@@ -7,7 +7,7 @@
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
-#include "pointbrush.h"
+#include "PointBrush.h"
 
 extern float frand();
 
