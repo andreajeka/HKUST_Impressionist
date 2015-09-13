@@ -41,8 +41,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.
-		glVertex2d(target.x, target.y);
-		glVertex2d(target.x + size, target.y);
+		glVertex2d(target.x - (size/2), target.y);
+		glVertex2d(target.x + (size/2), target.y);
 
 	glEnd();
 }
