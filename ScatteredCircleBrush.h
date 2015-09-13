@@ -1,7 +1,7 @@
 //
 // ScatteredCircleBrush.h
 //
-// The header file for Scattered Scattered Circle Brush. Inherited from CircleBrush class
+// The header file for Scattered Circle Brush. Inherited from CircleBrush class
 //
 
 #ifndef SCATTEREDCIRCLEBRUSH_H
