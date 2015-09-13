@@ -43,10 +43,11 @@ void ScatteredPointBrush::BrushMove(const Point source, const Point target)
 	// be more interesting and give more random scattering if it is used.
 	//srand(time(0));
 
-	for (int i = 0; i < size; i++) {
+	// 4 seems like a good number
+	for (int i = 0; i < size*4; i++) {
 		// Get random numbers to set scatter location in the brush area
-		int randomX = rand() % size + 1;
-		int randomY = rand() % size + 1;
+		int randomX = rand() % size + (-size / 2);
+		int randomY = rand() % size + (-size / 2);
 
 		// We need to set a new Point source for the brush as well to 
 		// match the location of the source and the target point
