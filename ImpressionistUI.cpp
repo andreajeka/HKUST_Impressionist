@@ -702,7 +702,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_AlphaSlider->type(FL_HOR_NICE_SLIDER);
 		m_AlphaSlider->labelfont(FL_COURIER);
 		m_AlphaSlider->labelsize(12);
-		m_AlphaSlider->minimum(0.00);
+		m_AlphaSlider->minimum(0.0);
 		m_AlphaSlider->maximum(1.00);
 		m_AlphaSlider->step(0.01);
 		m_AlphaSlider->value(m_nAlpha);

@@ -21,6 +21,10 @@ void CircleBrush::BrushBegin(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
+	
+	// Enable alpha blending before the brush moves
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 
 	BrushMove(source, target);
 }
@@ -37,19 +41,22 @@ void CircleBrush::BrushMove(const Point source, const Point target)
 
 	int brushSize = pDoc->getSize();
 	int radius = brushSize / 2;
-	glBegin(GL_TRIANGLE_FAN);
-	SetColor(source);
 
-	for (int i = 0; i < 360; i++)
-	{
-		double degInRad = i * M_PI / 180.0;
-		glVertex2d(cos(degInRad)*radius + target.x, sin(degInRad)*radius + target.y);
-	}
+	glBegin(GL_TRIANGLE_FAN);
+		SetColor(source);
+
+		for (int i = 0; i < 360; i++)
+		{
+			double degInRad = i * M_PI / 180.0;
+			glVertex2d(cos(degInRad)*radius + target.x, sin(degInRad)*radius + target.y);
+		}
 
 	glEnd();
 }
 
 void CircleBrush::BrushEnd(const Point source, const Point target)
 {
-	// do nothing so far
+	// Disable alpha blending
+	glBlendFunc(GL_NONE, GL_NONE);
+	glDisable(GL_BLEND);
 }
