@@ -69,9 +69,18 @@ public:
 	void				resize_windows(int w, int h);
 
 	// Interface to get attribute
-
 	int					getSize();
 	void				setSize(int size);
+	int					getLineWidth();
+	void				setLineWidth(int width);
+	int					getLineAngle();
+	void				setLineAngle(int angle);
+	float				getAlpha();
+	void				setAlpha(float value);
+	int					getSpacing();
+	void				setSpacing(int value);
+	int					getEdgeThreshold();
+	void				setEdgeThreshold(int value);
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document

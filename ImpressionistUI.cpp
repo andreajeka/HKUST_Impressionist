@@ -450,6 +450,101 @@ void ImpressionistUI::setSize( int size )
 		m_BrushSizeSlider->value(m_nSize);
 }
 
+//------------------------------------------------
+// Return the brush line width
+//------------------------------------------------
+int ImpressionistUI::getLineWidth()
+{
+	return m_nLineWidth;
+}
+
+//-------------------------------------------------
+// Set the brush line width
+//-------------------------------------------------
+void ImpressionistUI::setLineWidth(int width)
+{
+	m_nLineWidth = width;
+
+	if (width <= 40)
+		m_LineWidthSlider->value(m_nLineWidth);
+}
+
+//------------------------------------------------
+// Return the brush line angle
+//------------------------------------------------
+int ImpressionistUI::getLineAngle()
+{
+	return m_nLineAngle;
+}
+
+//-------------------------------------------------
+// Set the brush line angle
+//-------------------------------------------------
+void ImpressionistUI::setLineAngle(int angle)
+{
+	m_nLineAngle = angle;
+
+	if (angle <= 359)
+		m_LineAngleSlider->value(m_nLineAngle);
+}
+
+//------------------------------------------------
+// Return the brush alpha value
+//------------------------------------------------
+float ImpressionistUI::getAlpha()
+{
+	return m_nAlpha;
+}
+
+//-------------------------------------------------
+// Set the brush alpha value
+//-------------------------------------------------
+void ImpressionistUI::setAlpha(float value)
+{
+	m_nAlpha = value;
+
+	if (value <= 1.00)
+		m_AlphaSlider->value(m_nAlpha);
+}
+
+//------------------------------------------------
+// Return the spacing value
+//------------------------------------------------
+int ImpressionistUI::getSpacing()
+{
+	return m_nSpacing;
+}
+
+//-------------------------------------------------
+// Set the spacing value
+//-------------------------------------------------
+void ImpressionistUI::setSpacing(int value)
+{
+	m_nSpacing = value;
+
+	if (value <= 16)
+		m_SpacingSlider->value(m_nSpacing);
+}
+
+//------------------------------------------------
+// Return the edge threshold value
+//------------------------------------------------
+int ImpressionistUI::getEdgeThreshold()
+{
+	return m_nEdgeThreshold;
+}
+
+//-------------------------------------------------
+// Set the edge threshold value
+//-------------------------------------------------
+void ImpressionistUI::setEdgeThreshold(int value)
+{
+	m_nEdgeThreshold = value;
+
+	if (value <= 500)
+		m_EdgeThresholdSlider->value(m_nEdgeThreshold);
+}
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
