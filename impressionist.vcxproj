@@ -145,6 +145,7 @@
     <ClCompile Include="OriginalView.cpp" />
     <ClCompile Include="PaintView.cpp" />
     <ClCompile Include="PointBrush.cpp" />
+    <ClCompile Include="RightClickDirectionLine.cpp" />
     <ClCompile Include="ScatteredCircleBrush.cpp" />
     <ClCompile Include="ScatteredLineBrush.cpp" />
     <ClCompile Include="ScatteredPointBrush.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="OriginalView.h" />
     <ClInclude Include="PaintView.h" />
     <ClInclude Include="PointBrush.h" />
+    <ClInclude Include="RightClickDirectionLine.h" />
     <ClInclude Include="ScatteredCircleBrush.h" />
     <ClInclude Include="ScatteredLineBrush.h" />
     <ClInclude Include="ScatteredPointBrush.h" />

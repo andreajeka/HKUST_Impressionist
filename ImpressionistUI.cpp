@@ -269,9 +269,6 @@ void ImpressionistUI::cb_strokeDirectionChoice(Fl_Widget* o, void* v)
 	ImpressionistDoc* pDoc = pUI->getDocument();
 
 	int type = (int)v;
-
-
-	pDoc->setBrushType(type);
 }
 
 //------------------------------------------------------------
@@ -592,14 +589,12 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
 };
 
 // Stroke directioon choice menu definition
-Fl_Menu_Item ImpressionistUI::strokeDirectionTypeMenu[] = {
-  {"Slider/Right Mouse",	FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)BRUSH_POINTS},
-  { "Gradient",				FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)BRUSH_LINES },
-  { "Brush Direction",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)BRUSH_CIRCLES },
+Fl_Menu_Item ImpressionistUI::strokeDirectionTypeMenu[NUM_STROKEDIRECTION_TYPE+1] = {
+  {"Slider/Right Mouse",	FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)SLIDER_OR_RIGHTMOUSE},
+  { "Gradient",				FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)GRADIENT},
+  { "Brush Direction",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_strokeDirectionChoice, (void *)BRUSH_DIRECTION},
   {0}
 };
-
-
 
 //----------------------------------------------------
 // Constructor.  Creates all of the widgets.

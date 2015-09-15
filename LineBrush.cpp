@@ -26,6 +26,9 @@ void LineBrush::BrushBegin(const Point source, const Point target)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
+	int width = pDoc->getLineWidth();
+	glLineWidth((GLfloat)width);
+
 	BrushMove(source, target);
 }
 
@@ -39,18 +42,17 @@ void LineBrush::BrushMove(const Point source, const Point target)
 		return;
 	}
 
+
 	int size = pDoc->getSize();
 	int halfSize = size / 2;
-	int width = pDoc->getLineWidth();
+
 	int angle = pDoc->getLineAngle();
 
-	glLineWidth(width);
 	glBegin(GL_LINES);
 		SetColor(source);
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.
-		if (angle )
 		glVertex2d(target.x - (cos(angle * M_PI / 180) * halfSize), target.y - (sin(angle * M_PI / 180.0) * halfSize));
 		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfSize), target.y + (sin(angle * M_PI / 180.0) * halfSize));
 

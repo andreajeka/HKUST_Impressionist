@@ -9,6 +9,7 @@
 #include "impressionistUI.h"
 #include "paintview.h"
 #include "ImpBrush.h"
+#include "RightClickDirectionLine.h"
 
 
 #define LEFT_MOUSE_DOWN		1
@@ -118,11 +119,29 @@ void PaintView::draw()
 			break;
 		case RIGHT_MOUSE_DOWN:
 
+			// We have to save the current content to preserve the current brush line
+			SaveCurrentContent();
+
+			// Implement the right mouse stroke direction here
+			rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
+			rightClickDirectionLine->BrushBegin(source, target);
 			break;
 		case RIGHT_MOUSE_DRAG:
 
+			// We need to release the current content because 
+			// each mouse drag refers to a different angle
+			RestoreContent();
+
+			rightClickDirectionLine->BrushMove(source, target);
 			break;
 		case RIGHT_MOUSE_UP:
+			rightClickDirectionLine->BrushEnd(source, target);
+			delete rightClickDirectionLine;
+			rightClickDirectionLine = NULL;
+
+			// When we release the mouse click, we basically define an angle 
+			// and want to release every content created
+			RestoreContent();
 
 			break;
 
