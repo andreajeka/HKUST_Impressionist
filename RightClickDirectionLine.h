@@ -20,8 +20,6 @@ public:
 	void BrushEnd(const Point source, const Point target);
 
 	Point* startCoord;
-	// Return the name of the brush (not used in this version).
-	char* BrushName(void);
 };
 
 #endif

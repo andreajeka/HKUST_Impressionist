@@ -1,12 +1,13 @@
 //
 // RightClickDirectionLine.cpp
-// The implementation of Right Click Direction Line Brush. It is a kind of ImpBrush. All your brush implementations
+// The implementation of Right Click Direction Line. It is a kind of ImpBrush. All your brush implementations
 // will look like the file with the different GL primitive calls.
 //
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
 #include "RightClickDirectionLine.h"
+#include "PaintView.h"
 
 RightClickDirectionLine::RightClickDirectionLine(ImpressionistDoc*	pDoc, char*	name) :
 ImpBrush(pDoc, name)
@@ -22,7 +23,7 @@ void RightClickDirectionLine::BrushBegin(const Point source, const Point target)
 	// We use target as the initial coordinate because intuitively
 	// at the beginning, when we click once we get the brush coordinate
 	// and that is actually the target coordinate (depends on the scenario)
-	startCoord = new Point(target.x, target.y);
+	startCoord = new Point(target);
 	
 	// By default we set the smallest size
 	glPointSize(1);
@@ -50,6 +51,7 @@ void RightClickDirectionLine::BrushMove(const Point source, const Point target)
 		glVertex2d(startCoord->x, startCoord->y);
 		glVertex2d(target.x, target.y);
 	glEnd();
+
 }
 
 void RightClickDirectionLine::BrushEnd(const Point source, const Point target)

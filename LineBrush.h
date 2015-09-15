@@ -17,9 +17,15 @@ public:
 	void BrushBegin(const Point source, const Point target);
 	void BrushMove(const Point source, const Point target);
 	void BrushEnd(const Point source, const Point target);
+	static int DetermineAngle(const Point source, const Point target);
+	void DrawLine(const Point source, const Point target, const int width, const int angle);
 
 	char* BrushName(void);
 
+	// We need to create a specific attr interface to ease the calculation 
+	// of stroke direction
+	Point* startCoord;
+	Point* endCoord;
 };
 
 #endif

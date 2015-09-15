@@ -9,8 +9,9 @@
 #include "impressionistUI.h"
 #include "paintview.h"
 #include "ImpBrush.h"
+#include "LineBrush.h"
 #include "RightClickDirectionLine.h"
-
+#include <iostream>
 
 #define LEFT_MOUSE_DOWN		1
 #define LEFT_MOUSE_DRAG		2
@@ -28,6 +29,7 @@
 static int		eventToDo;
 static int		isAnEvent=0;
 static Point	coord;
+int angle;
 
 PaintView::PaintView(int			x, 
 					 int			y, 
@@ -101,7 +103,6 @@ void PaintView::draw()
 
 		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
 		Point target( coord.x, m_nWindowHeight - coord.y );
-		
 		// This is the event handler
 		switch (eventToDo) 
 		{
@@ -118,10 +119,9 @@ void PaintView::draw()
 			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DOWN:
-
 			// We have to save the current content to preserve the current brush line
 			SaveCurrentContent();
-
+			firstCoord = target;
 			// Implement the right mouse stroke direction here
 			rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
 			rightClickDirectionLine->BrushBegin(source, target);
@@ -136,13 +136,17 @@ void PaintView::draw()
 			break;
 		case RIGHT_MOUSE_UP:
 			rightClickDirectionLine->BrushEnd(source, target);
+			angle = LineBrush::DetermineAngle(firstCoord, target);
+			std::cout << firstCoord.x << " " << firstCoord.y << "\n";
+			std::cout << target.x << " " << target.y << "\n";
+			std::cout << angle << "\n";
+			m_pDoc->setLineAngle(angle);
 			delete rightClickDirectionLine;
 			rightClickDirectionLine = NULL;
 
 			// When we release the mouse click, we basically define an angle 
 			// and want to release every content created
 			RestoreContent();
-
 			break;
 
 		default:

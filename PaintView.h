@@ -35,6 +35,8 @@ public:
 private:
 	GLvoid* m_pPaintBitstart;
 	ImpBrush* rightClickDirectionLine;
+	Point firstCoord;
+
 	int		m_nDrawWidth,
 			m_nDrawHeight,
 			m_nStartRow, 
