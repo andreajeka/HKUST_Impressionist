@@ -88,6 +88,86 @@ int ImpressionistDoc::getSize()
 	return m_pUI->getSize();
 }
 
+//------------------------------------------------
+// Return the brush line width
+//------------------------------------------------
+int ImpressionistDoc::getLineWidth()
+{
+	return m_pUI->getLineWidth();
+}
+
+//-------------------------------------------------
+// Set the brush line width
+//-------------------------------------------------
+void ImpressionistDoc::setLineWidth(int width)
+{
+	m_pUI->setLineWidth(width);
+}
+
+//------------------------------------------------
+// Return the brush line angle
+//------------------------------------------------
+int ImpressionistDoc::getLineAngle()
+{
+	return m_pUI->getLineAngle();
+}
+
+//-------------------------------------------------
+// Set the brush line angle
+//-------------------------------------------------
+void ImpressionistDoc::setLineAngle(int angle)
+{
+	m_pUI->setLineAngle(angle);
+}
+
+//------------------------------------------------
+// Return the brush alpha value
+//------------------------------------------------
+float ImpressionistDoc::getAlpha()
+{
+	return m_pUI->getAlpha();
+}
+
+//-------------------------------------------------
+// Set the brush alpha value
+//-------------------------------------------------
+void ImpressionistDoc::setAlpha(float value)
+{
+	m_pUI->setAlpha(value);
+}
+
+//------------------------------------------------
+// Return the spacing value
+//------------------------------------------------
+int ImpressionistDoc::getSpacing()
+{
+	return m_pUI->getSpacing();
+}
+
+//-------------------------------------------------
+// Set the spacing value
+//-------------------------------------------------
+void ImpressionistDoc::setSpacing(int value)
+{
+	m_pUI->setSpacing(value);
+}
+
+//------------------------------------------------
+// Return the edge threshold value
+//------------------------------------------------
+int ImpressionistDoc::getEdgeThreshold()
+{
+	return m_pUI->getEdgeThreshold();
+}
+
+//-------------------------------------------------
+// Set the edge threshold value
+//-------------------------------------------------
+void ImpressionistDoc::setEdgeThreshold(int value)
+{
+	m_pUI->setEdgeThreshold(value);
+}
+
 //---------------------------------------------------------
 // Load the specified image
 // This is called by the UI when the load image button is 

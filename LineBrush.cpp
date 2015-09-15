@@ -8,6 +8,7 @@
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
 #include "LineBrush.h"
+#include <math.h>
 
 extern float frand();
 
@@ -35,14 +36,19 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	}
 
 	int size = pDoc->getSize();
+	int halfSize = size / 2;
+	int width = pDoc->getLineWidth();
+	int angle = pDoc->getLineAngle();
 
+	glLineWidth(width);
 	glBegin(GL_LINES);
 		SetColor(source);
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.
-		glVertex2d(target.x - (size/2), target.y);
-		glVertex2d(target.x + (size/2), target.y);
+		if (angle )
+		glVertex2d(target.x - (cos(angle * M_PI / 180) * halfSize), target.y - (sin(angle * M_PI / 180.0) * halfSize));
+		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfSize), target.y + (sin(angle * M_PI / 180.0) * halfSize));
 
 	glEnd();
 }
