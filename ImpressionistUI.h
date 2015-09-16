@@ -37,6 +37,7 @@ public:
 
 // for brush dialog
 	Fl_Window*			m_brushDialog;
+
 	Fl_Choice*			m_BrushTypeChoice;
 	Fl_Choice*			m_StrokeDirectionTypeChoice;
 

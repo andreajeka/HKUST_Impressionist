@@ -18,7 +18,10 @@ public:
 	void BrushMove(const Point source, const Point target);
 	void BrushEnd(const Point source, const Point target);
 	static int DetermineAngle(const Point source, const Point target);
-	void DrawLine(const Point source, const Point target, const int width, const int angle);
+	void DrawLine(const Point source, const Point target, const int size, const int angle);
+	int getGradientOfX(const Point source);
+	int getGradientOfY(const Point source);
+	int getPixelIntensity(int x, int y);
 
 	char* BrushName(void);
 

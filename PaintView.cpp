@@ -137,9 +137,6 @@ void PaintView::draw()
 		case RIGHT_MOUSE_UP:
 			rightClickDirectionLine->BrushEnd(source, target);
 			angle = LineBrush::DetermineAngle(firstCoord, target);
-			std::cout << firstCoord.x << " " << firstCoord.y << "\n";
-			std::cout << target.x << " " << target.y << "\n";
-			std::cout << angle << "\n";
 			m_pDoc->setLineAngle(angle);
 			delete rightClickDirectionLine;
 			rightClickDirectionLine = NULL;

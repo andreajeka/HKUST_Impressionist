@@ -9,6 +9,7 @@
 #include "impressionistUI.h"
 #include "LineBrush.h"
 #include <math.h>
+#include <iostream>
 
 extern float frand();
 
@@ -29,9 +30,9 @@ void LineBrush::BrushBegin(const Point source, const Point target)
 	glEnable(GL_BLEND);
 
 	int width = pDoc->getLineWidth();
-	glLineWidth((GLfloat)width);
+	glLineWidth(width);
 
-	//
+	
 	startCoord = new Point(target.x, target.y);
 	BrushMove(source, target);
 }
@@ -42,22 +43,43 @@ void LineBrush::BrushMove(const Point source, const Point target)
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
 	if (pDoc == NULL) {
-		printf("PointBrush::BrushMove  document is NULL\n");
+		printf("LineBrush::BrushMove  document is NULL\n");
 		return;
 	}
 
-	//// For stroke direction cases:
-	//// 1. Setting angle for stroke direction and slider case
-	//if (dlg->m_StrokeDirectionTypeChoice->value == SLIDER_OR_RIGHTMOUSE) {
-	//	if (endCoord == NULL)
-	//		endCoord = new Point(target.x, target.y);
-	//	else {
+	int size = pDoc->getSize();
+	int lineAngle = 0;
+	endCoord = new Point(target.x, target.y);
 
-	//	}
-	//}
+	int strokeDirectionChoice = dlg->m_StrokeDirectionTypeChoice->value();
+	Point startGradient, endGradient;
+	int perpendicularAngle = 0;
 
+	// For stroke direction cases:
+	// 1. Setting angle for stroke direction and slider case has been solved inside paintview.cpp
+	// 2. Setting angle from brush direction stroke
+	// 3. Setting angle from gradient
+	switch (strokeDirectionChoice) 
+	{
+		case SLIDER_OR_RIGHTMOUSE:
+			lineAngle = pDoc->getLineAngle();
+			break;
+		case BRUSH_DIRECTION:
+			lineAngle = DetermineAngle(*startCoord, *endCoord);
+			break;
+		case GRADIENT:
+			startGradient = Point(0, 0);
+			endGradient = Point(getGradientOfX(source), getGradientOfY(source));
+			perpendicularAngle = DetermineAngle(startGradient, endGradient) + 90;
+			if (perpendicularAngle >= 360) 
+				perpendicularAngle -= 180;
+			lineAngle = perpendicularAngle;
+			break;
+		default:
+			break;
+	}
 
-
+	DrawLine(source, target, size, lineAngle);
 }
 
 void LineBrush::BrushEnd(const Point source, const Point target)
@@ -65,25 +87,73 @@ void LineBrush::BrushEnd(const Point source, const Point target)
 	// Disable alpha blending
 	glBlendFunc(GL_NONE, GL_NONE);
 	glDisable(GL_BLEND);
-
-
 }
 
 // We now have a specific function that can draw a line just by feeding the parameters, 
 // esp. line angle because we have many stroke direction option to change the angle 
-void LineBrush::DrawLine(const Point source, const Point target, const int width, const int angle)
+void LineBrush::DrawLine(const Point source, const Point target, const int size, const int angle)
 {
-	int halfWidth = width / 2;
+	int halfSize = size / 2;
 
 	glBegin(GL_LINES);
 	SetColor(source);
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.
-		glVertex2d(target.x - (cos(angle * M_PI / 180) * halfWidth), target.y - (sin(angle * M_PI / 180.0) * halfWidth));
-		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfWidth), target.y + (sin(angle * M_PI / 180.0) * halfWidth));
+		glVertex2d(target.x - (cos(angle * M_PI / 180) * halfSize), target.y - (sin(angle * M_PI / 180.0) * halfSize));
+		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfSize), target.y + (sin(angle * M_PI / 180.0) * halfSize));
 
 	glEnd();
+}
+
+int LineBrush::getGradientOfX(const Point source){
+	
+	// Sobel Mask of X
+	int Sx[3][3] = 
+	{
+		{ -1, 0, 1 },
+		{ -2, 0, 2 },
+		{ -1, 0, 1 }
+
+	};
+
+	double Gx = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gx += Sx[i][j] * getPixelIntensity(source.x + j - 1,
+											   source.y - i + 1);
+		}
+	}
+	return (int) Gx;
+}
+
+int LineBrush::getGradientOfY(const Point source){
+
+	// Sobel Mask of Y
+	int Sy[3][3] =
+	{
+		{ 1, 2, 1 },
+		{ 0, 0, 0 },
+		{ -1, -2, -1 }
+
+	};
+
+	double Gy = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gy += Sy[i][j] * getPixelIntensity(source.x + j - 1,
+											   source.y - i + 1);
+		}
+	}
+	return (int)Gy;
+}
+
+// Get pixel intensity according to human eye
+int LineBrush::getPixelIntensity(int x, int y) {
+	ImpressionistDoc* pDoc = GetDocument();
+	unsigned char color[3];
+	memcpy(color, pDoc->GetOriginalPixel(x, y), 3);
+	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
 }
 
 int LineBrush::DetermineAngle(const Point start, const Point end)
