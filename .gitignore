@@ -3,7 +3,6 @@
 
 # User-specific files
 *.suo
-*.user
 *.userosscache
 *.sln.docstates
 
@@ -232,7 +231,6 @@ _Pvt_Extensions
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
