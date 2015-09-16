@@ -61,6 +61,13 @@ ImpressionistDoc::ImpressionistDoc()
 void ImpressionistDoc::setUI(ImpressionistUI* ui) 
 {
 	m_pUI	= ui;
+
+	// Deactivate some attrs at start-up
+	m_pUI->m_StrokeDirectionTypeChoice->deactivate();
+	m_pUI->m_LineWidthSlider->deactivate();
+	m_pUI->m_LineAngleSlider->deactivate();
+	m_pUI->m_EdgeClippingButton->deactivate();
+	m_pUI->m_AnotherGradientButton->deactivate();
 }
 
 //---------------------------------------------------------
@@ -78,6 +85,20 @@ char* ImpressionistDoc::getImageName()
 void ImpressionistDoc::setBrushType(int type)
 {
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[type];
+
+	m_pUI->m_StrokeDirectionTypeChoice->deactivate();
+	m_pUI->m_LineWidthSlider->deactivate();
+	m_pUI->m_LineAngleSlider->deactivate();
+	m_pUI->m_EdgeClippingButton->deactivate();
+	m_pUI->m_AnotherGradientButton->deactivate();
+
+	if (type == BRUSH_LINES || type == BRUSH_SCATTERED_LINES) {
+		m_pUI->m_StrokeDirectionTypeChoice->activate();
+		m_pUI->m_LineWidthSlider->activate();
+		m_pUI->m_LineAngleSlider->activate();
+		m_pUI->m_EdgeClippingButton->activate();
+		m_pUI->m_AnotherGradientButton->activate();
+	}
 }
 
 //---------------------------------------------------------
