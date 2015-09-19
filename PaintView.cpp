@@ -65,14 +65,18 @@ void PaintView::draw()
 		ortho();
 
 		glClear( GL_COLOR_BUFFER_BIT );
+
 	}
 
 	Point scrollpos;// = GetScrollPosition();
 	scrollpos.x = 0;
 	scrollpos.y	= 0;
-
+	
+	// Main window width and height
 	m_nWindowWidth	= w();
 	m_nWindowHeight	= h();
+	/*std::cout << m_nWindowWidth << '\n';
+	std::cout << m_nWindowHeight << '\n';*/
 
 	int drawWidth, drawHeight;
 	drawWidth = min( m_nWindowWidth, m_pDoc->m_nPaintWidth );
@@ -91,68 +95,102 @@ void PaintView::draw()
 	m_nEndRow		= startrow + drawHeight;
 	m_nStartCol		= scrollpos.x;
 	m_nEndCol		= m_nStartCol + drawWidth;
+	
+	// Implement edge clipping here using stencil buffer
+	if (!valid()) {
+		
+		// Quick explanation: 
+		// Stencil buffer gives an option to which 
+		// fragments should be drawn and which shouldn't
+		// more info: https://en.wikipedia.org/wiki/Stencil_buffer
+		glEnable(GL_STENCIL_TEST);
+
+		// Set all stencil values to 1 per bit
+		glStencilMask(0xFF);
+		// needs mask=0xFF
+		glClear(GL_STENCIL_BUFFER_BIT);
+
+		// Force drawing to stencil by declaring stencil test function fails
+		// This means we draw 1s on test fail (always)
+		glStencilFunc(GL_NEVER, 1, 0xFF);
+		glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+
+		// Disable all color channels 
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+		glBegin(GL_TRIANGLE_STRIP);
+			// Get the vertices for the paint view 
+			glVertex2f(0, m_nWindowHeight - m_nDrawHeight); // bottom left 
+			glVertex2f(m_nDrawWidth, m_nWindowHeight - m_nDrawHeight); //  bottom right
+			glVertex2f(0, m_nWindowHeight); // top left
+			glVertex2f(m_nDrawWidth, m_nWindowHeight); // top right
+
+		glEnd();
+		
+
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
+		glStencilMask(0);
+		// draw where stencil's value less than 0
+		glStencilFunc(GL_LESS, 0, 0xFF);
+	}
 
 	if ( m_pDoc->m_ucPainting && !isAnEvent) 
 	{
 		RestoreContent();
-
 	}
 
 	if (m_pDoc->m_ucPainting && isAnEvent)
 	{
-		// Do region clipping as brush is being painted
-		if (coord.x <= m_nDrawWidth && coord.y <= m_nDrawHeight) {
-			
-			// Clear it after processing.
-			isAnEvent = 0;
+		// Clear it after processing.
+		isAnEvent = 0;
 
-			Point source(coord.x + m_nStartCol, m_nEndRow - coord.y);
-			Point target(coord.x, m_nWindowHeight - coord.y);
-			// This is the event handler
-			switch (eventToDo)
-			{
-			case LEFT_MOUSE_DOWN:
-				m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
-				break;
-			case LEFT_MOUSE_DRAG:
-				m_pDoc->m_pCurrentBrush->BrushMove(source, target);
-				break;
-			case LEFT_MOUSE_UP:
-				m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
+		Point source(coord.x + m_nStartCol, m_nEndRow - coord.y);
+		Point target(coord.x, m_nWindowHeight - coord.y);
+		// This is the event handler
+		switch (eventToDo)
+		{
+		case LEFT_MOUSE_DOWN:
+			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+			break;
+		case LEFT_MOUSE_DRAG:
+			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
+			break;
+		case LEFT_MOUSE_UP:
+			m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
 
-				SaveCurrentContent();
-				RestoreContent();
-				break;
-			case RIGHT_MOUSE_DOWN:
-				firstCoord = target;
+			SaveCurrentContent();
+			RestoreContent();
+			break;
+		case RIGHT_MOUSE_DOWN:
+			firstCoord = target;
 
-				// Implement the right mouse stroke direction here
-				rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
-				rightClickDirectionLine->BrushBegin(source, target);
-				break;
-			case RIGHT_MOUSE_DRAG:
+			// Implement the right mouse stroke direction here
+			rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
+			rightClickDirectionLine->BrushBegin(source, target);
+			break;
+		case RIGHT_MOUSE_DRAG:
 
-				// We need to release the current content because 
-				// each mouse drag refers to a different angle
-				RestoreContent();
+			// We need to release the current content because 
+			// each mouse drag refers to a different angle
+			RestoreContent();
 
-				rightClickDirectionLine->BrushMove(source, target);
-				break;
-			case RIGHT_MOUSE_UP:
-				RestoreContent();
+			rightClickDirectionLine->BrushMove(source, target);
+			break;
+		case RIGHT_MOUSE_UP:
+			RestoreContent();
 
-				rightClickDirectionLine->BrushEnd(source, target);
-				angle = LineBrush::DetermineAngle(firstCoord, target);
-				m_pDoc->setLineAngle(angle);
-				delete rightClickDirectionLine;
-				rightClickDirectionLine = NULL;
+			rightClickDirectionLine->BrushEnd(source, target);
+			angle = LineBrush::DetermineAngle(firstCoord, target);
+			m_pDoc->setLineAngle(angle);
+			delete rightClickDirectionLine;
+			rightClickDirectionLine = NULL;
 
-				break;
+			break;
 
-			default:
-				printf("Unknown event!!\n");
-				break;
-			}
+		default:
+			printf("Unknown event!!\n");
+			break;
 		}
 	}
 
