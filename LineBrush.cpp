@@ -87,6 +87,10 @@ void LineBrush::BrushEnd(const Point source, const Point target)
 	// Disable alpha blending
 	glBlendFunc(GL_NONE, GL_NONE);
 	glDisable(GL_BLEND);
+	delete startCoord;
+	delete endCoord;
+	startCoord = NULL;
+	endCoord = NULL;
 }
 
 // We now have a specific function that can draw a line just by feeding the parameters, 

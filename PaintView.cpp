@@ -119,9 +119,8 @@ void PaintView::draw()
 			RestoreContent();
 			break;
 		case RIGHT_MOUSE_DOWN:
-			// We have to save the current content to preserve the current brush line
-			SaveCurrentContent();
 			firstCoord = target;
+
 			// Implement the right mouse stroke direction here
 			rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
 			rightClickDirectionLine->BrushBegin(source, target);
@@ -135,15 +134,14 @@ void PaintView::draw()
 			rightClickDirectionLine->BrushMove(source, target);
 			break;
 		case RIGHT_MOUSE_UP:
+			RestoreContent();
+
 			rightClickDirectionLine->BrushEnd(source, target);
 			angle = LineBrush::DetermineAngle(firstCoord, target);
 			m_pDoc->setLineAngle(angle);
 			delete rightClickDirectionLine;
 			rightClickDirectionLine = NULL;
-
-			// When we release the mouse click, we basically define an angle 
-			// and want to release every content created
-			RestoreContent();
+			
 			break;
 
 		default:
