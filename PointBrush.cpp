@@ -23,9 +23,6 @@ void PointBrush::BrushBegin( const Point source, const Point target )
 
 	int size = pDoc->getSize();
 
-	// Enable alpha blending before the brush moves
-	EnableAlphaBlending();
-
 	glPointSize((GLfloat)size);
 
 	BrushMove( source, target );
@@ -51,7 +48,5 @@ void PointBrush::BrushMove( const Point source, const Point target )
 
 void PointBrush::BrushEnd( const Point source, const Point target )
 {
-	// Disable alpha blending
-	DisableAlphaBlending();
 }
 

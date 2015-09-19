@@ -19,9 +19,6 @@ void ScatteredPointBrush::BrushBegin(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
-	
-	// Enable alpha blending before the brush moves
-    EnableAlphaBlending();
 
 	// Set the lowest size to one to get the scattered point effect
 	glPointSize((float)1.0);
@@ -63,6 +60,4 @@ void ScatteredPointBrush::BrushMove(const Point source, const Point target)
 
 void ScatteredPointBrush::BrushEnd(const Point source, const Point target)
 {
-	// Disable alpha blending
-	DisableAlphaBlending();
 }

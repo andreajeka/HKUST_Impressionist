@@ -19,13 +19,8 @@ void ScatteredLineBrush::BrushBegin(const Point source, const Point target)
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
-
-	// Enable alpha blending before the brush moves
-	EnableAlphaBlending();
-
 	int width = pDoc->getLineWidth();
 	glLineWidth(width);
-
 
 	startCoord = Point(target.x, target.y);
 	BrushMove(source, target);
@@ -60,7 +55,5 @@ void ScatteredLineBrush::BrushMove(const Point source, const Point target)
 
 void ScatteredLineBrush::BrushEnd(const Point source, const Point target)
 {
-	// Disable alpha blending
-	DisableAlphaBlending();
 }
 

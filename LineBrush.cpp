@@ -24,12 +24,8 @@ void LineBrush::BrushBegin(const Point source, const Point target)
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
-	// Enable alpha blending before the brush moves
-	EnableAlphaBlending();
-
 	int width = pDoc->getLineWidth();
 	glLineWidth(width);
-
 	
 	startCoord = Point(target.x, target.y);
 	BrushMove(source, target);
@@ -63,6 +59,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			break;
 		case BRUSH_DIRECTION:
 			lineAngle = DetermineAngle(startCoord, target);
+			startCoord = target;
 			break;
 		case GRADIENT:
 			startGradient = Point(0, 0);
@@ -81,8 +78,6 @@ void LineBrush::BrushMove(const Point source, const Point target)
 
 void LineBrush::BrushEnd(const Point source, const Point target)
 {
-	// Disable alpha blending
-	DisableAlphaBlending();
 }
 
 // We now have a specific function that can draw a line just by feeding the parameters, 

@@ -59,6 +59,9 @@ void PaintView::draw()
 		// We're only using 2-D, so turn off depth 
 		glDisable( GL_DEPTH_TEST );
 
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+
 		ortho();
 
 		glClear( GL_COLOR_BUFFER_BIT );

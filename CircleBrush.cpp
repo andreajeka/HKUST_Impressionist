@@ -21,9 +21,6 @@ void CircleBrush::BrushBegin(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
-	
-	// Enable alpha blending before the brush moves
-	EnableAlphaBlending();
 
 	BrushMove(source, target);
 }
@@ -55,6 +52,4 @@ void CircleBrush::BrushMove(const Point source, const Point target)
 
 void CircleBrush::BrushEnd(const Point source, const Point target)
 {
-	// Disable alpha blending
-	DisableAlphaBlending();
 }
