@@ -27,8 +27,7 @@ public:
 
 	// We need to create a specific attr interface to ease the calculation 
 	// of stroke direction
-	Point* startCoord;
-	Point* endCoord;
+	Point startCoord;
 };
 
 #endif

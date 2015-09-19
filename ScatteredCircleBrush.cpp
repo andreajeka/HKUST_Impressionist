@@ -22,8 +22,7 @@ void ScatteredCircleBrush::BrushBegin(const Point source, const Point target)
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
 	// Enable alpha blending before the brush moves
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
+	EnableAlphaBlending();
 
 	BrushMove(source, target);
 }
@@ -58,6 +57,5 @@ void ScatteredCircleBrush::BrushMove(const Point source, const Point target)
 void ScatteredCircleBrush::BrushEnd(const Point source, const Point target)
 {
 	// Disable alpha blending
-	glBlendFunc(GL_NONE, GL_NONE);
-	glDisable(GL_BLEND);
+	DisableAlphaBlending();
 }

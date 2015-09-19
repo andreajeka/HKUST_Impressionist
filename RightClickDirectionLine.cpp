@@ -27,7 +27,7 @@ void RightClickDirectionLine::BrushBegin(const Point source, const Point target)
 	
 	// By default we set the smallest size
 	glPointSize(1);
-
+	glLineWidth(1);
 	// By default we set it as red color
 	glColor3f(1.0, 0.0, 0.0);
 

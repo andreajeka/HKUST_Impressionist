@@ -16,8 +16,7 @@ extern float frand();
 LineBrush::LineBrush(ImpressionistDoc* pDoc, char* name) :
 ImpBrush(pDoc, name)
 {
-	startCoord = NULL;
-	endCoord = NULL;
+
 }
 
 void LineBrush::BrushBegin(const Point source, const Point target)
@@ -26,14 +25,13 @@ void LineBrush::BrushBegin(const Point source, const Point target)
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
 	// Enable alpha blending before the brush moves
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
+	EnableAlphaBlending();
 
 	int width = pDoc->getLineWidth();
 	glLineWidth(width);
 
 	
-	startCoord = new Point(target.x, target.y);
+	startCoord = Point(target.x, target.y);
 	BrushMove(source, target);
 }
 
@@ -49,7 +47,6 @@ void LineBrush::BrushMove(const Point source, const Point target)
 
 	int size = pDoc->getSize();
 	int lineAngle = 0;
-	endCoord = new Point(target.x, target.y);
 
 	int strokeDirectionChoice = dlg->m_StrokeDirectionTypeChoice->value();
 	Point startGradient, endGradient;
@@ -65,7 +62,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			lineAngle = pDoc->getLineAngle();
 			break;
 		case BRUSH_DIRECTION:
-			lineAngle = DetermineAngle(*startCoord, *endCoord);
+			lineAngle = DetermineAngle(startCoord, target);
 			break;
 		case GRADIENT:
 			startGradient = Point(0, 0);
@@ -85,12 +82,7 @@ void LineBrush::BrushMove(const Point source, const Point target)
 void LineBrush::BrushEnd(const Point source, const Point target)
 {
 	// Disable alpha blending
-	glBlendFunc(GL_NONE, GL_NONE);
-	glDisable(GL_BLEND);
-	delete startCoord;
-	delete endCoord;
-	startCoord = NULL;
-	endCoord = NULL;
+	DisableAlphaBlending();
 }
 
 // We now have a specific function that can draw a line just by feeding the parameters, 

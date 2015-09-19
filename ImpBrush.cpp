@@ -60,3 +60,13 @@ void ImpBrush::SetColor (const Point source)
 
 	glColor4ub(red, green, blue, alpha);
 }
+
+void ImpBrush::EnableAlphaBlending() {
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+}
+
+void ImpBrush::DisableAlphaBlending() {
+	glBlendFunc(GL_NONE, GL_NONE);
+	glDisable(GL_BLEND);
+}

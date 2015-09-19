@@ -21,14 +21,13 @@ void ScatteredLineBrush::BrushBegin(const Point source, const Point target)
 
 
 	// Enable alpha blending before the brush moves
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_BLEND);
+	EnableAlphaBlending();
 
 	int width = pDoc->getLineWidth();
 	glLineWidth(width);
 
 
-	startCoord = new Point(target.x, target.y);
+	startCoord = Point(target.x, target.y);
 	BrushMove(source, target);
 }
 
@@ -62,7 +61,6 @@ void ScatteredLineBrush::BrushMove(const Point source, const Point target)
 void ScatteredLineBrush::BrushEnd(const Point source, const Point target)
 {
 	// Disable alpha blending
-	glBlendFunc(GL_NONE, GL_NONE);
-	glDisable(GL_BLEND);
+	DisableAlphaBlending();
 }
 
