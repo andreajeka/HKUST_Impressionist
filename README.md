@@ -14,7 +14,7 @@ Here is a list of suggestions for extending the program. You are encouraged to c
   
 1. [ ] ![whistle](http://i.imgur.com/VYSixYv.gif) To give your paintings more variety, add some additional brush types to the program. These brush strokes should be substantially different from those you are required to implement. You will get one whistle for each new brush (within reason). 
 
-2. [ ] ![whistle](http://i.imgur.com/VYSixYv.gif) The skeleton program allows the user to paint outside the boundary of the paint rectangle, then erases this region when the stroke is completed. Change this to clip brush strokes to the region as they're being painted. 
+2. [x] ![whistle](http://i.imgur.com/VYSixYv.gif) The skeleton program allows the user to paint outside the boundary of the paint rectangle, then erases this region when the stroke is completed. Change this to clip brush strokes to the region as they're being painted. 
 
 3. [ ] ![whistle](http://i.imgur.com/VYSixYv.gif) When using your program, you currently can't see what part of the original image you're painting. Extend the program so that when the cursor is in the painting window, a marker appears on the original image showing where you're painting. 
 

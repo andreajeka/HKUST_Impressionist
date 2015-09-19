@@ -98,58 +98,61 @@ void PaintView::draw()
 
 	}
 
-	if ( m_pDoc->m_ucPainting && isAnEvent) 
+	if (m_pDoc->m_ucPainting && isAnEvent)
 	{
-
-		// Clear it after processing.
-		isAnEvent	= 0;	
-
-		Point source( coord.x + m_nStartCol, m_nEndRow - coord.y );
-		Point target( coord.x, m_nWindowHeight - coord.y );
-		// This is the event handler
-		switch (eventToDo) 
-		{
-		case LEFT_MOUSE_DOWN:
-			m_pDoc->m_pCurrentBrush->BrushBegin( source, target );
-			break;
-		case LEFT_MOUSE_DRAG:
-			m_pDoc->m_pCurrentBrush->BrushMove( source, target );
-			break;
-		case LEFT_MOUSE_UP:
-			m_pDoc->m_pCurrentBrush->BrushEnd( source, target );
-
-			SaveCurrentContent();
-			RestoreContent();
-			break;
-		case RIGHT_MOUSE_DOWN:
-			firstCoord = target;
-
-			// Implement the right mouse stroke direction here
-			rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
-			rightClickDirectionLine->BrushBegin(source, target);
-			break;
-		case RIGHT_MOUSE_DRAG:
-
-			// We need to release the current content because 
-			// each mouse drag refers to a different angle
-			RestoreContent();
-
-			rightClickDirectionLine->BrushMove(source, target);
-			break;
-		case RIGHT_MOUSE_UP:
-			RestoreContent();
-
-			rightClickDirectionLine->BrushEnd(source, target);
-			angle = LineBrush::DetermineAngle(firstCoord, target);
-			m_pDoc->setLineAngle(angle);
-			delete rightClickDirectionLine;
-			rightClickDirectionLine = NULL;
+		// Do region clipping as brush is being painted
+		if (coord.x <= m_nDrawWidth && coord.y <= m_nDrawHeight) {
 			
-			break;
+			// Clear it after processing.
+			isAnEvent = 0;
 
-		default:
-			printf("Unknown event!!\n");		
-			break;
+			Point source(coord.x + m_nStartCol, m_nEndRow - coord.y);
+			Point target(coord.x, m_nWindowHeight - coord.y);
+			// This is the event handler
+			switch (eventToDo)
+			{
+			case LEFT_MOUSE_DOWN:
+				m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+				break;
+			case LEFT_MOUSE_DRAG:
+				m_pDoc->m_pCurrentBrush->BrushMove(source, target);
+				break;
+			case LEFT_MOUSE_UP:
+				m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
+
+				SaveCurrentContent();
+				RestoreContent();
+				break;
+			case RIGHT_MOUSE_DOWN:
+				firstCoord = target;
+
+				// Implement the right mouse stroke direction here
+				rightClickDirectionLine = new RightClickDirectionLine(m_pDoc, "Right Click Direction Line");
+				rightClickDirectionLine->BrushBegin(source, target);
+				break;
+			case RIGHT_MOUSE_DRAG:
+
+				// We need to release the current content because 
+				// each mouse drag refers to a different angle
+				RestoreContent();
+
+				rightClickDirectionLine->BrushMove(source, target);
+				break;
+			case RIGHT_MOUSE_UP:
+				RestoreContent();
+
+				rightClickDirectionLine->BrushEnd(source, target);
+				angle = LineBrush::DetermineAngle(firstCoord, target);
+				m_pDoc->setLineAngle(angle);
+				delete rightClickDirectionLine;
+				rightClickDirectionLine = NULL;
+
+				break;
+
+			default:
+				printf("Unknown event!!\n");
+				break;
+			}
 		}
 	}
 
