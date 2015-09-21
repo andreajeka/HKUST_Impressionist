@@ -63,7 +63,8 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			break;
 		case GRADIENT:
 			startGradient = Point(0, 0);
-			endGradient = Point(getGradientOfX(source), getGradientOfY(source));
+			endGradient = Point(pDoc->GetGradientOfX(source), pDoc->GetGradientOfY(source));
+			// DetermineAngle(startGradient, endGradient) is the gradient direction
 			perpendicularAngle = DetermineAngle(startGradient, endGradient) + 90;
 			if (perpendicularAngle >= 360) 
 				perpendicularAngle -= 180;
@@ -97,55 +98,7 @@ void LineBrush::DrawLine(const Point source, const Point target, const int size,
 	glEnd();
 }
 
-int LineBrush::getGradientOfX(const Point source){
-	
-	// Sobel Mask of X
-	int Sx[3][3] = 
-	{
-		{ -1, 0, 1 },
-		{ -2, 0, 2 },
-		{ -1, 0, 1 }
 
-	};
-
-	double Gx = 0.0;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++){
-			Gx += Sx[i][j] * getPixelIntensity(source.x + j - 1,
-											   source.y - i + 1);
-		}
-	}
-	return (int) Gx;
-}
-
-int LineBrush::getGradientOfY(const Point source){
-
-	// Sobel Mask of Y
-	int Sy[3][3] =
-	{
-		{ 1, 2, 1 },
-		{ 0, 0, 0 },
-		{ -1, -2, -1 }
-
-	};
-
-	double Gy = 0.0;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++){
-			Gy += Sy[i][j] * getPixelIntensity(source.x + j - 1,
-											   source.y - i + 1);
-		}
-	}
-	return (int)Gy;
-}
-
-// Get pixel intensity according to human eye
-int LineBrush::getPixelIntensity(int x, int y) {
-	ImpressionistDoc* pDoc = GetDocument();
-	unsigned char color[3];
-	memcpy(color, pDoc->GetOriginalPixel(x, y), 3);
-	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
-}
 
 int LineBrush::DetermineAngle(const Point start, const Point end)
 {

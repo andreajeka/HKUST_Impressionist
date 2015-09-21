@@ -239,6 +239,31 @@ void ImpressionistUI::cb_about(Fl_Menu_* o, void* v)
 	fl_message("Impressionist FLTK version for COMP4411, Fall 2015 by Andrea Juliati Kurniasari");
 }
 
+//------------------------------------------------------------
+// Display the original image
+// Called by the UI when the original menu item is chosen
+//------------------------------------------------------------
+void ImpressionistUI::cb_display_original_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+	pDoc->displayOrigImg();
+}
+
+//------------------------------------------------------------
+// Display the image filtered to get image with edge detected
+// Called by the UI when the original menu item is chosen
+//------------------------------------------------------------
+void ImpressionistUI::cb_display_edge_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	if (pDoc->m_ucBitmap == NULL) {
+		fl_alert("Please load an image first in your original view!");
+		return;
+	}
+	pDoc->displayEdgeImg();
+}
+
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
 //-------------------------------------------------------------
 // Sets the type of brush to use to the one chosen in the brush 
@@ -349,7 +374,8 @@ void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget* o, void* v)
 //------------------------------------------------------------
 void ImpressionistUI::cb_edge_clipping_button(Fl_Widget* o, void* v)
 {
-	//
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	pDoc->clipEdge();
 }
 
 //------------------------------------------------------------
@@ -560,8 +586,8 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ 0 },
 
 	{ "&Display",		0, 0, 0, FL_SUBMENU },
-		{ "&Original Image...", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_load_image },
-		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_save_image },
+		{ "&Original Image...", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_display_original_image },
+		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
 		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
 		{ 0 },
 
@@ -631,7 +657,7 @@ ImpressionistUI::ImpressionistUI() {
 	m_nLineAngle = 0;
 	m_nAlpha = 1.00;
 	m_nSpacing = 4;
-	m_nEdgeThreshold = 200;
+	m_nEdgeThreshold = 100;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(410, 335, "Brush Dialog");
@@ -768,7 +794,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_DoItGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 275, 380, 40, "");
 		m_DoItGroup = new Fl_Group(10, 275, 380, 40, "");
 		m_DoItGroup->user_data((void*)this);
-		m_DoItGroup->resizable(m_PaintGroupBox);
+		m_DoItGroup->resizable(m_DoItGroupBox);
 		m_DoItGroup->add(m_EdgeThresholdSlider);
 		m_DoItGroup->add(m_DoItButton);
     m_brushDialog->end();	

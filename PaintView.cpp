@@ -75,8 +75,6 @@ void PaintView::draw()
 	// Main window width and height
 	m_nWindowWidth	= w();
 	m_nWindowHeight	= h();
-	/*std::cout << m_nWindowWidth << '\n';
-	std::cout << m_nWindowHeight << '\n';*/
 
 	int drawWidth, drawHeight;
 	drawWidth = min( m_nWindowWidth, m_pDoc->m_nPaintWidth );
@@ -97,27 +95,47 @@ void PaintView::draw()
 	m_nEndCol		= m_nStartCol + drawWidth;
 	
 	// Implement edge clipping here using stencil buffer
+	// There are two steps:
+	// 1. Initialize stencil buffer by setting color buffer masks to false
+	//    and then setting appropriate ref value to stencil buffer by failing 
+	//    the stencil test every time.
+	// 2. Use the initialized stencil buffer and stencil test to write only 
+	//    in the locations where stencil value is 1
 	if (!valid()) {
 		
 		// Quick explanation: 
 		// Stencil buffer gives an option to which 
 		// fragments should be drawn and which shouldn't
 		// more info: https://en.wikipedia.org/wiki/Stencil_buffer
+
+		/************** Step 1 **************/
 		glEnable(GL_STENCIL_TEST);
 
-		// Set all stencil values to 1 per bit
+		/* Basically glStencilMask allows us to set a bitmask that is 
+		   ANDed with the stencil value about to be written to the buffer */
+		/*----------------------------------------------------------------*/
+		// 0xFF means we set all stencil values to 1 per bit, no mask  
 		glStencilMask(0xFF);
-		// needs mask=0xFF
+		// clear stencil buffer witih 0s
 		glClear(GL_STENCIL_BUFFER_BIT);
 
+		/* Configure Stencil Testing*/
+		/* a. glStencilFunc describes what OpenGL should do
+			  with the content of the stencil buffer
+		/* b. glStencilOp describes how we can update
+		      the stencil buffer
+		/*------------------------------------------------*/
 		// Force drawing to stencil by declaring stencil test function fails
 		// This means we draw 1s on test fail (always)
 		glStencilFunc(GL_NEVER, 1, 0xFF);
+		// replace stencil buffer values to ref=1, 2nd parameter of glStencilFunc
 		glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 
-		// Disable all color channels 
+		// Disable all color channels so stencil buffer won't affect 
+		// the content of the color buffer
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
+		// Draw stencil shape
 		glBegin(GL_TRIANGLE_STRIP);
 			// Get the vertices for the paint view 
 			glVertex2f(0, m_nWindowHeight - m_nDrawHeight); // bottom left 
@@ -127,11 +145,15 @@ void PaintView::draw()
 
 		glEnd();
 		
-
+		/************** Step 2 **************/
+		// Enable color
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
+		// no more modifying of stencil buffer on stencil
 		glStencilMask(0);
-		// draw where stencil's value less than 0
+
+		// stencil test: only pass stencil test at stencilValue less than 0 
+		// and write actual content to color buffer only at stencil shape locations.
 		glStencilFunc(GL_LESS, 0, 0xFF);
 	}
 
@@ -250,8 +272,6 @@ int PaintView::handle(int event)
 		break;
 
 	}
-
-
 
 	return 1;
 }
