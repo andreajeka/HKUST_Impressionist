@@ -29,17 +29,27 @@ void HeartBrush::BrushMove(const Point source, const Point target) {
 
 	glPushMatrix();
 	glTranslatef(target.x, target.y, 0); // move (0, 0) to the tip of mouse cursor
-
-	// the implementation is flawed, need to be changed later
-	glBegin(GL_POLYGON);
 	SetColor(source);
-	for (float x = -1.139; x <= 1.139; x += 0.001) {
-		float delta = cbrt(x*x) * cbrt(x*x) - 4 * x*x + 4;
-		float y1 = (cbrt(x*x) + sqrt(delta)) / 2;
-		float y2 = (cbrt(x*x) - sqrt(delta)) / 2;
-		glVertex2f(x * size, y1 * size);
-		glVertex2f(x * size, y2 * size);
+
+	glBegin(GL_POLYGON);
+	
+	for (int i = -20; i < 180; i++) {
+		float theta = 2.0f * M_PI * float(i) / float(360); // get the current angle 
+		float x = cosf(theta) * size / 2 + size / 2; // calculate the x component 
+		float y = sinf(theta) * size / 2; // calculate the y component 
+
+		glVertex2f(x, y); // output vertex 
 	}
+
+	for (int i = 0; i < 200; i++) {
+		float theta = 2.0f * M_PI * float(i) / float(360); // get the current angle 
+		float x = cosf(theta) * size / 2 - size / 2; // calculate the x component 
+		float y = sinf(theta) * size / 2; // calculate the y component 
+
+		glVertex2f(x, y); // output vertex 
+	}
+
+	glVertex2f(0, -size / 3 * 4); // output vertex 
 
 	glEnd();
 
