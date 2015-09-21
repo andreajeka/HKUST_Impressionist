@@ -56,6 +56,7 @@ public:
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
+	unsigned char*  m_ucPaintViewBG;
 
 	// Bitmaps for edge image
 	unsigned char* m_ucEdge;

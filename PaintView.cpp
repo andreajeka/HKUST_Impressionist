@@ -83,8 +83,7 @@ void PaintView::draw()
 	int startrow = m_pDoc->m_nPaintHeight - (scrollpos.y + drawHeight);
 	if ( startrow < 0 ) startrow = 0;
 
-	m_pPaintBitstart = m_pDoc->m_ucPainting + 
-		3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
+	m_pPaintBitstart = m_pDoc->m_ucPainting + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
 
 	m_nDrawWidth	= drawWidth;
 	m_nDrawHeight	= drawHeight;
@@ -159,7 +158,7 @@ void PaintView::draw()
 
 	if ( m_pDoc->m_ucPainting && !isAnEvent) 
 	{
-		RestoreContent();
+		RestoreContent(); // restore content upon refresh
 	}
 
 	if (m_pDoc->m_ucPainting && isAnEvent)
@@ -325,21 +324,17 @@ void PaintView::SaveCurrentContent()
 				  m_pPaintBitstart );
 }
 
-
+// read data from m_pPaintBitstart to frame buffer
 void PaintView::RestoreContent()
 {
-	glDrawBuffer(GL_BACK);
+	glDrawBuffer(GL_BACK); // specify which color buffers are to be drawn into
 
-	glClear( GL_COLOR_BUFFER_BIT );
+	glClear( GL_COLOR_BUFFER_BIT ); // clear buffers to preset values
 
-	glRasterPos2i( 0, m_nWindowHeight - m_nDrawHeight );
-	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+	glRasterPos2i( 0, m_nWindowHeight - m_nDrawHeight ); // starting point for pixel write op
+	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 ); // how to store the pixels
 	glPixelStorei( GL_UNPACK_ROW_LENGTH, m_pDoc->m_nPaintWidth );
-	glDrawPixels( m_nDrawWidth, 
-				  m_nDrawHeight, 
-				  GL_RGB, 
-				  GL_UNSIGNED_BYTE, 
-				  m_pPaintBitstart);
+	glDrawPixels( m_nDrawWidth, m_nDrawHeight, GL_RGB, GL_UNSIGNED_BYTE, m_pPaintBitstart); // write to frame buffer
 
 //	glDrawBuffer(GL_FRONT);
 }

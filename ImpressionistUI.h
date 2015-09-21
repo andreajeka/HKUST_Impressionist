@@ -48,15 +48,15 @@ public:
 	Fl_Slider*			m_AlphaSlider;
 	Fl_Slider*			m_SpacingSlider;
 	Fl_Slider*			m_EdgeThresholdSlider;
-
-	Fl_Group*			m_PaintGroup;
-	Fl_Group*			m_DoItGroup;
+	Fl_Slider*			m_DimLevelSlider;
 
 	Fl_Box*				m_PaintGroupBox;
 	Fl_Box*				m_DoItGroupBox;
+	Fl_Box*				m_DimLevelGroupBox;
 
 	Fl_Button*          m_PaintButton;
 	Fl_Button*          m_DoItButton;
+	Fl_Button*          m_DimLevelButton;
 	Fl_Button*          m_ClearCanvasButton;
 
 	Fl_Light_Button*    m_EdgeClippingButton;

@@ -61,7 +61,7 @@ void OriginalView::draw()
 		drawWidth	= min( m_nWindowWidth, m_pDoc->m_nWidth );
 		drawHeight	= min( m_nWindowHeight, m_pDoc->m_nHeight );
 
-		int	startrow	= m_pDoc->m_nHeight - (scrollpos.y + drawHeight);
+		int	startrow	= m_pDoc->m_nHeight - (scrollpos.y + drawHeight); // start at bottom left
 		if ( startrow < 0 ) 
 			startrow = 0;
 
@@ -76,7 +76,7 @@ void OriginalView::draw()
 				break;
 			case (ANOTHER_IMAGE) :
 				bitstart = m_pDoc->m_ucBitmap +
-				3 * ((m_pDoc->m_nWidth * startrow) + scrollpos.x);
+						   3 * ((m_pDoc->m_nWidth * startrow) + scrollpos.x);
 				break;
 		}
 

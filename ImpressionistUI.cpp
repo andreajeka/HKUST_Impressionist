@@ -690,7 +690,7 @@ ImpressionistUI::ImpressionistUI() {
 	blendColour[2] = 1;
 
 	// brush dialog definition
-	m_brushDialog = new Fl_Window(410, 335, "Brush Dialog");
+	m_brushDialog = new Fl_Window(410, 380, "Brush Dialog");
 		// Add a brush type choice to the dialog
 		m_BrushTypeChoice = new Fl_Choice(50,10,150,25,"&Brush");
 		m_BrushTypeChoice->user_data((void*)(this));	// record self to be used by static callback functions
@@ -770,6 +770,9 @@ ImpressionistUI::ImpressionistUI() {
 		m_EdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
 		m_EdgeClippingButton->callback(cb_another_gradient_button);
 
+		// Create a group for spacing slider, size rand. buttom, and paint button
+		m_PaintGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 230, 380, 40, "");
+
 		// Add spacing slider to the dialog
 		m_SpacingSlider = new Fl_Value_Slider(20, 240, 140, 20, "Spacing");
 		m_SpacingSlider->user_data((void*)(this));	// record self to be used by static callback functions
@@ -793,14 +796,8 @@ ImpressionistUI::ImpressionistUI() {
 		m_PaintButton->user_data((void*)(this));
 		m_PaintButton->callback(cb_paint_button);
 
-		// Create a group for spacing slider, size rand. buttom, and paint button
-		m_PaintGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 230, 380, 40, "");
-		m_PaintGroup = new Fl_Group(10, 230, 380, 40, "");
-		m_PaintGroup->user_data((void*)this);
-		m_PaintGroup->resizable(m_PaintGroupBox);
-		m_PaintGroup->add(m_SpacingSlider);
-		m_PaintGroup->add(m_SizeRandButton);
-		m_PaintGroup->add(m_PaintButton);
+		// Create a group for edge threshold slider and do it button
+		m_DoItGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 275, 380, 40, "");
 
 		// Add edge threshold slider to the dialog
 		m_EdgeThresholdSlider = new Fl_Value_Slider(20, 285, 200, 20, "Edge Threshold");
@@ -819,14 +816,28 @@ ImpressionistUI::ImpressionistUI() {
 		m_DoItButton = new Fl_Button(330, 285, 50, 20, "&Do it");
 		m_DoItButton->user_data((void*)(this));
 		m_DoItButton->callback(cb_do_it_button);
-		
-		// Create a group for edge threshold slider and do it button
-		m_DoItGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 275, 380, 40, "");
-		m_DoItGroup = new Fl_Group(10, 275, 380, 40, "");
-		m_DoItGroup->user_data((void*)this);
-		m_DoItGroup->resizable(m_DoItGroupBox);
-		m_DoItGroup->add(m_EdgeThresholdSlider);
-		m_DoItGroup->add(m_DoItButton);
+
+		// Create a group for dimlevel slider and add button
+		m_DimLevelGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 320, 380, 40, "");
+
+		// Add dim level slider to the dialog
+		m_DimLevelSlider = new Fl_Value_Slider(20, 330, 200, 20, "Dim Level");
+		m_DimLevelSlider->user_data((void*)(this));	// record self to be used by static callback functions
+		m_DimLevelSlider->type(FL_HOR_NICE_SLIDER);
+		m_DimLevelSlider->labelfont(FL_COURIER);
+		m_DimLevelSlider->labelsize(12);
+		m_DimLevelSlider->minimum(0);
+		m_DimLevelSlider->maximum(255);
+		m_DimLevelSlider->step(1);
+		m_DimLevelSlider->value(255);
+		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
+		//m_DimLevelSlider->callback(cb_edgeThresholdSlides);
+
+		// Add dim level button to the dialog
+		m_DimLevelButton = new Fl_Button(330, 330, 50, 20, "&Add");
+		m_DimLevelButton->user_data((void*)(this));
+		//m_DimLevelButton->callback(cb_do_it_button);
+
     m_brushDialog->end();	
 
 }
