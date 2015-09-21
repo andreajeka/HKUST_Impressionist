@@ -382,7 +382,6 @@ void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget* o, void* v)
 	((ImpressionistUI*)(o->user_data()))->m_nEdgeThreshold = int(((Fl_Slider *)o)->value());
 }
 
-
 //------------------------------------------------------------
 // 
 // 
@@ -427,6 +426,15 @@ void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 {
 	//
+}
+
+//------------------------------------------------------------
+// for adding the background to the paint view
+//------------------------------------------------------------
+void ImpressionistUI::cb_add_button(Fl_Widget* o, void* v) {
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	pDoc->changePaintViewBGAlpha(pDoc->m_pUI->m_DimLevelSlider->value());
+	pDoc->m_pUI->m_paintView->addBackground();
 }
 
 //---------------------------------- per instance functions --------------------------------------
@@ -831,12 +839,11 @@ ImpressionistUI::ImpressionistUI() {
 		m_DimLevelSlider->step(1);
 		m_DimLevelSlider->value(255);
 		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
-		//m_DimLevelSlider->callback(cb_edgeThresholdSlides);
 
 		// Add dim level button to the dialog
 		m_DimLevelButton = new Fl_Button(330, 330, 50, 20, "&Add");
 		m_DimLevelButton->user_data((void*)(this));
-		//m_DimLevelButton->callback(cb_do_it_button);
+		m_DimLevelButton->callback(cb_add_button);
 
     m_brushDialog->end();	
 

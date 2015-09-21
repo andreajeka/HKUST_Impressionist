@@ -27,6 +27,7 @@ public:
 
 	void refresh();
 	void resizeWindow(int width, int height);
+	void addBackground();
 
 	void SaveCurrentContent();
 	void RestoreContent();
@@ -35,6 +36,7 @@ public:
 
 private:
 	GLvoid* m_pPaintBitstart;
+	GLvoid* m_pPaintBGBitstart;
 	ImpBrush* rightClickDirectionLine;
 	Point firstCoord;
 

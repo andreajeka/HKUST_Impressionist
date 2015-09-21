@@ -41,6 +41,8 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucPainting	= NULL;
 	m_ucEdge		= NULL;
 	m_ucPreviousPainting = NULL;
+	m_ucPaintViewBG = NULL;
+
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -232,18 +234,30 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucPainting ) delete [] m_ucPainting;
 	if ( m_ucEdge ) delete[] m_ucEdge;
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
+	if (m_ucPaintViewBG) delete[] m_ucPaintViewBG;
 
 	m_ucBitmap		= data;
-
 	m_ucEdge		= new GLubyte[3 * width * height];
 
 	// allocate space for draw view
-	m_ucPainting	= new unsigned char [width*height*3];
-	memset(m_ucPainting, 0, width*height*3);
+	m_ucPainting	= new unsigned char [width*height*4];
+	memset(m_ucPainting, 0, width*height*4);
 
 	// allocate space for storing previous image
-	m_ucPreviousPainting = new unsigned char[width*height * 3];
-	memset(m_ucPreviousPainting, 0, width*height * 3);
+	m_ucPreviousPainting = new unsigned char[width*height * 4];
+	memset(m_ucPreviousPainting, 0, width*height * 4);
+
+	// allocate space for the background in paint view
+	m_ucPaintViewBG = new unsigned char[width*height * 4];
+	memset(m_ucPaintViewBG, 0, width*height * 4);
+	// create the background for paint view
+	for (int i = 0; i < m_nPaintHeight; i++) {
+		for (int j = 0; j < m_nPaintWidth; j++) {
+			int k = i * m_nPaintWidth + j;
+			memcpy(m_ucPaintViewBG + 4 * k, m_ucBitmap + 3 * k, 3);
+			m_ucPaintViewBG[4 * k + 3] = 255;
+		}
+	}
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -289,8 +303,8 @@ int ImpressionistDoc::clearCanvas()
 		delete [] m_ucPainting;
 
 		// allocate space for draw view
-		m_ucPainting	= new unsigned char [m_nPaintWidth*m_nPaintHeight*3];
-		memset(m_ucPainting, 0, m_nPaintWidth*m_nPaintHeight*3);
+		m_ucPainting	= new unsigned char [m_nPaintWidth*m_nPaintHeight*4];
+		memset(m_ucPainting, 0, m_nPaintWidth*m_nPaintHeight*4);
 
 		// refresh paint view as well	
 		m_pUI->m_paintView->refresh();
@@ -300,8 +314,17 @@ int ImpressionistDoc::clearCanvas()
 }
 
 void ImpressionistDoc::undo() {
-	memcpy(m_ucPainting, m_ucPreviousPainting, m_nPaintWidth * m_nPaintHeight * 3);
+	memcpy(m_ucPainting, m_ucPreviousPainting, m_nPaintWidth * m_nPaintHeight * 4);
 	m_pUI->m_paintView->redraw();
+}
+
+void ImpressionistDoc::changePaintViewBGAlpha(int alpha) {
+	for (int i = 0; i < m_nPaintHeight; i++) {
+		for (int j = 0; j < m_nPaintWidth; j++) {
+			int k = i * m_nPaintWidth + j;
+			m_ucPaintViewBG[4 * k + 3] = alpha;
+		}
+	}
 }
 
 //----------------------------------------------------------------

@@ -24,6 +24,7 @@ public:
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	undo();							// called by UI to undo changes
+	void	changePaintViewBGAlpha(int alpha);
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	int		getSize();						// get the size of the brush
 	void	setSize(int size);				// set the size of the brush
