@@ -6,6 +6,7 @@
 //
 
 #include <FL/fl_ask.H>
+#include <iostream>
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
@@ -38,7 +39,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_nWidth		= -1;
 	m_ucBitmap		= NULL;
 	m_ucPainting	= NULL;
-
+	m_ucEdge		= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -161,6 +162,14 @@ void ImpressionistDoc::setAlpha(float value)
 	m_pUI->setAlpha(value);
 }
 
+//-------------------------------------------------
+// Set the brush alpha value
+//-------------------------------------------------
+void ImpressionistDoc::clipEdge()
+{
+	//
+}
+
 //------------------------------------------------
 // Return the spacing value
 //------------------------------------------------
@@ -209,7 +218,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	{
 		fl_alert("Can't load bitmap file");
 		return 0;
-	}
+	}	
 
 	// reflect the fact of loading the new image
 	m_nWidth		= width;
@@ -220,8 +229,11 @@ int ImpressionistDoc::loadImage(char *iname)
 	// release old storage
 	if ( m_ucBitmap ) delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
+	if ( m_ucEdge ) delete[] m_ucEdge;
 
 	m_ucBitmap		= data;
+
+	m_ucEdge		= new GLubyte[3 * width * height];
 
 	// allocate space for draw view
 	m_ucPainting	= new unsigned char [width*height*3];
@@ -239,7 +251,6 @@ int ImpressionistDoc::loadImage(char *iname)
 	// refresh paint view as well
 	m_pUI->m_paintView->resizeWindow(width, height);	
 	m_pUI->m_paintView->refresh();
-
 
 	return 1;
 }
@@ -282,6 +293,29 @@ int ImpressionistDoc::clearCanvas()
 	return 0;
 }
 
+//----------------------------------------------------------------
+// Display the original image
+// This is called by the UI when the original image menu item 
+// is chosen 
+//-----------------------------------------------------------------
+void ImpressionistDoc::displayOrigImg()
+{
+	m_pUI->m_origView->setDisplayType(ORIGINAL_IMAGE);
+	m_pUI->m_origView->refresh();
+}
+
+//----------------------------------------------------------------
+// Display the image filtered with edge detection
+// This is called by the UI when the edge image menu item 
+// is chosen 
+//-----------------------------------------------------------------
+void ImpressionistDoc::displayEdgeImg()
+{
+	GenerateEdgeDetectedImg(m_pUI->getEdgeThreshold());
+	m_pUI->m_origView->setDisplayType(EDGE_IMAGE);
+	m_pUI->m_origView->refresh();
+}
+
 //------------------------------------------------------------------
 // Get the color of the pixel in the original image at coord x and y
 //------------------------------------------------------------------
@@ -308,3 +342,87 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 	return GetOriginalPixel( p.x, p.y );
 }
 
+int ImpressionistDoc::GetGradientOfX(const Point source)
+{
+	// Sobel Mask of X
+	int Sx[3][3] =
+	{
+		{ -1, 0, 1 },
+		{ -2, 0, 2 },
+		{ -1, 0, 1 }
+
+	};
+
+	double Gx = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gx += Sx[i][j] * GetPixelIntensity(source.x + j - 1,
+				source.y - i + 1);
+		}
+	}
+	return (int)Gx;
+}
+
+int ImpressionistDoc::GetGradientOfY(const Point source)
+{
+	// Sobel Mask of Y
+	int Sy[3][3] =
+	{
+		{ 1, 2, 1 },
+		{ 0, 0, 0 },
+		{ -1, -2, -1 }
+
+	};
+
+	double Gy = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gy += Sy[i][j] * GetPixelIntensity(source.x + j - 1,
+				source.y - i + 1);
+		}
+	}
+	return (int)Gy;
+}
+
+
+// Get pixel intensity according to human eye
+int ImpressionistDoc::GetPixelIntensity(int x, int y) 
+{
+	unsigned char color[3];
+	memcpy(color, GetOriginalPixel(x, y), 3);
+	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
+}
+
+void ImpressionistDoc::GenerateEdgeDetectedImg(int threshold) 
+{
+	int combinedGradientSum = 0;
+	int Gx = 0;
+	int Gy = 0;
+	int loc = 0;
+
+	// Iterate each pixels in image
+	for (int i = 0; i < m_nPaintWidth; i++)
+	{
+		for (int j = 0; j < m_nPaintHeight; j++)
+		{
+			// We need to use a mapped version of position
+			// that represents a pixel. It is multiplied by
+			// 3 because it consist of 3 channels R,G,B
+			loc = (j * m_nPaintWidth + i);
+			Gx = GetGradientOfX(Point(i,j));
+			Gy = GetGradientOfY(Point(i,j));
+			combinedGradientSum = sqrt(double(Gx*Gx) + double(Gy*Gy));
+
+			// Set to white(255 = highest) if gradient is bigger than threshold
+			if (combinedGradientSum > threshold) combinedGradientSum = 255;
+
+			// Set to black(0 = lowest) if gradient is smaller than threshold
+			if (combinedGradientSum <= threshold) combinedGradientSum = 0;
+
+			// Because we have to set the 3 channels of RGB, that means all 
+			// 3 consecutive block of m_ucEdge should be filled with the same number
+			// to get either black (0,0,0) or white (255,255,255)
+			m_ucEdge[3 * loc] = m_ucEdge[3 * loc + 1] = m_ucEdge[3 * loc + 2] = combinedGradientSum;
+		}
+	}
+}

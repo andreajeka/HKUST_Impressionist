@@ -15,8 +15,15 @@
 #include <GL/glu.h>
 
 #include <stdlib.h>
-
 #include "ImpBrush.h"
+
+enum ImageDisplayType
+{
+	ORIGINAL_IMAGE = 0,
+	EDGE_IMAGE,
+	ANOTHER_IMAGE,
+};
+
 
 class ImpressionistDoc;
 
@@ -29,12 +36,16 @@ public:
 	void refresh();
 
 	void resizeWindow(int width, int height);
+	ImageDisplayType getDisplayType();
+	void setDisplayType(ImageDisplayType type);
 
 	ImpressionistDoc*	m_pDoc;
 
 private:
 	int	m_nWindowWidth, 
 		m_nWindowHeight;
+
+	ImageDisplayType m_nImageDisplaytype;
 
 };
 
