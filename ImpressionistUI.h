@@ -111,6 +111,7 @@ private:
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void	cb_color_blending(Fl_Menu_* o, void* v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
+	static void	cb_undo(Fl_Menu_* o, void* v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void cb_display_original_image(Fl_Menu_* o, void* v);

@@ -40,6 +40,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucBitmap		= NULL;
 	m_ucPainting	= NULL;
 	m_ucEdge		= NULL;
+	m_ucPreviousPainting = NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -230,6 +231,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucBitmap ) delete [] m_ucBitmap;
 	if ( m_ucPainting ) delete [] m_ucPainting;
 	if ( m_ucEdge ) delete[] m_ucEdge;
+	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
 
 	m_ucBitmap		= data;
 
@@ -238,6 +240,10 @@ int ImpressionistDoc::loadImage(char *iname)
 	// allocate space for draw view
 	m_ucPainting	= new unsigned char [width*height*3];
 	memset(m_ucPainting, 0, width*height*3);
+
+	// allocate space for storing previous image
+	m_ucPreviousPainting = new unsigned char[width*height * 3];
+	memset(m_ucPreviousPainting, 0, width*height * 3);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -291,6 +297,11 @@ int ImpressionistDoc::clearCanvas()
 	}
 	
 	return 0;
+}
+
+void ImpressionistDoc::undo() {
+	memcpy(m_ucPainting, m_ucPreviousPainting, m_nPaintWidth * m_nPaintHeight * 3);
+	m_pUI->m_paintView->redraw();
 }
 
 //----------------------------------------------------------------

@@ -23,6 +23,7 @@ public:
 	int		saveImage(char *iname);			// called by the UI to save image
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
+	void	undo();							// called by UI to undo changes
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	int		getSize();						// get the size of the brush
 	void	setSize(int size);				// set the size of the brush
@@ -54,6 +55,7 @@ public:
 	// Bitmaps for original image and painting.
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
+	unsigned char*  m_ucPreviousPainting;
 
 	// Bitmaps for edge image
 	unsigned char* m_ucEdge;

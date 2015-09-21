@@ -227,6 +227,14 @@ void ImpressionistUI::cb_clear_canvas(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------
+// Undo the most recent brush stroke
+//------------------------------------------------------------
+void ImpressionistUI::cb_undo(Fl_Menu_* o, void* v) {
+	ImpressionistDoc* pDoc = whoami(o)->getDocument();
+	pDoc->undo();
+}
+
+//------------------------------------------------------------
 // Causes the Impressionist program to exit
 // Called by the UI when the quit menu item is chosen
 //------------------------------------------------------------
@@ -588,8 +596,10 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
 		{ "&Load Image...",	FL_ALT + 'l', (Fl_Callback *)ImpressionistUI::cb_load_image },
 		{ "&Save Image...",	FL_ALT + 's', (Fl_Callback *)ImpressionistUI::cb_save_image },
-		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
-		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
+		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes, 0, FL_MENU_DIVIDER },
+
+		{ "&Clear Canvas",	FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas},
+		{ "&Undo",			FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo, 0, FL_MENU_DIVIDER },
 		
 		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_color_blending },
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },

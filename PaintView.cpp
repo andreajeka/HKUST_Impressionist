@@ -313,6 +313,8 @@ void PaintView::SaveCurrentContent()
 
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glPixelStorei( GL_PACK_ROW_LENGTH, m_pDoc->m_nPaintWidth );
+
+	memcpy(m_pDoc->m_ucPreviousPainting, m_pDoc->m_ucPainting, m_nDrawWidth * m_nDrawHeight * 3);
 	
 	glReadPixels( 0, 
 				  m_nWindowHeight - m_nDrawHeight, 
