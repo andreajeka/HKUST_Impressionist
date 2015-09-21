@@ -208,6 +208,13 @@ void ImpressionistUI::cb_brushes(Fl_Menu_* o, void* v)
 	whoami(o)->m_brushDialog->show();
 }
 
+//-------------------------------------------------------------
+// Display the colur wheel for colour blending
+//-------------------------------------------------------------
+void ImpressionistUI::cb_color_blending(Fl_Menu_* o, void* v) {
+	fl_color_chooser("Please choose a colour", whoami(o)->blendColour[0], whoami(o)->blendColour[1], whoami(o)->blendColour[2]);
+}
+
 //------------------------------------------------------------
 // Clears the paintview canvas.
 // Called by the UI when the clear canvas menu item is chosen
@@ -568,6 +575,14 @@ void ImpressionistUI::setEdgeThreshold(int value)
 		m_EdgeThresholdSlider->value(m_nEdgeThreshold);
 }
 
+//-------------------------------------------------
+// Get the colour for blending
+//-------------------------------------------------
+double ImpressionistUI::getBlendColour(int index)
+{
+	return blendColour[index];
+}
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -576,7 +591,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes }, 
 		{ "&Clear Canvas", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 		
-		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_load_image },
+		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_color_blending },
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_image },
@@ -660,6 +675,9 @@ ImpressionistUI::ImpressionistUI() {
 	m_nAlpha = 1.00;
 	m_nSpacing = 4;
 	m_nEdgeThreshold = 100;
+	blendColour[0] = 1;
+	blendColour[1] = 1;
+	blendColour[2] = 1;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(410, 335, "Brush Dialog");

@@ -17,6 +17,7 @@
 #include <FL/Fl_Light_Button.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.h>
+#include <FL/Fl_Color_Chooser.H>
 
 #include "Impressionist.h"
 #include "OriginalView.h"
@@ -82,6 +83,7 @@ public:
 	void				setSpacing(int value);
 	int					getEdgeThreshold();
 	void				setEdgeThreshold(int value);
+	double				getBlendColour(int index);
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
@@ -93,6 +95,7 @@ private:
 	float	m_nAlpha;
 	int		m_nSpacing;
 	int		m_nEdgeThreshold;
+	double	blendColour[3];
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
@@ -106,6 +109,7 @@ private:
 	static void	cb_load_image(Fl_Menu_* o, void* v);
 	static void	cb_save_image(Fl_Menu_* o, void* v);
 	static void	cb_brushes(Fl_Menu_* o, void* v);
+	static void	cb_color_blending(Fl_Menu_* o, void* v);
 	static void	cb_clear_canvas(Fl_Menu_* o, void* v);
 	static void	cb_exit(Fl_Menu_* o, void* v);
 	static void	cb_about(Fl_Menu_* o, void* v);
