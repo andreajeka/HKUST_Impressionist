@@ -251,6 +251,7 @@ int PaintView::handle(int event)
 		else
 			eventToDo=LEFT_MOUSE_DRAG;
 		isAnEvent=1;
+		mouseMove(coord);
 		redraw();
 		break;
 	case FL_RELEASE:
@@ -266,6 +267,7 @@ int PaintView::handle(int event)
 	case FL_MOVE:
 		coord.x = Fl::event_x();
 		coord.y = Fl::event_y();
+		mouseMove(coord);
 		break;
 	default:
 		return 0;
@@ -274,6 +276,23 @@ int PaintView::handle(int event)
 	}
 
 	return 1;
+}
+
+void PaintView::mouseMove(Point coord) 
+{
+	m_nWindowHeight = h();
+
+	int drawWidth, drawHeight;
+	drawHeight = min(m_nWindowHeight, m_pDoc->m_nPaintHeight);
+
+	int startrow = m_pDoc->m_nPaintHeight - drawHeight;
+	if (startrow < 0) startrow = 0;
+
+	m_nEndRow = startrow + drawHeight;
+
+	Point source(coord.x, m_nEndRow - coord.y);
+
+	m_pDoc->m_pUI->m_origView->drawCursor(source);
 }
 
 void PaintView::refresh()

@@ -87,6 +87,19 @@ void OriginalView::draw()
 		glDrawBuffer( GL_BACK );
 		glDrawPixels( drawWidth, drawHeight, GL_RGB, GL_UNSIGNED_BYTE, bitstart );
 
+		// for drawing the cursor
+		if (coord.x != 0 && coord.y != 0) {
+			GLubyte red[3] = { 255, 0, 0 };
+
+			glPointSize((float)5);
+			glBegin(GL_POINTS);
+
+			glColor3ubv(red);
+			glVertex2d(coord.x, coord.y);
+
+			glEnd();
+		}
+
 	}
 			
 	glFlush();
@@ -94,6 +107,12 @@ void OriginalView::draw()
 
 void OriginalView::refresh()
 {
+	redraw();
+}
+
+void OriginalView::drawCursor(Point source) 
+{
+	coord = source;
 	redraw();
 }
 

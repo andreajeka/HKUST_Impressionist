@@ -36,6 +36,9 @@ public:
 	void refresh();
 
 	void resizeWindow(int width, int height);
+
+	void drawCursor(Point source);
+
 	ImageDisplayType getDisplayType();
 	void setDisplayType(ImageDisplayType type);
 
@@ -44,6 +47,7 @@ public:
 private:
 	int	m_nWindowWidth, 
 		m_nWindowHeight;
+	Point coord;
 
 	ImageDisplayType m_nImageDisplaytype;
 

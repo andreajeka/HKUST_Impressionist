@@ -23,6 +23,8 @@ public:
 	void draw();
 	int handle(int event);
 
+	void mouseMove(Point coord);
+
 	void refresh();
 	void resizeWindow(int width, int height);
 
