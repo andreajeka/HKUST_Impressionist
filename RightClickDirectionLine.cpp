@@ -2,7 +2,7 @@
 // RightClickDirectionLine.cpp
 // The implementation of Right Click Direction Line. It is a kind of ImpBrush. All your brush implementations
 // will look like the file with the different GL primitive calls.
-//
+// TESTING COMMENT
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
