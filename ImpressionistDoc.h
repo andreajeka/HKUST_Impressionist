@@ -35,7 +35,7 @@ public:
 	void	setLineAngle(int angle);
 	float	getAlpha();
 	void	setAlpha(float value);
-	void	clipEdge();
+	bool	edgeClippingIsOn();
 	int		getSpacing();
 	void	setSpacing(int value);
 	int		getEdgeThreshold();
@@ -44,6 +44,7 @@ public:
 
 	void	displayOrigImg();
 	void	displayEdgeImg();
+	void	swapCanvas();
 	
 
 // Attributes

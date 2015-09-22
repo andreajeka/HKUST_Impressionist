@@ -84,6 +84,7 @@ public:
 	int					getEdgeThreshold();
 	void				setEdgeThreshold(int value);
 	double				getBlendColour(int index);
+	bool				edgeClippingIsOn();
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
@@ -96,6 +97,7 @@ private:
 	int		m_nSpacing;
 	int		m_nEdgeThreshold;
 	double	blendColour[3];
+	bool	edgeClippingClicked;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
@@ -117,6 +119,7 @@ private:
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void cb_display_original_image(Fl_Menu_* o, void* v);
 	static void cb_display_edge_image(Fl_Menu_* o, void* v);
+	static void cb_swap_canvas(Fl_Menu_* o, void* v);
 
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_strokeDirectionChoice(Fl_Widget* o, void* v);

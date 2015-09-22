@@ -7,6 +7,7 @@
 
 #include <FL/fl_ask.H>
 #include <iostream>
+#include <algorithm>
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
@@ -167,11 +168,11 @@ void ImpressionistDoc::setAlpha(float value)
 }
 
 //-------------------------------------------------
-// Set the brush alpha value
+// Return the state of the edge clipping button
 //-------------------------------------------------
-void ImpressionistDoc::clipEdge()
+bool ImpressionistDoc::edgeClippingIsOn()
 {
-	//
+	return m_pUI->edgeClippingIsOn();
 }
 
 //------------------------------------------------
@@ -348,6 +349,16 @@ void ImpressionistDoc::displayEdgeImg()
 	GenerateEdgeDetectedImg(m_pUI->getEdgeThreshold());
 	m_pUI->m_origView->setDisplayType(EDGE_IMAGE);
 	m_pUI->m_origView->refresh();
+}
+
+//----------------------------------------------------------------
+// 
+//-----------------------------------------------------------------
+void ImpressionistDoc::swapCanvas()
+{
+	std::swap(m_ucBitmap, m_ucPainting);
+	m_pUI->m_origView->refresh();
+	m_pUI->m_paintView->refresh();
 }
 
 //------------------------------------------------------------------
