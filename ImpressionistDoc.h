@@ -44,6 +44,7 @@ public:
 
 	void	displayOrigImg();
 	void	displayEdgeImg();
+	void	swapCanvas();
 	
 
 // Attributes

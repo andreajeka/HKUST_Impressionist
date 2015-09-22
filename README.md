@@ -18,7 +18,7 @@ Here is a list of suggestions for extending the program. You are encouraged to c
 
 3. [ ] ![whistle](http://i.imgur.com/VYSixYv.gif) When using your program, you currently can't see what part of the original image you're painting. Extend the program so that when the cursor is in the painting window, a marker appears on the original image showing where you're painting. 
 
-4. [ ] ![whistle](http://i.imgur.com/VYSixYv.gif) Sometimes it is useful to use the contents of the painting window as the original image. Add a control to swap the contents of the painting window and the contents of the original image window. 
+4. [x] ![whistle](http://i.imgur.com/VYSixYv.gif) Sometimes it is useful to use the contents of the painting window as the original image. Add a control to swap the contents of the painting window and the contents of the original image window. 
 
    1. [ ] ![bell](http://i.imgur.com/HJ7cCdM.gif) Add controls that allow you to manipulate the color of the image. For example, you could implement independent scaling of the red, green, and blue channels. 
 

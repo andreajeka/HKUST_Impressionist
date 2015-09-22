@@ -119,6 +119,7 @@ private:
 	static void	cb_about(Fl_Menu_* o, void* v);
 	static void cb_display_original_image(Fl_Menu_* o, void* v);
 	static void cb_display_edge_image(Fl_Menu_* o, void* v);
+	static void cb_swap_canvas(Fl_Menu_* o, void* v);
 
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_strokeDirectionChoice(Fl_Widget* o, void* v);

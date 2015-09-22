@@ -292,6 +292,19 @@ void ImpressionistUI::cb_display_edge_image(Fl_Menu_* o, void* v)
 	pDoc->displayEdgeImg();
 }
 
+//------------------------------------------------------------
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_swap_canvas(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+	if (pDoc->m_ucBitmap == NULL) {
+		fl_alert("Please load an image first in your original view!");
+		return;
+	}
+	pDoc->swapCanvas();
+}
+
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
 //-------------------------------------------------------------
 // Sets the type of brush to use to the one chosen in the brush 
@@ -642,6 +655,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Original Image...", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_display_original_image },
 		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
 		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
+		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
 		{ 0 },
 
 	{ "&Options",		0, 0, 0, FL_SUBMENU },
