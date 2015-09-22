@@ -123,7 +123,15 @@ void ImpressionistDoc::setBrushType(int type)
 //---------------------------------------------------------
 int ImpressionistDoc::getSize()
 {
-	return m_pUI->getSize();
+	int size = m_pUI->getSize();
+	if (m_pUI->sizeRandIsOn()) {
+		// Get better size randomization
+		int randomSize = (size - 5) + (rand() % (int)(size - (size - 5) + 1));
+		printf("Random num is = %d", randomSize);
+		return randomSize;
+	}
+	else return size;
+	
 }
 
 //------------------------------------------------
@@ -189,6 +197,15 @@ bool ImpressionistDoc::manEdgeClippingIsOn()
 {
 	return m_pUI->manEdgeClippingIsOn();
 }
+
+//----------------------------------------------------
+// Return the state of the size rand. button
+//----------------------------------------------------
+bool ImpressionistDoc::sizeRandIsOn()
+{
+	return m_pUI->sizeRandIsOn();
+}
+
 
 //------------------------------------------------
 // Return the spacing value
@@ -353,9 +370,11 @@ int ImpressionistDoc::loadMuralImage(char *iname)
 		return 0;
 	}
 
+	// Get the difference of the image in original view to the loaded mural image
 	int dimDiffX= (m_nWidth - width) / 2; 
 	int dimDiffY = (m_nHeight - height) / 2;
 
+	// Replace the pixels in the original view with the smaller dimension of loaded mural image
 	for (int i = 0; i < height; i++) {
 		memcpy(m_ucBitmap + ((dimDiffX + i) * m_nWidth + dimDiffY) * 3, data + i * 3 * width, 3 * width);
 	}

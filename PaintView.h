@@ -20,7 +20,9 @@ class PaintView : public Fl_Gl_Window
 public:
 	PaintView(int x, int y, int w, int h, const char* l);
 
+	void initSetup();
 	void draw();
+	void autoDraw(int spacing, bool randomSize);
 	int handle(int event);
 
 	void mouseMove(Point coord);

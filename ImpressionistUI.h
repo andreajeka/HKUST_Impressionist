@@ -88,6 +88,7 @@ public:
 	bool				autoEdgeClippingIsOn();
 	bool				manEdgeClippingIsOn();
 	bool				anotherGradientIsOn();
+	bool				sizeRandIsOn();
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
@@ -103,6 +104,7 @@ private:
 	bool	autoEdgeClippingClicked;
 	bool	manEdgeClippingClicked;
 	bool	anotherGradientClicked;
+	bool	sizeRandClicked;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];

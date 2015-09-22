@@ -43,56 +43,59 @@ PaintView::PaintView(int			x,
 
 }
 
-
-void PaintView::draw()
+void PaintView::initSetup()
 {
-	#ifndef MESA
+#ifndef MESA
 	// To avoid flicker on some machines.
 	glDrawBuffer(GL_FRONT_AND_BACK);
-	#endif // !MESA
+#endif // !MESA
 
-	if(!valid())
+	if (!valid())
 	{
 
 		glClearColor(0.7f, 0.7f, 0.7f, 1.0);
 
 		// We're only using 2-D, so turn off depth 
-		glDisable( GL_DEPTH_TEST );
+		glDisable(GL_DEPTH_TEST);
 
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_BLEND);
 
 		ortho();
 
-		glClear( GL_COLOR_BUFFER_BIT );
+		glClear(GL_COLOR_BUFFER_BIT);
 
 	}
 
 	Point scrollpos;// = GetScrollPosition();
 	scrollpos.x = 0;
-	scrollpos.y	= 0;
-	
+	scrollpos.y = 0;
+
 	// Main window width and height
-	m_nWindowWidth	= w();
-	m_nWindowHeight	= h();
+	m_nWindowWidth = w();
+	m_nWindowHeight = h();
 
 	int drawWidth, drawHeight;
-	drawWidth = min( m_nWindowWidth, m_pDoc->m_nPaintWidth );
-	drawHeight = min( m_nWindowHeight, m_pDoc->m_nPaintHeight );
+	drawWidth = min(m_nWindowWidth, m_pDoc->m_nPaintWidth);
+	drawHeight = min(m_nWindowHeight, m_pDoc->m_nPaintHeight);
 
 	int startrow = m_pDoc->m_nPaintHeight - (scrollpos.y + drawHeight);
-	if ( startrow < 0 ) startrow = 0;
+	if (startrow < 0) startrow = 0;
 
 	m_pPaintBitstart = m_pDoc->m_ucPainting + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
 
-	m_nDrawWidth	= drawWidth;
-	m_nDrawHeight	= drawHeight;
+	m_nDrawWidth = drawWidth;
+	m_nDrawHeight = drawHeight;
 
-	m_nStartRow		= startrow;
-	m_nEndRow		= startrow + drawHeight;
-	m_nStartCol		= scrollpos.x;
-	m_nEndCol		= m_nStartCol + drawWidth;
-	
+	m_nStartRow = startrow;
+	m_nEndRow = startrow + drawHeight;
+	m_nStartCol = scrollpos.x;
+	m_nEndCol = m_nStartCol + drawWidth;
+}
+
+void PaintView::draw()
+{
+	initSetup();
 	// Implement edge clipping here using stencil buffer
 	// There are two steps:
 	// 1. Initialize stencil buffer by setting color buffer masks to false
@@ -222,6 +225,32 @@ void PaintView::draw()
 	glDrawBuffer(GL_BACK);
 	#endif // !MESA
 
+}
+
+void PaintView::autoDraw(int spacing, bool randomSize) 
+{
+	initSetup();
+
+	int canvasWidth = m_pDoc->m_nWidth;
+	int canvasHeight = m_pDoc->m_nHeight;
+		
+	m_pDoc->m_pCurrentBrush->BrushBegin(Point(0, 0), Point(0, 0));
+
+	for (int i = 0; i < canvasWidth; i += spacing) {
+		for (int j = 0; j < canvasHeight; j += spacing) {
+			m_pDoc->m_pCurrentBrush->BrushMove(Point(i, j), Point(i, j));
+		}
+	}
+
+	m_pDoc->m_pCurrentBrush->BrushEnd(Point(canvasWidth - 1, canvasHeight - 1), 
+									  Point(canvasWidth - 1, canvasHeight - 1));
+	SaveCurrentContent();
+	glFlush();
+
+	#ifndef MESA
+	// To avoid flicker on some machines.
+	glDrawBuffer(GL_BACK);
+	#endif // !MESA
 }
 
 
