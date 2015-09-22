@@ -63,10 +63,14 @@ void LineBrush::BrushMove(const Point source, const Point target)
 			break;
 		case GRADIENT:
 			startGradient = Point(0, 0);
-			endGradient = Point(pDoc->GetGradientOfX(source), pDoc->GetGradientOfY(source));
+			if (pDoc->m_pUI->anotherGradientIsOn())
+				endGradient = Point(pDoc->GetGradientOfX_DiffImg(source), pDoc->GetGradientOfY_DiffImg(source));
+			else
+				endGradient = Point(pDoc->GetGradientOfX(source), pDoc->GetGradientOfY(source));
+
 			// DetermineAngle(startGradient, endGradient) is the gradient direction
 			perpendicularAngle = DetermineAngle(startGradient, endGradient) + 90;
-			if (perpendicularAngle >= 360) 
+			if (perpendicularAngle >= 360)
 				perpendicularAngle -= 180;
 			lineAngle = perpendicularAngle;
 			break;

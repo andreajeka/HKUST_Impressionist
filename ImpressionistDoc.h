@@ -22,6 +22,8 @@ public:
 
 	int		loadImage(char *iname);			// called by the UI to load image
 	void	loadAlphaMappedBrush(char *iname);
+	int		loadGradientImage(char *iname);
+	bool	hasGradientImage();
 	int		saveImage(char *iname);			// called by the UI to save image
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
@@ -49,7 +51,7 @@ public:
 
 // Attributes
 public:
-	// Dimensions of original window.
+	// Dimensions of original window. (dimension of the image??)
 	int				m_nWidth, 
 					m_nHeight;
 	// Dimensions of the paint window.
@@ -57,6 +59,7 @@ public:
 					m_nPaintHeight;	
 	// Bitmaps for original image and painting.
 	unsigned char*	m_ucBitmap;
+	unsigned char*	m_ucGradientBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
 	unsigned char*  m_ucAlphaMappedBrush;
@@ -79,10 +82,14 @@ public:
 
 // Operations
 public:
-	// Get the color of the original picture at the specified coord
+	// Get the color of the picture at the specified coord
 	GLubyte* GetOriginalPixel( int x, int y );   
-	// Get the color of the original picture at the specified point	
 	GLubyte* GetOriginalPixel( const Point p );  
+	GLubyte* GetGradientPixel( int x, int y );
+
+	int GetGradientOfX_DiffImg(const Point source);
+	int GetGradientOfY_DiffImg(const Point source);
+	int GetPixelIntensity_DiffImg(int x, int y);
 
 	int GetGradientOfX(const Point source);
 	int GetGradientOfY(const Point source);

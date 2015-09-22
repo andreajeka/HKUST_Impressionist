@@ -85,6 +85,7 @@ public:
 	void				setEdgeThreshold(int value);
 	double				getBlendColour(int index);
 	bool				edgeClippingIsOn();
+	bool				anotherGradientIsOn();
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
@@ -98,6 +99,7 @@ private:
 	int		m_nEdgeThreshold;
 	double	blendColour[3];
 	bool	edgeClippingClicked;
+	bool	anotherGradientClicked;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
@@ -110,6 +112,7 @@ private:
 	// static
 	static void	cb_load_image(Fl_Menu_* o, void* v);
 	static void	cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v);
+	static void	cb_load_gradient_image(Fl_Menu_* o, void* v);
 	static void	cb_save_image(Fl_Menu_* o, void* v);
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void	cb_color_blending(Fl_Menu_* o, void* v);

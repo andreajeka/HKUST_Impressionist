@@ -8,6 +8,7 @@
 #include <FL/fl_ask.h>
 
 #include <math.h>
+#include <iostream>
 
 #include "impressionistUI.h"
 #include "impressionistDoc.h"
@@ -180,6 +181,19 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName() );
 	if (newfile != NULL) {
 		pDoc->loadImage(newfile);
+	}
+}
+
+//------------------------------------------------------------------
+// Brings up a file chooser and then loads an alpha mapped brush
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_gradient_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadGradientImage(newfile);
 	}
 }
 
@@ -430,7 +444,15 @@ void ImpressionistUI::cb_edge_clipping_button(Fl_Widget* o, void* v)
 //------------------------------------------------------------
 void ImpressionistUI::cb_another_gradient_button(Fl_Widget* o, void* v)
 {
-	//
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	if (!pDoc->hasGradientImage()) {
+		fl_message("No Gradient Image");
+		// need to find some ways to turn of the button...
+		return;
+	}
+		
+	pUI->anotherGradientClicked = (bool)pUI->m_AnotherGradientButton->value();
 }
 
 //------------------------------------------------------------
@@ -630,6 +652,13 @@ bool ImpressionistUI::edgeClippingIsOn()
 	return edgeClippingClicked;
 }
 
+//-------------------------------------------------
+// 
+//-------------------------------------------------
+bool ImpressionistUI::anotherGradientIsOn()
+{
+	return anotherGradientClicked;
+}
 
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
@@ -645,7 +674,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_image },
-		{ "Load Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_clear_canvas },
+		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image },
 		{ "Load Alpha-mapped Brush...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush, 0, FL_MENU_DIVIDER },
 
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
@@ -732,6 +761,7 @@ ImpressionistUI::ImpressionistUI() {
 	blendColour[1] = 1;
 	blendColour[2] = 1;
 	edgeClippingClicked = TRUE;
+	anotherGradientClicked = FALSE;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(410, 380, "Brush Dialog");
@@ -811,8 +841,8 @@ ImpressionistUI::ImpressionistUI() {
 
 		// Add edge clipping light button to the dialog
 		m_AnotherGradientButton = new Fl_Light_Button(240, 200, 150, 25, "&Another Gradient");
-		m_EdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
-		m_EdgeClippingButton->callback(cb_another_gradient_button);
+		m_AnotherGradientButton->user_data((void*)(this));   // record self to be used by static callback functions
+		m_AnotherGradientButton->callback(cb_another_gradient_button);
 
 		// Create a group for spacing slider, size rand. buttom, and paint button
 		m_PaintGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 230, 380, 40, "");

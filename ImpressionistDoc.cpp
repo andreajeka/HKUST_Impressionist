@@ -44,6 +44,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucEdge		= NULL;
 	m_ucPreviousPainting = NULL;
 	m_ucAlphaMappedBrush = NULL;
+	m_ucGradientBitmap = NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -286,6 +287,36 @@ void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
 	a->setHeight(height);
 }
 
+//---------------------------------------------------------
+// Load the specified brush image
+// This is called by the UI when the load alpha brush button 
+// is pressed.
+//---------------------------------------------------------
+int ImpressionistDoc::loadGradientImage(char *iname)
+{
+	// try to open the image to read
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+	if (width != m_nWidth || height != m_nHeight) {
+		fl_alert("Image size differs from the original image");
+		delete[] data;
+		return 0;
+	}
+
+	m_ucGradientBitmap = data;
+
+	return 1;
+}
+
+bool ImpressionistDoc::hasGradientImage() {
+	return (m_ucGradientBitmap != NULL);
+}
+
 //----------------------------------------------------------------
 // Save the specified image
 // This is called by the UI when the save image menu button is 
@@ -387,6 +418,24 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( const Point p )
 	return GetOriginalPixel( p.x, p.y );
 }
 
+//------------------------------------------------------------------
+// I know it is to stupid to copy and paste but it is the fastest way...
+//------------------------------------------------------------------
+GLubyte* ImpressionistDoc::GetGradientPixel(int x, int y)
+{
+	if (x < 0)
+		x = 0;
+	else if (x >= m_nWidth)
+		x = m_nWidth - 1;
+
+	if (y < 0)
+		y = 0;
+	else if (y >= m_nHeight)
+		y = m_nHeight - 1;
+
+	return (GLubyte*)(m_ucGradientBitmap + 3 * (y*m_nWidth + x));
+}
+
 int ImpressionistDoc::GetGradientOfX(const Point source)
 {
 	// Sobel Mask of X
@@ -470,4 +519,54 @@ void ImpressionistDoc::GenerateEdgeDetectedImg(int threshold)
 			m_ucEdge[3 * loc] = m_ucEdge[3 * loc + 1] = m_ucEdge[3 * loc + 2] = combinedGradientSum;
 		}
 	}
+}
+
+// The the following 3 functions are not good practice but we don't have time...
+int ImpressionistDoc::GetGradientOfX_DiffImg(const Point source)
+{
+	// Sobel Mask of X
+	int Sx[3][3] =
+	{
+		{ -1, 0, 1 },
+		{ -2, 0, 2 },
+		{ -1, 0, 1 }
+
+	};
+
+	double Gx = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gx += Sx[i][j] * GetPixelIntensity_DiffImg(source.x + j - 1,
+				source.y - i + 1);
+		}
+	}
+	return (int)Gx;
+}
+
+int ImpressionistDoc::GetGradientOfY_DiffImg(const Point source)
+{
+	// Sobel Mask of Y
+	int Sy[3][3] =
+	{
+		{ 1, 2, 1 },
+		{ 0, 0, 0 },
+		{ -1, -2, -1 }
+
+	};
+
+	double Gy = 0.0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++){
+			Gy += Sy[i][j] * GetPixelIntensity_DiffImg(source.x + j - 1,
+				source.y - i + 1);
+		}
+	}
+	return (int)Gy;
+}
+
+int ImpressionistDoc::GetPixelIntensity_DiffImg(int x, int y)
+{
+	unsigned char color[3];
+	memcpy(color, GetGradientPixel(x, y), 3);
+	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
 }
