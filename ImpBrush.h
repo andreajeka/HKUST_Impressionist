@@ -20,6 +20,7 @@ enum
 	BRUSH_SCATTERED_CIRCLES,
 	TRIANGLE,
 	HEART,
+	CIRCLESTAR,
 	ALPHAMAPPED,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };

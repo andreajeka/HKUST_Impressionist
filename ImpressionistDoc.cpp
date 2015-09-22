@@ -20,6 +20,7 @@
 #include "CircleBrush.h"
 #include "TriangleBrush.h"
 #include "HeartBrush.h"
+#include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
 
 // Inherit from PointBrush
@@ -59,6 +60,7 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	= new ScatteredCircleBrush(this, "Scattered Circles");
 	ImpBrush::c_pBrushes[TRIANGLE]					= new TriangleBrush(this, "Triangle");
 	ImpBrush::c_pBrushes[HEART]						= new HeartBrush(this, "Heart");
+	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
 
 	// make one of the brushes current

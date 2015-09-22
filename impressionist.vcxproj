@@ -138,6 +138,7 @@
     <ClCompile Include="AlphaMappedBrush.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
+    <ClCompile Include="CircleStarBrush.cpp" />
     <ClCompile Include="HeartBrush.cpp" />
     <ClCompile Include="ImpBrush.cpp" />
     <ClCompile Include="Impressionist.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="AlphaMappedBrush.h" />
     <ClInclude Include="bitmap.h" />
     <ClInclude Include="CircleBrush.h" />
+    <ClInclude Include="CircleStarBrush.h" />
     <ClInclude Include="HeartBrush.h" />
     <ClInclude Include="ImpBrush.h" />
     <ClInclude Include="impressionist.h" />
