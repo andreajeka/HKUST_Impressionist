@@ -21,7 +21,8 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
-	int		loadEdgeImage(char *iname);
+	int	loadEdgeImage(char *iname);
+	int	loadMuralImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
 	int		loadGradientImage(char *iname);
 	bool	hasGradientImage();
@@ -59,17 +60,13 @@ public:
 	// Dimensions of the paint window.
 	int				m_nPaintWidth, 
 					m_nPaintHeight;	
-	// Bitmaps for original image and painting.
+	// Bitmaps 
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucGradientBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
 	unsigned char*  m_ucAlphaMappedBrush;
-
-	// Bitmaps for edge image
 	unsigned char* m_ucEdge;
-
-	// Bitmaps for edge image
 	unsigned char* m_ucLoadedEdge;
 
 	// The current active brush.

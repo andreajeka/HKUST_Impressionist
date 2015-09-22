@@ -198,6 +198,19 @@ void ImpressionistUI::cb_load_edge_image(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------------
+// Brings up a file chooser and then loads a mural image
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_mural_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadMuralImage(newfile);
+	}
+}
+
+//------------------------------------------------------------------
 // Brings up a file chooser and then loads an alpha mapped brush
 //------------------------------------------------------------------
 void ImpressionistUI::cb_load_gradient_image(Fl_Menu_* o, void* v)
@@ -723,6 +736,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
+		{ "Load Mural Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_mural_image },
 		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image },
 		{ "Load Alpha-mapped Brush...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush, 0, FL_MENU_DIVIDER },
 

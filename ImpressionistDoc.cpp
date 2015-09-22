@@ -326,6 +326,44 @@ int ImpressionistDoc::loadEdgeImage(char *iname)
 }
 
 //---------------------------------------------------------
+// Load the specified mural image
+// This is called by the UI when the load mural image button 
+// is pressed.
+//---------------------------------------------------------
+int ImpressionistDoc::loadMuralImage(char *iname)
+{
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+
+	if (!m_ucBitmap) {
+		fl_alert("Add an original one first!");
+		return 0;
+	}
+
+	if (width > m_nWidth || height > m_nHeight) {
+		fl_alert("Image size has to be smaller or equals to original image!");
+		delete[] data;
+		return 0;
+	}
+
+	int dimDiffX= (m_nWidth - width) / 2; 
+	int dimDiffY = (m_nHeight - height) / 2;
+
+	for (int i = 0; i < height; i++) {
+		memcpy(m_ucBitmap + ((dimDiffX + i) * m_nWidth + dimDiffY) * 3, data + i * 3 * width, 3 * width);
+	}
+
+	m_pUI->m_origView->refresh();
+
+	return 1;
+}
+
+//---------------------------------------------------------
 // Load the specified brush image
 // This is called by the UI when the load alpha brush button 
 // is pressed.
