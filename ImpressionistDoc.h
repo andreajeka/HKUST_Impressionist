@@ -9,6 +9,7 @@
 
 #include "impressionist.h"
 #include "bitmap.h"
+#include "loadpng.h"
 
 class ImpressionistUI;
 
@@ -20,6 +21,7 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
+	void	loadAlphaMappedBrush(char *iname);
 	int		saveImage(char *iname);			// called by the UI to save image
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
@@ -56,7 +58,7 @@ public:
 	unsigned char*	m_ucBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
-	unsigned char*  m_ucPaintViewBG;
+	unsigned char*  m_ucAlphaMappedBrush;
 
 	// Bitmaps for edge image
 	unsigned char* m_ucEdge;

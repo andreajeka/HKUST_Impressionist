@@ -32,6 +32,7 @@ void PointBrush::BrushMove( const Point source, const Point target )
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg=pDoc->m_pUI;
+	float alphaValue = pDoc->getAlpha();
 
 	if ( pDoc == NULL ) {
 		printf( "PointBrush::BrushMove  document is NULL\n" );
@@ -39,7 +40,7 @@ void PointBrush::BrushMove( const Point source, const Point target )
 	}
 
 	glBegin( GL_POINTS );
-		SetColor( source );
+		SetColor(source, alphaValue);
 
 		glVertex2d( target.x, target.y );
 

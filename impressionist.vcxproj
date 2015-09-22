@@ -143,6 +143,7 @@
     <ClCompile Include="ImpressionistDoc.cpp" />
     <ClCompile Include="ImpressionistUI.cpp" />
     <ClCompile Include="LineBrush.cpp" />
+    <ClCompile Include="loadpng.cpp" />
     <ClCompile Include="OriginalView.cpp" />
     <ClCompile Include="PaintView.cpp" />
     <ClCompile Include="PointBrush.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="impressionistDoc.h" />
     <ClInclude Include="impressionistUI.h" />
     <ClInclude Include="LineBrush.h" />
+    <ClInclude Include="loadpng.h" />
     <ClInclude Include="OriginalView.h" />
     <ClInclude Include="PaintView.h" />
     <ClInclude Include="PointBrush.h" />

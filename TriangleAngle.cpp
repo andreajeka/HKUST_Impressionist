@@ -23,13 +23,14 @@ void TriangleBrush::BrushMove(const Point source, const Point target) {
 	}
 
 	int size = pDoc->getSize(); // get brush size
+	float alphaValue = pDoc->getAlpha();
 
 	glPushMatrix();
 	glTranslatef(target.x, target.y, 0); // move (0, 0) to the tip of mouse cursor
 
 	glBegin(GL_POLYGON);
 
-	SetColor(source);
+	SetColor(source, alphaValue);
 	for (int i = 0; i < 3; i++) {
 		float theta = -M_PI / 6 + 2.0f * M_PI * float(i) / float(3); // get the current angle (start from -30 degree)
 		float x = cosf(theta) * size / 2; // calculate the x component 
