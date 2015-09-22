@@ -91,10 +91,11 @@ public:
 	int GetGradientOfY_DiffImg(const Point source);
 	int GetPixelIntensity_DiffImg(int x, int y);
 
-	int GetGradientOfX(const Point source);
-	int GetGradientOfY(const Point source);
-	int GetPixelIntensity(int x, int y);
-	void GenerateEdgeDetectedImg(int threshold);
+	int			GetGradientOfX(const Point source);
+	int			GetGradientOfY(const Point source);
+	int			GetPixelIntensity(int x, int y);
+	GLboolean	isEdgePixel(int x, int y);
+	void		GenerateEdgeDetectedImg(int threshold);
 
 private:
 	char			m_imageName[256];

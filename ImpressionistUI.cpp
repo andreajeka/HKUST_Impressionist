@@ -435,6 +435,10 @@ void ImpressionistUI::cb_edge_clipping_button(Fl_Widget* o, void* v)
 	else {
 		pUI->edgeClippingClicked = TRUE; 
 		pDoc->GenerateEdgeDetectedImg(pUI->getEdgeThreshold());
+			/*fl_alert("Please generate edge image first!");
+			return;*/
+		//}
+
 	}
 }
 
