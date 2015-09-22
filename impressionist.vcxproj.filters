@@ -66,6 +66,9 @@
     <ClCompile Include="loadpng.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="AlphaMappedBrush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h">
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="loadpng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlphaMappedBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
