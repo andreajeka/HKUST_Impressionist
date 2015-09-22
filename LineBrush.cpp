@@ -85,13 +85,15 @@ void LineBrush::BrushEnd(const Point source, const Point target)
 // esp. line angle because we have many stroke direction option to change the angle 
 void LineBrush::DrawLine(const Point source, const Point target, const int size, const int angle)
 {
+	ImpressionistDoc* pDoc = GetDocument();
 	int halfSize = size / 2;
+	float alphaValue = pDoc->getAlpha();
 
 	//TODO calculate ege clipping here
 	// still looking for algorithm
 
 	glBegin(GL_LINES);
-	SetColor(source);
+	SetColor(source, alphaValue);
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.

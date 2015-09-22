@@ -26,10 +26,11 @@ void HeartBrush::BrushMove(const Point source, const Point target) {
 	}
 
 	int size = pDoc->getSize(); // get brush size
+	float alphaValue = pDoc->getAlpha();
 
 	glPushMatrix();
 	glTranslatef(target.x, target.y, 0); // move (0, 0) to the tip of mouse cursor
-	SetColor(source);
+	SetColor(source, alphaValue);
 
 	glBegin(GL_POLYGON);
 	

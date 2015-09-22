@@ -183,6 +183,19 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 	}
 }
 
+//------------------------------------------------------------------
+// Brings up a file chooser and then loads an alpha mapped brush
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.png", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadAlphaMappedBrush(newfile);
+	}
+}
+
 
 //------------------------------------------------------------------
 // Brings up a file chooser and then saves the painted image
@@ -619,7 +632,8 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_image },
-		{ "Load Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
+		{ "Load Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_clear_canvas },
+		{ "Load Alpha-mapped Brush...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush, 0, FL_MENU_DIVIDER },
 
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },

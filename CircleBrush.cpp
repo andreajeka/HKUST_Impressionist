@@ -37,9 +37,10 @@ void CircleBrush::BrushMove(const Point source, const Point target)
 
 	int brushSize = pDoc->getSize();
 	int radius = brushSize / 2;
+	float alphaValue = pDoc->getAlpha();
 
 	glBegin(GL_TRIANGLE_FAN);
-		SetColor(source);
+		SetColor(source, alphaValue);
 
 		for (int i = 0; i < 360; i++)
 		{

@@ -41,6 +41,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucPainting	= NULL;
 	m_ucEdge		= NULL;
 	m_ucPreviousPainting = NULL;
+	m_ucAlphaMappedBrush = NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -261,6 +262,21 @@ int ImpressionistDoc::loadImage(char *iname)
 	return 1;
 }
 
+//---------------------------------------------------------
+// Load the specified brush image
+// This is called by the UI when the load alpha brush button 
+// is pressed.
+//---------------------------------------------------------
+void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
+{
+	unsigned error;
+	unsigned width, height;
+
+	if (m_ucAlphaMappedBrush) delete[] m_ucAlphaMappedBrush;
+
+	error = lodepng_decode32_file(&m_ucAlphaMappedBrush, &width, &height, iname);
+	if (error) printf("error %u: %s\n", error, lodepng_error_text(error));
+}
 
 //----------------------------------------------------------------
 // Save the specified image

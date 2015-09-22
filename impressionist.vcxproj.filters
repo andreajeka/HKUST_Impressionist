@@ -63,6 +63,9 @@
     <ClCompile Include="HeartBrush.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="loadpng.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h">
@@ -111,6 +114,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HeartBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadpng.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

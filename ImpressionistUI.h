@@ -109,6 +109,7 @@ private:
 	// All callbacks here.  Callbacks are declared 
 	// static
 	static void	cb_load_image(Fl_Menu_* o, void* v);
+	static void	cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v);
 	static void	cb_save_image(Fl_Menu_* o, void* v);
 	static void	cb_brushes(Fl_Menu_* o, void* v);
 	static void	cb_color_blending(Fl_Menu_* o, void* v);
