@@ -24,6 +24,7 @@ public:
 	int		loadEdgeImage(char *iname);
 	int		loadMuralImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
+	void	loadLuminanceBrush(char *iname);
 	int		loadGradientImage(char *iname);
 	bool	hasGradientImage();
 	int		saveImage(char *iname);			// called by the UI to save image
@@ -67,6 +68,7 @@ public:
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
 	unsigned char*  m_ucAlphaMappedBrush;
+	unsigned char*  m_ucLuminanceBrush;
 	unsigned char*  m_ucEdge;
 	unsigned char*  m_ucLoadedEdge;
 

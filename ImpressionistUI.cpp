@@ -363,6 +363,21 @@ void ImpressionistUI::cb_load_alpha_mapped_brush(Fl_Widget* o, void* v)
 	}
 }
 
+//------------------------------------------------------------------
+// Brings up a file chooser and then loads a luminance brush
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_luminance_brush(Fl_Widget* o, void* v)
+{
+	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	ImpressionistDoc* pDoc = pUI->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadLuminanceBrush(newfile);
+		pDoc->setBrushType(LUMINANCE);
+	}
+}
+
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
 //-------------------------------------------------------------
 // Sets the type of stroke direction to use to the one chosen in 
@@ -799,6 +814,7 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Heart",				FL_ALT+'h', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)HEART},
   {"Circel Star",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)CIRCLESTAR},
   {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
+  {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
   {0}
 };
 

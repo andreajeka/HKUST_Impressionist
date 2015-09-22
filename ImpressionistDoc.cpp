@@ -22,6 +22,7 @@
 #include "HeartBrush.h"
 #include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
+#include "LuminanceBrush.h"
 
 // Inherit from PointBrush
 #include "ScatteredPointBrush.h"
@@ -62,6 +63,7 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[HEART]						= new HeartBrush(this, "Heart");
 	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
+	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
@@ -310,10 +312,30 @@ void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
 	if (m_ucAlphaMappedBrush) delete[] m_ucAlphaMappedBrush;
 
 	error = lodepng_decode32_file(&m_ucAlphaMappedBrush, &width, &height, iname);
-	if (error) printf("error %u: %s\n", error, lodepng_error_text(error));
+	if (error) fl_alert("error %u: %s\n", error, lodepng_error_text(error));
 
 	// init alpha brush
 	AlphaMappedBrush* a = dynamic_cast<AlphaMappedBrush*>(ImpBrush::c_pBrushes[ALPHAMAPPED]);
+	a->setWidth(width);
+	a->setHeight(height);
+}
+
+//---------------------------------------------------------
+// Load a luminance brush
+//---------------------------------------------------------
+void ImpressionistDoc::loadLuminanceBrush(char *iname)
+{
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+	}
+
+	m_ucLuminanceBrush = data;
+	
+	// init alpha brush
+	LuminanceBrush* a = dynamic_cast<LuminanceBrush*>(ImpBrush::c_pBrushes[LUMINANCE]);
 	a->setWidth(width);
 	a->setHeight(height);
 }
