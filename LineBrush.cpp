@@ -87,6 +87,9 @@ void LineBrush::DrawLine(const Point source, const Point target, const int size,
 {
 	int halfSize = size / 2;
 
+	//TODO calculate ege clipping here
+	// still looking for algorithm
+
 	glBegin(GL_LINES);
 	SetColor(source);
 
@@ -96,6 +99,7 @@ void LineBrush::DrawLine(const Point source, const Point target, const int size,
 		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfSize), target.y + (sin(angle * M_PI / 180.0) * halfSize));
 
 	glEnd();
+
 }
 
 

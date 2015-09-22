@@ -164,11 +164,11 @@ void ImpressionistDoc::setAlpha(float value)
 }
 
 //-------------------------------------------------
-// Set the brush alpha value
+// Return the state of the edge clipping button
 //-------------------------------------------------
-void ImpressionistDoc::clipEdge()
+bool ImpressionistDoc::edgeClippingIsOn()
 {
-	//
+	return m_pUI->edgeClippingIsOn();
 }
 
 //------------------------------------------------

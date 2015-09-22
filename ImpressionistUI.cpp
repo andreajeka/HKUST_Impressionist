@@ -390,7 +390,12 @@ void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget* o, void* v)
 void ImpressionistUI::cb_edge_clipping_button(Fl_Widget* o, void* v)
 {
 	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
-	pDoc->clipEdge();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	if (pUI->edgeClippingClicked == TRUE) pUI->edgeClippingClicked = FALSE;
+	else {
+		pUI->edgeClippingClicked = TRUE; 
+		pDoc->GenerateEdgeDetectedImg(pUI->getEdgeThreshold());
+	}
 }
 
 //------------------------------------------------------------
@@ -591,6 +596,15 @@ double ImpressionistUI::getBlendColour(int index)
 	return blendColour[index];
 }
 
+//-------------------------------------------------
+// 
+//-------------------------------------------------
+bool ImpressionistUI::edgeClippingIsOn()
+{
+	return edgeClippingClicked;
+}
+
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -688,6 +702,7 @@ ImpressionistUI::ImpressionistUI() {
 	blendColour[0] = 1;
 	blendColour[1] = 1;
 	blendColour[2] = 1;
+	edgeClippingClicked = TRUE;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(410, 380, "Brush Dialog");
