@@ -487,6 +487,7 @@ void ImpressionistUI::cb_man_edge_clipping_button(Fl_Widget* o, void* v)
 			fl_alert("Load an edge image first!");
 			pUI->m_ManEdgeClippingButton->value(0);
 			pUI->manEdgeClippingClicked = FALSE;
+			pUI->m_AutoEdgeClippingButton->activate();
 		}
 		else pDoc->m_ucEdge == pDoc->m_ucLoadedEdge;
 	}
@@ -515,7 +516,14 @@ void ImpressionistUI::cb_another_gradient_button(Fl_Widget* o, void* v)
 //------------------------------------------------------------
 void ImpressionistUI::cb_size_rand_button(Fl_Widget* o, void* v)
 {
-	//
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	if (pUI->m_SizeRandButton->value() == 1) {
+		pUI->sizeRandClicked = TRUE;
+	}
+	else {
+		pUI->sizeRandClicked = FALSE;
+	}
 }
 
 //------------------------------------------------------------
@@ -524,7 +532,9 @@ void ImpressionistUI::cb_size_rand_button(Fl_Widget* o, void* v)
 //------------------------------------------------------------
 void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 {
-	//
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	pUI->m_paintView->autoDraw(pDoc->getSpacing(), pDoc->sizeRandIsOn());
 }
 
 //------------------------------------------------------------
@@ -533,7 +543,13 @@ void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 //------------------------------------------------------------
 void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 {
-	//
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+
+	if (pDoc->m_ucBitmap == NULL) {
+		fl_alert("Please load an image first in your original view!");
+		return;
+	}
+	pDoc->displayEdgeImg();
 }
 
 //---------------------------------- per instance functions --------------------------------------
@@ -722,6 +738,15 @@ bool ImpressionistUI::anotherGradientIsOn()
 	return anotherGradientClicked;
 }
 
+//-------------------------------------------------
+// 
+//-------------------------------------------------
+bool ImpressionistUI::sizeRandIsOn()
+{
+	return sizeRandClicked;
+}
+
+
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -826,6 +851,7 @@ ImpressionistUI::ImpressionistUI() {
 	autoEdgeClippingClicked = FALSE;
 	manEdgeClippingClicked = FALSE;
 	anotherGradientClicked = FALSE;
+	sizeRandClicked = FALSE;
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(500, 380, "Brush Dialog");

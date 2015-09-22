@@ -21,8 +21,8 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
-	int	loadEdgeImage(char *iname);
-	int	loadMuralImage(char *iname);
+	int		loadEdgeImage(char *iname);
+	int		loadMuralImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
 	int		loadGradientImage(char *iname);
 	bool	hasGradientImage();
@@ -41,6 +41,7 @@ public:
 	void	setAlpha(float value);
 	bool	autoEdgeClippingIsOn();
 	bool	manEdgeClippingIsOn();
+	bool	sizeRandIsOn();
 	int		getSpacing();
 	void	setSpacing(int value);
 	int		getEdgeThreshold();
@@ -66,8 +67,8 @@ public:
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
 	unsigned char*  m_ucAlphaMappedBrush;
-	unsigned char* m_ucEdge;
-	unsigned char* m_ucLoadedEdge;
+	unsigned char*  m_ucEdge;
+	unsigned char*  m_ucLoadedEdge;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	
