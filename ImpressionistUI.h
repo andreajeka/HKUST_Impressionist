@@ -59,7 +59,8 @@ public:
 	Fl_Button*          m_DimLevelButton;
 	Fl_Button*          m_ClearCanvasButton;
 
-	Fl_Light_Button*    m_EdgeClippingButton;
+	Fl_Light_Button*    m_AutoEdgeClippingButton;
+	Fl_Light_Button*	m_ManEdgeClippingButton;
 	Fl_Light_Button*    m_AnotherGradientButton;
 	Fl_Light_Button*    m_SizeRandButton;
 
@@ -84,7 +85,8 @@ public:
 	int					getEdgeThreshold();
 	void				setEdgeThreshold(int value);
 	double				getBlendColour(int index);
-	bool				edgeClippingIsOn();
+	bool				autoEdgeClippingIsOn();
+	bool				manEdgeClippingIsOn();
 	bool				anotherGradientIsOn();
 
 private:
@@ -98,7 +100,8 @@ private:
 	int		m_nSpacing;
 	int		m_nEdgeThreshold;
 	double	blendColour[3];
-	bool	edgeClippingClicked;
+	bool	autoEdgeClippingClicked;
+	bool	manEdgeClippingClicked;
 	bool	anotherGradientClicked;
 
 	// Static class members
@@ -111,6 +114,7 @@ private:
 	// All callbacks here.  Callbacks are declared 
 	// static
 	static void	cb_load_image(Fl_Menu_* o, void* v);
+	static void cb_load_edge_image(Fl_Menu_* o, void* v);
 	static void	cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v);
 	static void	cb_load_gradient_image(Fl_Menu_* o, void* v);
 	static void	cb_save_image(Fl_Menu_* o, void* v);
@@ -126,7 +130,8 @@ private:
 
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_strokeDirectionChoice(Fl_Widget* o, void* v);
-	static void cb_edge_clipping_button(Fl_Widget* o, void* v);
+	static void cb_auto_edge_clipping_button(Fl_Widget* o, void* v);
+	static void cb_man_edge_clipping_button(Fl_Widget* o, void* v);
 	static void cb_another_gradient_button(Fl_Widget* o, void* v);
 	static void cb_size_rand_button(Fl_Widget* o, void* v);
 	static void cb_paint_button(Fl_Widget* o, void* v);

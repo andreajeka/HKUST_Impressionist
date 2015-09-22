@@ -21,6 +21,7 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
+	int		loadEdgeImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
 	int		loadGradientImage(char *iname);
 	bool	hasGradientImage();
@@ -37,7 +38,8 @@ public:
 	void	setLineAngle(int angle);
 	float	getAlpha();
 	void	setAlpha(float value);
-	bool	edgeClippingIsOn();
+	bool	autoEdgeClippingIsOn();
+	bool	manEdgeClippingIsOn();
 	int		getSpacing();
 	void	setSpacing(int value);
 	int		getEdgeThreshold();
@@ -66,6 +68,9 @@ public:
 
 	// Bitmaps for edge image
 	unsigned char* m_ucEdge;
+
+	// Bitmaps for edge image
+	unsigned char* m_ucLoadedEdge;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	
@@ -96,6 +101,7 @@ public:
 	int			GetPixelIntensity(int x, int y);
 	GLboolean	isEdgePixel(int x, int y);
 	void		GenerateEdgeDetectedImg(int threshold);
+	void		ReferToLoadedEdgeImg();
 
 private:
 	char			m_imageName[256];

@@ -38,13 +38,14 @@ ImpressionistDoc::ImpressionistDoc()
 	// Set NULL image name as init. 
 	m_imageName[0]	='\0';	
 
-	m_nWidth		= -1;
-	m_ucBitmap		= NULL;
-	m_ucPainting	= NULL;
-	m_ucEdge		= NULL;
-	m_ucPreviousPainting = NULL;
-	m_ucAlphaMappedBrush = NULL;
-	m_ucGradientBitmap = NULL;
+	m_nWidth				= -1;
+	m_ucBitmap				= NULL;
+	m_ucPainting			= NULL;
+	m_ucEdge				= NULL;
+	m_ucLoadedEdge			= NULL;
+	m_ucPreviousPainting	= NULL;
+	m_ucAlphaMappedBrush	= NULL;
+	m_ucGradientBitmap		= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -77,7 +78,8 @@ void ImpressionistDoc::setUI(ImpressionistUI* ui)
 	m_pUI->m_StrokeDirectionTypeChoice->deactivate();
 	m_pUI->m_LineWidthSlider->deactivate();
 	m_pUI->m_LineAngleSlider->deactivate();
-	m_pUI->m_EdgeClippingButton->deactivate();
+	m_pUI->m_AutoEdgeClippingButton->deactivate();
+	m_pUI->m_ManEdgeClippingButton->deactivate();
 	m_pUI->m_AnotherGradientButton->deactivate();
 }
 
@@ -100,14 +102,16 @@ void ImpressionistDoc::setBrushType(int type)
 	m_pUI->m_StrokeDirectionTypeChoice->deactivate();
 	m_pUI->m_LineWidthSlider->deactivate();
 	m_pUI->m_LineAngleSlider->deactivate();
-	m_pUI->m_EdgeClippingButton->deactivate();
+	m_pUI->m_AutoEdgeClippingButton->deactivate();
+	m_pUI->m_ManEdgeClippingButton->deactivate();
 	m_pUI->m_AnotherGradientButton->deactivate();
 
 	if (type == BRUSH_LINES || type == BRUSH_SCATTERED_LINES) {
 		m_pUI->m_StrokeDirectionTypeChoice->activate();
 		m_pUI->m_LineWidthSlider->activate();
 		m_pUI->m_LineAngleSlider->activate();
-		m_pUI->m_EdgeClippingButton->activate();
+		m_pUI->m_AutoEdgeClippingButton->activate();
+		m_pUI->m_ManEdgeClippingButton->activate();
 		m_pUI->m_AnotherGradientButton->activate();
 	}
 }
@@ -168,12 +172,20 @@ void ImpressionistDoc::setAlpha(float value)
 	m_pUI->setAlpha(value);
 }
 
-//-------------------------------------------------
-// Return the state of the edge clipping button
-//-------------------------------------------------
-bool ImpressionistDoc::edgeClippingIsOn()
+//--------------------------------------------------
+// Return the state of the auto edge clipping button
+//--------------------------------------------------
+bool ImpressionistDoc::autoEdgeClippingIsOn()
 {
-	return m_pUI->edgeClippingIsOn();
+	return m_pUI->autoEdgeClippingIsOn();
+}
+
+//----------------------------------------------------
+// Return the state of the manual edge clipping button
+//----------------------------------------------------
+bool ImpressionistDoc::manEdgeClippingIsOn()
+{
+	return m_pUI->manEdgeClippingIsOn();
 }
 
 //------------------------------------------------
@@ -285,6 +297,32 @@ void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
 	AlphaMappedBrush* a = dynamic_cast<AlphaMappedBrush*>(ImpBrush::c_pBrushes[ALPHAMAPPED]);
 	a->setWidth(width);
 	a->setHeight(height);
+}
+
+//---------------------------------------------------------
+// Load the specified edge image
+// This is called by the UI when the load edge image button 
+// is pressed.
+//---------------------------------------------------------
+int ImpressionistDoc::loadEdgeImage(char *iname)
+{
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+		return 0;
+	}
+
+	if (width != m_nWidth || height != m_nHeight) {
+		fl_alert("Image size differs from the original image");
+		delete[] data;
+		return 0;
+	}
+
+	m_ucLoadedEdge = data;
+
+	return 1;
 }
 
 //---------------------------------------------------------
@@ -410,6 +448,7 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( int x, int y )
 	return (GLubyte*)(m_ucBitmap + 3 * (y*m_nWidth + x));
 }
 
+
 //------------------------------------------------------------------
 // Check whether a pixel in edge image is an edge pixel
 //------------------------------------------------------------------
@@ -497,7 +536,6 @@ int ImpressionistDoc::GetGradientOfY(const Point source)
 	return (int)Gy;
 }
 
-
 // Get pixel intensity according to human eye
 int ImpressionistDoc::GetPixelIntensity(int x, int y) 
 {
@@ -522,6 +560,7 @@ void ImpressionistDoc::GenerateEdgeDetectedImg(int threshold)
 			// that represents a pixel. It is multiplied by
 			// 3 because it consist of 3 channels R,G,B
 			loc = (j * m_nPaintWidth + i);
+
 			Gx = GetGradientOfX(Point(i,j));
 			Gy = GetGradientOfY(Point(i,j));
 			combinedGradientSum = sqrt(double(Gx*Gx) + double(Gy*Gy));

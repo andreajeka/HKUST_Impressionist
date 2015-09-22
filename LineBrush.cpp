@@ -101,7 +101,7 @@ void LineBrush::DrawLine(const Point source, const Point target, const int size,
 	int centerToTarget1 = halfSize;
 	int centerToTarget2 = halfSize;
 	
-	if (pDoc->edgeClippingIsOn()) {
+	if (pDoc->autoEdgeClippingIsOn() || pDoc->manEdgeClippingIsOn()) {
 		for (int lengthToTarget = halfSize; lengthToTarget > 0; lengthToTarget--) {
 			if (pDoc->isEdgePixel(target.x - lengthToTarget * cosineProj, target.y - lengthToTarget * sineProj))
 				centerToTarget1 = lengthToTarget;

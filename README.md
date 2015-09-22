@@ -38,7 +38,7 @@ Here is a list of suggestions for extending the program. You are encouraged to c
 
 9. [ ] ![bell+whistle](http://i.imgur.com/BxHJUfG.gif) At times, you may want the brush strokes to follow the gradient of a different image than the base image. Add a button(s) that will cause the direction of brush strokes to be automatically determined from a user specified image. 
 
-10. [ ] ![bell+whistle](http://i.imgur.com/BxHJUfG.gif) The "accuracy" of the painting can be also be improved by clipping long brush strokes to edges in the image. Allow the user to load a black-and-white image that represents the edges in the picture. Then add a checkbox so that the user can turn on edge-clipping, which will automatically clip brush strokes at edges in the image. 
+10. [x] ![bell+whistle](http://i.imgur.com/BxHJUfG.gif) The "accuracy" of the painting can be also be improved by clipping long brush strokes to edges in the image. Allow the user to load a black-and-white image that represents the edges in the picture. Then add a checkbox so that the user can turn on edge-clipping, which will automatically clip brush strokes at edges in the image. 
 
 11. [ ] ![bell](http://i.imgur.com/HJ7cCdM.gif)![bell](http://i.imgur.com/HJ7cCdM.gif) Construct a filter kernel design interface so that you can enter the weights of filters of arbitrary sizes. Provide an "apply" button that will cause the convolution to happen. Include a "normalize" checkbox that will automatically divide by the sum of the weights when the user wishes it. 
 

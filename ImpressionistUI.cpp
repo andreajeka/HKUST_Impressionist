@@ -185,6 +185,19 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------------
+// Brings up a file chooser and then loads an edge image
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_edge_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadEdgeImage(newfile);
+	}
+}
+
+//------------------------------------------------------------------
 // Brings up a file chooser and then loads an alpha mapped brush
 //------------------------------------------------------------------
 void ImpressionistUI::cb_load_gradient_image(Fl_Menu_* o, void* v)
@@ -427,18 +440,42 @@ void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget* o, void* v)
 // 
 // 
 //------------------------------------------------------------
-void ImpressionistUI::cb_edge_clipping_button(Fl_Widget* o, void* v)
+void ImpressionistUI::cb_auto_edge_clipping_button(Fl_Widget* o, void* v)
 {
 	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
 	ImpressionistUI* pUI = pDoc->m_pUI;
-	if (pUI->edgeClippingClicked == TRUE) pUI->edgeClippingClicked = FALSE;
+	if (pUI->m_AutoEdgeClippingButton->value() != 1) {
+		pUI->autoEdgeClippingClicked = FALSE;
+		pUI->m_ManEdgeClippingButton->activate();
+	}
 	else {
-		pUI->edgeClippingClicked = TRUE; 
+		pUI->autoEdgeClippingClicked = TRUE; 
+		pUI->m_ManEdgeClippingButton->deactivate();
 		pDoc->GenerateEdgeDetectedImg(pUI->getEdgeThreshold());
-			/*fl_alert("Please generate edge image first!");
-			return;*/
-		//}
+	}
+}
 
+//------------------------------------------------------------
+// 
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_man_edge_clipping_button(Fl_Widget* o, void* v)
+{
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	if (pUI->m_ManEdgeClippingButton->value() != 1){
+		pUI->manEdgeClippingClicked = FALSE;
+		pUI->m_AutoEdgeClippingButton->activate();
+	}
+	else {
+		pUI->manEdgeClippingClicked = TRUE;
+		pUI->m_AutoEdgeClippingButton->deactivate();
+		if (pDoc->m_ucLoadedEdge == NULL) {
+			fl_alert("Load an edge image first!");
+			pUI->m_ManEdgeClippingButton->value(0);
+			pUI->manEdgeClippingClicked = FALSE;
+		}
+		else pDoc->m_ucEdge == pDoc->m_ucLoadedEdge;
 	}
 }
 
@@ -651,9 +688,17 @@ double ImpressionistUI::getBlendColour(int index)
 //-------------------------------------------------
 // 
 //-------------------------------------------------
-bool ImpressionistUI::edgeClippingIsOn()
+bool ImpressionistUI::autoEdgeClippingIsOn()
 {
-	return edgeClippingClicked;
+	return autoEdgeClippingClicked;
+}
+
+//-------------------------------------------------
+// 
+//-------------------------------------------------
+bool ImpressionistUI::manEdgeClippingIsOn()
+{
+	return manEdgeClippingClicked;
 }
 
 //-------------------------------------------------
@@ -677,7 +722,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_color_blending },
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
-		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_image },
+		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
 		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image },
 		{ "Load Alpha-mapped Brush...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush, 0, FL_MENU_DIVIDER },
 
@@ -764,11 +809,12 @@ ImpressionistUI::ImpressionistUI() {
 	blendColour[0] = 1;
 	blendColour[1] = 1;
 	blendColour[2] = 1;
-	edgeClippingClicked = TRUE;
+	autoEdgeClippingClicked = FALSE;
+	manEdgeClippingClicked = FALSE;
 	anotherGradientClicked = FALSE;
 
 	// brush dialog definition
-	m_brushDialog = new Fl_Window(410, 380, "Brush Dialog");
+	m_brushDialog = new Fl_Window(500, 380, "Brush Dialog");
 		// Add a brush type choice to the dialog
 		m_BrushTypeChoice = new Fl_Choice(50,10,150,25,"&Brush");
 		m_BrushTypeChoice->user_data((void*)(this));	// record self to be used by static callback functions
@@ -839,12 +885,19 @@ ImpressionistUI::ImpressionistUI() {
 		m_AlphaSlider->callback(cb_alphaSlides);
 
 		// Add edge clipping light button to the dialog
-		m_EdgeClippingButton = new Fl_Light_Button(10, 200, 125, 25, "&Edge Clipping");
-		m_EdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
-		m_EdgeClippingButton->callback(cb_edge_clipping_button);
+		m_AutoEdgeClippingButton = new Fl_Light_Button(10, 200, 150, 25, "Auto &Edge Clipping");
+		m_AutoEdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
+		m_AutoEdgeClippingButton->callback(cb_auto_edge_clipping_button);
 
-		// Add edge clipping light button to the dialog
-		m_AnotherGradientButton = new Fl_Light_Button(240, 200, 150, 25, "&Another Gradient");
+		// Add manual edge clipping light button to the dialog
+		// Manual edge clipping allows edge clipping through edge image
+		m_ManEdgeClippingButton = new Fl_Light_Button(170, 200, 150, 25, "Man &Edge Clipping");
+		m_ManEdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
+		m_ManEdgeClippingButton->callback(cb_man_edge_clipping_button);
+
+		// Add auto edge clipping light button to the dialog
+		// Automatic edge clipping allows edge clipping through auto-generated edge image
+		m_AnotherGradientButton = new Fl_Light_Button(330, 200, 150, 25, "&Another Gradient");
 		m_AnotherGradientButton->user_data((void*)(this));   // record self to be used by static callback functions
 		m_AnotherGradientButton->callback(cb_another_gradient_button);
 
