@@ -42,7 +42,7 @@ Here is a list of suggestions for extending the program. You are encouraged to c
 
 11. [ ] ![bell](http://i.imgur.com/HJ7cCdM.gif)![bell](http://i.imgur.com/HJ7cCdM.gif) Construct a filter kernel design interface so that you can enter the weights of filters of arbitrary sizes. Provide an "apply" button that will cause the convolution to happen. Include a "normalize" checkbox that will automatically divide by the sum of the weights when the user wishes it. 
 
-12. [ ] ![bell](http://i.imgur.com/HJ7cCdM.gif)![bell](http://i.imgur.com/HJ7cCdM.gif) Use the image processing techniques described in class to automatically find the edges in the base image. Once you have found the edges, add a button to the user interface that will allow the user to select whether or not the brush strokes should be clipped to the edges in the picture. 
+12. [x] ![bell](http://i.imgur.com/HJ7cCdM.gif)![bell](http://i.imgur.com/HJ7cCdM.gif) Use the image processing techniques described in class to automatically find the edges in the base image. Once you have found the edges, add a button to the user interface that will allow the user to select whether or not the brush strokes should be clipped to the edges in the picture. 
 
 13. [ ] ![bell](http://i.imgur.com/HJ7cCdM.gif)![bell](http://i.imgur.com/HJ7cCdM.gif) Implement a multiresolution automatic painting technique. See [Painterly Styles for Expressive Rendering](http://mrl.nyu.edu/projects/npr/painterly/). 
 

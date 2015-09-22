@@ -372,6 +372,25 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( int x, int y )
 	return (GLubyte*)(m_ucBitmap + 3 * (y*m_nWidth + x));
 }
 
+//------------------------------------------------------------------
+// Check whether a pixel in edge image is an edge pixel
+//------------------------------------------------------------------
+GLboolean ImpressionistDoc::isEdgePixel(int x, int y)
+{
+	if (x < 0)
+		x = 0;
+	else if (x >= m_nWidth)
+		x = m_nWidth - 1;
+
+	if (y < 0)
+		y = 0;
+	else if (y >= m_nHeight)
+		y = m_nHeight - 1;
+
+	if (m_ucEdge[3 * (y*m_nWidth + x)] > 0) return true;
+	else return false;
+}
+
 //----------------------------------------------------------------
 // Get the color of the pixel in the original image at point p
 //----------------------------------------------------------------

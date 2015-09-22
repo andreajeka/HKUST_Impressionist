@@ -89,16 +89,35 @@ void LineBrush::DrawLine(const Point source, const Point target, const int size,
 	int halfSize = size / 2;
 	float alphaValue = pDoc->getAlpha();
 
-	//TODO calculate ege clipping here
-	// still looking for algorithm
+	double cosineProj = cos(angle * M_PI / 180.0);
+	double sineProj = sin(angle * M_PI / 180.0);
+
+	// Originally without edge clipping, its a full half size
+	// From the center of the line to the other half
+	int centerToTarget1 = halfSize;
+	int centerToTarget2 = halfSize;
+	
+	if (pDoc->edgeClippingIsOn()) {
+		for (int lengthToTarget = halfSize; lengthToTarget > 0; lengthToTarget--) {
+			if (pDoc->isEdgePixel(target.x - lengthToTarget * cosineProj, target.y - lengthToTarget * sineProj))
+				centerToTarget1 = lengthToTarget;
+			if (pDoc->isEdgePixel(target.x + lengthToTarget * cosineProj, target.y + lengthToTarget * sineProj))
+				centerToTarget2 = lengthToTarget;
+		}
+	}
+
+	int startPointX = target.x - cosineProj  * centerToTarget1;
+	int startPointY = target.y - sineProj * centerToTarget1;
+	int endPointX = target.x + cosineProj * centerToTarget2;
+	int endPointY = target.y + sineProj * centerToTarget2;
 
 	glBegin(GL_LINES);
 	SetColor(source, alphaValue);
 
 		// Because a line is made of two points,
 		// we have to supply the location of two points.
-		glVertex2d(target.x - (cos(angle * M_PI / 180) * halfSize), target.y - (sin(angle * M_PI / 180.0) * halfSize));
-		glVertex2d(target.x + (cos(angle * M_PI / 180) * halfSize), target.y + (sin(angle * M_PI / 180.0) * halfSize));
+		glVertex2d(startPointX, startPointY);
+		glVertex2d(endPointX, endPointY);
 
 	glEnd();
 
