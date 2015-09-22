@@ -19,6 +19,7 @@
 #include "CircleBrush.h"
 #include "TriangleBrush.h"
 #include "HeartBrush.h"
+#include "AlphaMappedBrush.h"
 
 // Inherit from PointBrush
 #include "ScatteredPointBrush.h"
@@ -55,6 +56,7 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[BRUSH_SCATTERED_CIRCLES]	= new ScatteredCircleBrush(this, "Scattered Circles");
 	ImpBrush::c_pBrushes[TRIANGLE]					= new TriangleBrush(this, "Triangle");
 	ImpBrush::c_pBrushes[HEART]						= new HeartBrush(this, "Heart");
+	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
@@ -276,6 +278,11 @@ void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
 
 	error = lodepng_decode32_file(&m_ucAlphaMappedBrush, &width, &height, iname);
 	if (error) printf("error %u: %s\n", error, lodepng_error_text(error));
+
+	// init alpha brush
+	AlphaMappedBrush* a = dynamic_cast<AlphaMappedBrush*>(ImpBrush::c_pBrushes[ALPHAMAPPED]);
+	a->setWidth(width);
+	a->setHeight(height);
 }
 
 //----------------------------------------------------------------
