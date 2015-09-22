@@ -118,7 +118,6 @@ private:
 	static void	cb_load_image(Fl_Menu_* o, void* v);
 	static void cb_load_edge_image(Fl_Menu_* o, void* v);
 	static void	cb_load_mural_image(Fl_Menu_* o, void* v);
-	static void	cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v);
 	static void	cb_load_gradient_image(Fl_Menu_* o, void* v);
 	static void	cb_save_image(Fl_Menu_* o, void* v);
 	static void	cb_brushes(Fl_Menu_* o, void* v);
@@ -132,6 +131,7 @@ private:
 	static void cb_swap_canvas(Fl_Menu_* o, void* v);
 
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
+	static void	cb_load_alpha_mapped_brush(Fl_Widget* o, void* v);
 	static void	cb_strokeDirectionChoice(Fl_Widget* o, void* v);
 	static void cb_auto_edge_clipping_button(Fl_Widget* o, void* v);
 	static void cb_man_edge_clipping_button(Fl_Widget* o, void* v);

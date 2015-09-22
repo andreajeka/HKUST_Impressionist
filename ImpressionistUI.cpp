@@ -211,7 +211,7 @@ void ImpressionistUI::cb_load_mural_image(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------------
-// Brings up a file chooser and then loads an alpha mapped brush
+// Brings up a file chooser and then loads a gradient image
 //------------------------------------------------------------------
 void ImpressionistUI::cb_load_gradient_image(Fl_Menu_* o, void* v)
 {
@@ -222,20 +222,6 @@ void ImpressionistUI::cb_load_gradient_image(Fl_Menu_* o, void* v)
 		pDoc->loadGradientImage(newfile);
 	}
 }
-
-//------------------------------------------------------------------
-// Brings up a file chooser and then loads an alpha mapped brush
-//------------------------------------------------------------------
-void ImpressionistUI::cb_load_alpha_mapped_brush(Fl_Menu_* o, void* v)
-{
-	ImpressionistDoc *pDoc = whoami(o)->getDocument();
-
-	char* newfile = fl_file_chooser("Open File?", "*.png", pDoc->getImageName());
-	if (newfile != NULL) {
-		pDoc->loadAlphaMappedBrush(newfile);
-	}
-}
-
 
 //------------------------------------------------------------------
 // Brings up a file chooser and then saves the painted image
@@ -360,6 +346,21 @@ void ImpressionistUI::cb_brushChoice(Fl_Widget* o, void* v)
 
 
 	pDoc->setBrushType(type);
+}
+
+//------------------------------------------------------------------
+// Brings up a file chooser and then loads an alpha mapped brush
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_alpha_mapped_brush(Fl_Widget* o, void* v)
+{
+	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	ImpressionistDoc* pDoc = pUI->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.png", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadAlphaMappedBrush(newfile);
+		pDoc->setBrushType(ALPHAMAPPED);
+	}
 }
 
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
@@ -762,8 +763,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
 		{ "Load Mural Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_mural_image },
-		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image },
-		{ "Load Alpha-mapped Brush...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush, 0, FL_MENU_DIVIDER },
+		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image, 0, FL_MENU_DIVIDER },
 
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
 		{ 0 },
@@ -798,7 +798,7 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Triangle",			FL_ALT+'t', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)TRIANGLE},
   {"Heart",				FL_ALT+'h', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)HEART},
   {"Circel Star",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)CIRCLESTAR},
-  {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)ALPHAMAPPED},
+  {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
   {0}
 };
 
