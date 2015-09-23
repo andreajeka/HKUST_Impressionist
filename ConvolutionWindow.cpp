@@ -55,7 +55,7 @@ void ConvolutionWindow::show(ImpressionistDoc* doc, int size) {
 	m_pDoc = doc;
 	kernelSize = size;
 
-	m_convolutionWindow = new Fl_Window(max(kernelSize * 45 + 20, 200), kernelSize * 35 + 50, "Kernel");
+	m_convolutionWindow = new Fl_Window(max(kernelSize * 30 + 30, 210), max(kernelSize * 45, 200), "Kernel Definition");
 	
 		m_OKButton = new Fl_Button(10, 10, 80, 20, "Do it");
 		m_OKButton->user_data((void*)(this));
@@ -67,7 +67,7 @@ void ConvolutionWindow::show(ImpressionistDoc* doc, int size) {
 		for (int i = 0; i < kernelSize; i++) {
 			m_KernelInput[i] = new Fl_Float_Input*[kernelSize];
 			for (int j = 0; j < kernelSize; j++) {
-				m_KernelInput[i][j] = new Fl_Float_Input(10 + 45 * i, 40 + 35 * j, 35, 25);
+				m_KernelInput[i][j] = new Fl_Float_Input(10 + 30 * j, 50 + 30 * i, 30, 30);
 				m_KernelInput[i][j]->value("0");
 			}
 		}
