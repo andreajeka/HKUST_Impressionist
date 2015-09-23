@@ -331,6 +331,17 @@ void ImpressionistUI::cb_swap_canvas(Fl_Menu_* o, void* v)
 	pDoc->swapCanvas();
 }
 
+//------------------------------------------------------------
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_convolution(Fl_Menu_* o, void* v)
+{
+	char s[10];
+	strcpy(s, fl_input("Please enter an odd number for kernel size"));
+	int kernelSize = atoi(s);
+	whoami(o)->m_convolutionWindow->show(whoami(o)->getDocument(), kernelSize);
+}
+
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
 //-------------------------------------------------------------
 // Sets the type of brush to use to the one chosen in the brush 
@@ -360,6 +371,21 @@ void ImpressionistUI::cb_load_alpha_mapped_brush(Fl_Widget* o, void* v)
 	if (newfile != NULL) {
 		pDoc->loadAlphaMappedBrush(newfile);
 		pDoc->setBrushType(ALPHAMAPPED);
+	}
+}
+
+//------------------------------------------------------------------
+// Brings up a file chooser and then loads a luminance brush
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_luminance_brush(Fl_Widget* o, void* v)
+{
+	ImpressionistUI* pUI = ((ImpressionistUI *)(o->user_data()));
+	ImpressionistDoc* pDoc = pUI->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadLuminanceBrush(newfile);
+		pDoc->setBrushType(LUMINANCE);
 	}
 }
 
@@ -773,6 +799,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
 		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
 		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
+		{ "&Convolution", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_convolution },
 		{ 0 },
 
 	{ "&Options",		0, 0, 0, FL_SUBMENU },
@@ -800,6 +827,7 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Circle Star",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)CIRCLESTAR},
   {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
   { "Filter: Blur",		FL_ALT+'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BLUR},
+  {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
   {0}
 };
 
@@ -854,6 +882,7 @@ ImpressionistUI::ImpressionistUI() {
 	manEdgeClippingClicked = FALSE;
 	anotherGradientClicked = FALSE;
 	sizeRandClicked = FALSE;
+	m_convolutionWindow = new ConvolutionWindow();
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(500, 380, "Brush Dialog");

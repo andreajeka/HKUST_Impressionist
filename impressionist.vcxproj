@@ -140,6 +140,7 @@
     <ClCompile Include="BlurBrush.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
     <ClCompile Include="CircleStarBrush.cpp" />
+    <ClCompile Include="ConvolutionWindow.cpp" />
     <ClCompile Include="HeartBrush.cpp" />
     <ClCompile Include="ImpBrush.cpp" />
     <ClCompile Include="Impressionist.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="ImpressionistUI.cpp" />
     <ClCompile Include="LineBrush.cpp" />
     <ClCompile Include="loadpng.cpp" />
+    <ClCompile Include="LuminanceBrush.cpp" />
     <ClCompile Include="OriginalView.cpp" />
     <ClCompile Include="PaintView.cpp" />
     <ClCompile Include="PointBrush.cpp" />
@@ -162,6 +164,7 @@
     <ClInclude Include="BlurBrush.h" />
     <ClInclude Include="CircleBrush.h" />
     <ClInclude Include="CircleStarBrush.h" />
+    <ClInclude Include="ConvolutionWindow.h" />
     <ClInclude Include="HeartBrush.h" />
     <ClInclude Include="ImpBrush.h" />
     <ClInclude Include="impressionist.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="impressionistUI.h" />
     <ClInclude Include="LineBrush.h" />
     <ClInclude Include="loadpng.h" />
+    <ClInclude Include="LuminanceBrush.h" />
     <ClInclude Include="OriginalView.h" />
     <ClInclude Include="PaintView.h" />
     <ClInclude Include="PointBrush.h" />

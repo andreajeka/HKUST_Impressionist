@@ -19,10 +19,10 @@
 #include <FL/Fl_Box.h>
 #include <FL/Fl_Color_Chooser.H>
 
+#include "ConvolutionWindow.h"
 #include "Impressionist.h"
 #include "OriginalView.h"
 #include "PaintView.h"
-
 #include "ImpBrush.h"
 
 class ImpressionistUI {
@@ -35,6 +35,8 @@ public:
 								
 	PaintView*			m_paintView;
 	OriginalView*		m_origView;
+
+	ConvolutionWindow* m_convolutionWindow;
 
 // for brush dialog
 	Fl_Window*			m_brushDialog;
@@ -129,9 +131,11 @@ private:
 	static void cb_display_original_image(Fl_Menu_* o, void* v);
 	static void cb_display_edge_image(Fl_Menu_* o, void* v);
 	static void cb_swap_canvas(Fl_Menu_* o, void* v);
+	static void cb_convolution(Fl_Menu_* o, void* v);
 
 	static void	cb_brushChoice(Fl_Widget* o, void* v);
 	static void	cb_load_alpha_mapped_brush(Fl_Widget* o, void* v);
+	static void	cb_load_luminance_brush(Fl_Widget* o, void* v);
 	static void	cb_strokeDirectionChoice(Fl_Widget* o, void* v);
 	static void cb_auto_edge_clipping_button(Fl_Widget* o, void* v);
 	static void cb_man_edge_clipping_button(Fl_Widget* o, void* v);

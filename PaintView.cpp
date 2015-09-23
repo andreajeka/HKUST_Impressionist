@@ -19,6 +19,7 @@
 #define RIGHT_MOUSE_DOWN	4
 #define RIGHT_MOUSE_DRAG	5
 #define RIGHT_MOUSE_UP		6
+#define CONVOLUTION			7
 
 
 #ifndef WIN32
@@ -83,6 +84,7 @@ void PaintView::initSetup()
 	if (startrow < 0) startrow = 0;
 
 	m_pPaintBitstart = m_pDoc->m_ucPainting + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
+	m_pConvolutionstart = m_pDoc->m_ucConvolution + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
 
 	m_nDrawWidth = drawWidth;
 	m_nDrawHeight = drawHeight;
@@ -211,7 +213,16 @@ void PaintView::draw()
 			rightClickDirectionLine = NULL;
 
 			break;
+		case CONVOLUTION:
+			glDrawBuffer(GL_BACK); // specify which color buffers are to be drawn into
 
+			glClear(GL_COLOR_BUFFER_BIT); // clear buffers to preset values
+
+			glRasterPos2i(0, m_nWindowHeight - m_nDrawHeight); // starting point for pixel write op
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // how to store the pixels
+			glPixelStorei(GL_UNPACK_ROW_LENGTH, m_pDoc->m_nPaintWidth);
+			glDrawPixels(m_nDrawWidth, m_nDrawHeight, GL_RGB, GL_UNSIGNED_BYTE, m_pConvolutionstart); // write to frame buffer
+			break;
 		default:
 			printf("Unknown event!!\n");
 			break;
@@ -225,6 +236,12 @@ void PaintView::draw()
 	glDrawBuffer(GL_BACK);
 	#endif // !MESA
 
+}
+
+void PaintView::drawConvolution() {
+	eventToDo = CONVOLUTION;
+	isAnEvent = 1;
+	redraw();
 }
 
 void PaintView::autoDraw(int spacing, bool randomSize) 

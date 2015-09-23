@@ -23,6 +23,7 @@
 #include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
 #include "BlurBrush.h"
+#include "LuminanceBrush.h"
 
 // Inherit from PointBrush
 #include "ScatteredPointBrush.h"
@@ -48,6 +49,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucPreviousPainting	= NULL;
 	m_ucAlphaMappedBrush	= NULL;
 	m_ucGradientBitmap		= NULL;
+	m_ucConvolution			= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -64,6 +66,8 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
 	ImpBrush::c_pBrushes[BLUR]						= new BlurBrush(this, "Blur");
+	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
+
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
 
@@ -269,6 +273,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucPainting ) delete [] m_ucPainting;
 	if ( m_ucEdge ) delete[] m_ucEdge;
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
+	if (m_ucConvolution) delete[] m_ucConvolution;
 
 	m_ucBitmap		= data;
 
@@ -281,6 +286,9 @@ int ImpressionistDoc::loadImage(char *iname)
 	// allocate space for storing previous image
 	m_ucPreviousPainting = new unsigned char[width*height * 3];
 	memset(m_ucPreviousPainting, 0, width*height * 3);
+
+	m_ucConvolution = new unsigned char[width*height * 3];
+	memset(m_ucConvolution, 0, width*height * 3);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -311,10 +319,30 @@ void ImpressionistDoc::loadAlphaMappedBrush(char *iname)
 	if (m_ucAlphaMappedBrush) delete[] m_ucAlphaMappedBrush;
 
 	error = lodepng_decode32_file(&m_ucAlphaMappedBrush, &width, &height, iname);
-	if (error) printf("error %u: %s\n", error, lodepng_error_text(error));
+	if (error) fl_alert("error %u: %s\n", error, lodepng_error_text(error));
 
 	// init alpha brush
 	AlphaMappedBrush* a = dynamic_cast<AlphaMappedBrush*>(ImpBrush::c_pBrushes[ALPHAMAPPED]);
+	a->setWidth(width);
+	a->setHeight(height);
+}
+
+//---------------------------------------------------------
+// Load a luminance brush
+//---------------------------------------------------------
+void ImpressionistDoc::loadLuminanceBrush(char *iname)
+{
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+	}
+
+	m_ucLuminanceBrush = data;
+	
+	// init alpha brush
+	LuminanceBrush* a = dynamic_cast<LuminanceBrush*>(ImpBrush::c_pBrushes[LUMINANCE]);
 	a->setWidth(width);
 	a->setHeight(height);
 }
@@ -450,6 +478,32 @@ int ImpressionistDoc::clearCanvas()
 	}
 	
 	return 0;
+}
+
+void ImpressionistDoc::doConvolution(float **kernel, int kernelSize) {
+	for (int x = 0; x < m_nWidth; x++)
+	for (int y = 0; y < m_nHeight; y++)
+	{
+		double red = 0.0, green = 0.0, blue = 0.0;
+
+		//multiply every value of the filter with corresponding image pixel 
+		for (int filterX = 0; filterX < kernelSize; filterX++)
+		for (int filterY = 0; filterY < kernelSize; filterY++)
+		{
+			int imageX = (x - 3 / 2 + filterX + m_nWidth) % m_nWidth;
+			int imageY = (y - 3 / 2 + filterY + m_nHeight) % m_nHeight;
+			red += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3] * kernel[filterX][filterY];
+			green += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 1] * kernel[filterX][filterY];
+			blue += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 2] * kernel[filterX][filterY];
+		}
+
+		//truncate values smaller than zero and larger than 255 
+		m_ucConvolution[y * m_nWidth * 3 + x * 3] = min(max(int(red), 0), 255);
+		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 1] = min(max(int(green), 0), 255);
+		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 2] = min(max(int(blue), 0), 255);
+	}
+
+	m_pUI->m_paintView->drawConvolution();
 }
 
 void ImpressionistDoc::undo() {
