@@ -65,6 +65,7 @@ public:
 					m_nPaintHeight;	
 	// Bitmaps 
 	unsigned char*	m_ucBitmap;
+	unsigned char*  m_ucBitmapBackup;
 	unsigned char*	m_ucGradientBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
@@ -72,7 +73,6 @@ public:
 	unsigned char*  m_ucLuminanceBrush;
 	unsigned char*  m_ucEdge;
 	unsigned char*  m_ucLoadedEdge;
-	unsigned char*  m_ucConvolution;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	

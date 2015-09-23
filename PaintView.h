@@ -22,7 +22,6 @@ public:
 
 	void initSetup();
 	void draw();
-	void drawConvolution();
 	void autoDraw(int spacing, bool randomSize);
 	int handle(int event);
 
@@ -38,7 +37,6 @@ public:
 
 private:
 	GLvoid* m_pPaintBitstart;
-	GLvoid* m_pConvolutionstart;
 	ImpBrush* rightClickDirectionLine;
 	Point firstCoord;
 

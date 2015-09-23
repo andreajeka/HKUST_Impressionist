@@ -42,13 +42,13 @@ ImpressionistDoc::ImpressionistDoc()
 
 	m_nWidth				= -1;
 	m_ucBitmap				= NULL;
+	m_ucBitmapBackup		= NULL;
 	m_ucPainting			= NULL;
 	m_ucEdge				= NULL;
 	m_ucLoadedEdge			= NULL;
 	m_ucPreviousPainting	= NULL;
 	m_ucAlphaMappedBrush	= NULL;
 	m_ucGradientBitmap		= NULL;
-	m_ucConvolution			= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -271,7 +271,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucPainting ) delete [] m_ucPainting;
 	if ( m_ucEdge ) delete[] m_ucEdge;
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
-	if (m_ucConvolution) delete[] m_ucConvolution;
+	if ( m_ucBitmapBackup ) delete[] m_ucBitmapBackup;
 
 	m_ucBitmap		= data;
 
@@ -285,8 +285,8 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_ucPreviousPainting = new unsigned char[width*height * 3];
 	memset(m_ucPreviousPainting, 0, width*height * 3);
 
-	m_ucConvolution = new unsigned char[width*height * 3];
-	memset(m_ucConvolution, 0, width*height * 3);
+	m_ucBitmapBackup = new unsigned char[width*height * 3];
+	memcpy(m_ucBitmapBackup, m_ucBitmap, width*height * 3);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -490,18 +490,18 @@ void ImpressionistDoc::doConvolution(float **kernel, int kernelSize) {
 		{
 			int imageX = (x - 3 / 2 + filterX + m_nWidth) % m_nWidth;
 			int imageY = (y - 3 / 2 + filterY + m_nHeight) % m_nHeight;
-			red += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3] * kernel[filterX][filterY];
-			green += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 1] * kernel[filterX][filterY];
-			blue += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 2] * kernel[filterX][filterY];
+			red += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3] * kernel[filterX][filterY];
+			green += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3 + 1] * kernel[filterX][filterY];
+			blue += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3 + 2] * kernel[filterX][filterY];
 		}
 
 		//truncate values smaller than zero and larger than 255 
-		m_ucConvolution[y * m_nWidth * 3 + x * 3] = min(max(int(red), 0), 255);
-		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 1] = min(max(int(green), 0), 255);
-		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 2] = min(max(int(blue), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3] = min(max(int(red), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3 + 1] = min(max(int(green), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3 + 2] = min(max(int(blue), 0), 255);
 	}
 
-	m_pUI->m_paintView->drawConvolution();
+	m_pUI->m_origView->refresh();
 }
 
 void ImpressionistDoc::undo() {
