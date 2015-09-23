@@ -331,6 +331,17 @@ void ImpressionistUI::cb_swap_canvas(Fl_Menu_* o, void* v)
 	pDoc->swapCanvas();
 }
 
+//------------------------------------------------------------
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_convolution(Fl_Menu_* o, void* v)
+{
+	char s[10];
+	strcpy(s, fl_input("Please enter an odd number for kernel size"));
+	int kernelSize = atoi(s);
+	whoami(o)->m_convolutionWindow->show(whoami(o)->getDocument(), kernelSize);
+}
+
 //------- UI should keep track of the current for all the controls for answering the query from Doc ---------
 //-------------------------------------------------------------
 // Sets the type of brush to use to the one chosen in the brush 
@@ -788,6 +799,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
 		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
 		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
+		{ "&Convolution", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_convolution },
 		{ 0 },
 
 	{ "&Options",		0, 0, 0, FL_SUBMENU },
@@ -869,6 +881,7 @@ ImpressionistUI::ImpressionistUI() {
 	manEdgeClippingClicked = FALSE;
 	anotherGradientClicked = FALSE;
 	sizeRandClicked = FALSE;
+	m_convolutionWindow = new ConvolutionWindow();
 
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(500, 380, "Brush Dialog");
