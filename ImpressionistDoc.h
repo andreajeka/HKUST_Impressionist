@@ -86,7 +86,8 @@ public:
 // Operations
 public:
 	// Get the color of the picture at the specified coord
-	GLubyte* GetOriginalPixel( int x, int y );   
+	GLubyte* GetOriginalPixel( int x, int y ); 
+	GLubyte* GetOriginalPaintingPixel(int x, int y);
 	GLubyte* GetOriginalPixel( const Point p );  
 	GLubyte* GetGradientPixel( int x, int y );
 
