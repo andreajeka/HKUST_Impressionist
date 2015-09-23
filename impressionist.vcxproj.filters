@@ -72,12 +72,19 @@
     <ClCompile Include="CircleStarBrush.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="BlurBrush.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+||||||| merged common ancestors
+=======
     <ClCompile Include="LuminanceBrush.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConvolutionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+>>>>>>> 066325af34eaf61e146c11c0d34b8f721ff6234e
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h">
@@ -137,11 +144,18 @@
     <ClInclude Include="CircleStarBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="BlurBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+||||||| merged common ancestors
+=======
     <ClInclude Include="LuminanceBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConvolutionWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+>>>>>>> 066325af34eaf61e146c11c0d34b8f721ff6234e
   </ItemGroup>
 </Project>

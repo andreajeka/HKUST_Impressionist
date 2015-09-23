@@ -22,6 +22,7 @@
 #include "HeartBrush.h"
 #include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
+#include "BlurBrush.h"
 #include "LuminanceBrush.h"
 
 // Inherit from PointBrush
@@ -64,6 +65,7 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[HEART]						= new HeartBrush(this, "Heart");
 	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
+	ImpBrush::c_pBrushes[BLUR]						= new BlurBrush(this, "Blur");
 	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
 
 	// make one of the brushes current
@@ -558,6 +560,24 @@ GLubyte* ImpressionistDoc::GetOriginalPixel( int x, int y )
 		y = m_nHeight-1;
 
 	return (GLubyte*)(m_ucBitmap + 3 * (y*m_nWidth + x));
+}
+
+//------------------------------------------------------------------
+// Get the color of the pixel in the original image at coord x and y
+//------------------------------------------------------------------
+GLubyte* ImpressionistDoc::GetOriginalPaintingPixel(int x, int y)
+{
+	if (x < 0)
+		x = 0;
+	else if (x >= m_nWidth)
+		x = m_nWidth - 1;
+
+	if (y < 0)
+		y = 0;
+	else if (y >= m_nHeight)
+		y = m_nHeight - 1;
+
+	return (GLubyte*)(m_ucPainting + 3 * (y*m_nWidth + x));
 }
 
 

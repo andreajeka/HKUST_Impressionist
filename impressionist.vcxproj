@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="AlphaMappedBrush.cpp" />
     <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="BlurBrush.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
     <ClCompile Include="CircleStarBrush.cpp" />
     <ClCompile Include="ConvolutionWindow.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="AlphaMappedBrush.h" />
     <ClInclude Include="bitmap.h" />
+    <ClInclude Include="BlurBrush.h" />
     <ClInclude Include="CircleBrush.h" />
     <ClInclude Include="CircleStarBrush.h" />
     <ClInclude Include="ConvolutionWindow.h" />
