@@ -50,6 +50,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucPreviousPainting	= NULL;
 	m_ucAlphaMappedBrush	= NULL;
 	m_ucGradientBitmap		= NULL;
+	m_ucBackground			= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -274,6 +275,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucEdge ) delete[] m_ucEdge;
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
 	if ( m_ucBitmapBackup ) delete[] m_ucBitmapBackup;
+	if ( m_ucBackground ) delete[] m_ucBackground;
 
 	m_ucBitmap		= data;
 
@@ -287,8 +289,13 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_ucPreviousPainting = new unsigned char[width*height * 3];
 	memset(m_ucPreviousPainting, 0, width*height * 3);
 
+	// allocate space for backup
 	m_ucBitmapBackup = new unsigned char[width*height * 3];
 	memcpy(m_ucBitmapBackup, m_ucBitmap, width*height * 3);
+
+	// allocate space for background in paint view
+	m_ucBackground = new unsigned char[width*height * 4];
+	memset(m_ucBackground, 0, width*height * 4);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -504,6 +511,16 @@ void ImpressionistDoc::doConvolution(float **kernel, int kernelSize) {
 	}
 
 	m_pUI->m_origView->refresh();
+}
+
+void ImpressionistDoc::changeBackgroundBrightness(int alpha) {
+	for (int i = 0; i < this->m_nPaintHeight; i++) {
+		for (int j = 0; j < this->m_nPaintWidth; j++) {
+			int k = i * m_nPaintWidth + j;
+			memcpy(m_ucBackground + 4 * k, m_ucBitmap + 3 * k, 3);
+			m_ucBackground[4 * k + 3] = alpha;
+		}
+	}
 }
 
 void ImpressionistDoc::undo() {

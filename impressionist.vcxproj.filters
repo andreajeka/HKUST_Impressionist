@@ -1,93 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{9cc004fb-df01-4ab7-a5b7-fe10c508fae6}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{44221553-6d29-45d0-886a-80fa9894cbb8}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{b89c4043-2e1a-46ad-8c0b-3512354115f9}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="AlphaMappedBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
     <ClCompile Include="Bitmap.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImpBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Impressionist.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImpressionistDoc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImpressionistUI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OriginalView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PaintView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PointBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LineBrush.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="BlurBrush.cpp">
+      <Filter>Sources Files</Filter>
     </ClCompile>
     <ClCompile Include="CircleBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScatteredPointBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScatteredCircleBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScatteredLineBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RightClickDirectionLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleAngle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HeartBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="loadpng.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AlphaMappedBrush.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources Files</Filter>
     </ClCompile>
     <ClCompile Include="CircleStarBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="BlurBrush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-||||||| merged common ancestors
-=======
-    <ClCompile Include="LuminanceBrush.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources Files</Filter>
     </ClCompile>
     <ClCompile Include="ConvolutionWindow.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Sources Files</Filter>
     </ClCompile>
->>>>>>> 066325af34eaf61e146c11c0d34b8f721ff6234e
+    <ClCompile Include="HeartBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Impressionist.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpressionistDoc.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpressionistUI.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadpng.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LuminanceBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OriginalView.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PaintView.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RightClickDirectionLine.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScatteredCircleBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScatteredLineBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScatteredPointBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleAngle.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlphaMappedBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleStarBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvolutionWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HeartBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ImpBrush.h">
@@ -102,6 +102,15 @@
     <ClInclude Include="impressionistUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LineBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="loadpng.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LuminanceBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="OriginalView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -111,13 +120,7 @@
     <ClInclude Include="PointBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LineBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScatteredPointBrush.h">
+    <ClInclude Include="RightClickDirectionLine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScatteredCircleBrush.h">
@@ -126,36 +129,19 @@
     <ClInclude Include="ScatteredLineBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RightClickDirectionLine.h">
+    <ClInclude Include="ScatteredPointBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TriangleBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeartBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="loadpng.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AlphaMappedBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleStarBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="BlurBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-||||||| merged common ancestors
-=======
-    <ClInclude Include="LuminanceBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConvolutionWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
->>>>>>> 066325af34eaf61e146c11c0d34b8f721ff6234e
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{e0c3ad43-351e-487b-82a4-fdca7bff9531}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources Files">
+      <UniqueIdentifier>{03829225-18bc-4a5d-84fc-bc2d550b867d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

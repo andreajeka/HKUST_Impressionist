@@ -579,6 +579,18 @@ void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 	pDoc->displayEdgeImg();
 }
 
+//------------------------------------------------------------
+// 
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_add_background_button(Fl_Widget* o, void* v)
+{
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+
+	pDoc->changeBackgroundBrightness(pDoc->m_pUI->m_DimLevelSlider->value());
+	pDoc->m_pUI->m_paintView->refresh();
+}
+
 //---------------------------------- per instance functions --------------------------------------
 
 //------------------------------------------------
@@ -1033,12 +1045,11 @@ ImpressionistUI::ImpressionistUI() {
 		m_DimLevelSlider->step(1);
 		m_DimLevelSlider->value(255);
 		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
-		//m_DimLevelSlider->callback(cb_edgeThresholdSlides);
 
 		// Add dim level button to the dialog
 		m_DimLevelButton = new Fl_Button(330, 330, 50, 20, "&Add");
 		m_DimLevelButton->user_data((void*)(this));
-		//m_DimLevelButton->callback(cb_do_it_button);
+		m_DimLevelButton->callback(cb_add_background_button);
 
     m_brushDialog->end();	
 

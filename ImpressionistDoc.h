@@ -31,6 +31,7 @@ public:
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	doConvolution(float **kernel, int kernelSize);
+	void	changeBackgroundBrightness(int alpha);
 	void	undo();							// called by UI to undo changes
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	int		getSize();						// get the size of the brush
@@ -73,6 +74,7 @@ public:
 	unsigned char*  m_ucLuminanceBrush;
 	unsigned char*  m_ucEdge;
 	unsigned char*  m_ucLoadedEdge;
+	unsigned char*  m_ucBackground;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	
