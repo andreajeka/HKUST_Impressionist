@@ -118,6 +118,7 @@ private:
 	// All callbacks here.  Callbacks are declared 
 	// static
 	static void	cb_load_image(Fl_Menu_* o, void* v);
+	static void cb_load_dissolve_image(Fl_Menu_* o, void* v);
 	static void cb_load_edge_image(Fl_Menu_* o, void* v);
 	static void	cb_load_mural_image(Fl_Menu_* o, void* v);
 	static void	cb_load_gradient_image(Fl_Menu_* o, void* v);
@@ -143,6 +144,7 @@ private:
 	static void cb_size_rand_button(Fl_Widget* o, void* v);
 	static void cb_paint_button(Fl_Widget* o, void* v);
 	static void cb_do_it_button(Fl_Widget* o, void* v);
+	static void cb_add_background_button(Fl_Widget* o, void* v);
 	static void	cb_clear_canvas_button(Fl_Widget* o, void* v);
 	static void	cb_sizeSlides(Fl_Widget* o, void* v);
 	static void cb_lineWidthSlides(Fl_Widget* o, void* v);

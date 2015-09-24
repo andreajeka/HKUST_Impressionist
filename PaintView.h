@@ -22,7 +22,7 @@ public:
 
 	void initSetup();
 	void draw();
-	void drawConvolution();
+	void displayBackground();
 	void autoDraw(int spacing, bool randomSize);
 	int handle(int event);
 
@@ -32,13 +32,13 @@ public:
 	void resizeWindow(int width, int height);
 
 	void SaveCurrentContent();
+	void savePreviousStrokes();
 	void RestoreContent();
 
 	ImpressionistDoc *m_pDoc;
 
 private:
 	GLvoid* m_pPaintBitstart;
-	GLvoid* m_pConvolutionstart;
 	ImpBrush* rightClickDirectionLine;
 	Point firstCoord;
 

@@ -21,6 +21,7 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
+	void	loadDissolveImage(char *iname);
 	int		loadEdgeImage(char *iname);
 	int		loadMuralImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
@@ -31,6 +32,7 @@ public:
 
 	int     clearCanvas();                  // called by the UI to clear the drawing canvas
 	void	doConvolution(float **kernel, int kernelSize);
+	void	changeBackgroundBrightness(int alpha);
 	void	undo();							// called by UI to undo changes
 	void	setBrushType(int type);			// called by the UI to set the brushType
 	int		getSize();						// get the size of the brush
@@ -65,6 +67,7 @@ public:
 					m_nPaintHeight;	
 	// Bitmaps 
 	unsigned char*	m_ucBitmap;
+	unsigned char*  m_ucBitmapBackup;
 	unsigned char*	m_ucGradientBitmap;
 	unsigned char*	m_ucPainting;
 	unsigned char*  m_ucPreviousPainting;
@@ -72,7 +75,8 @@ public:
 	unsigned char*  m_ucLuminanceBrush;
 	unsigned char*  m_ucEdge;
 	unsigned char*  m_ucLoadedEdge;
-	unsigned char*  m_ucConvolution;
+	unsigned char*  m_ucBackground;
+	unsigned char*  m_ucDissolveImage;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	
@@ -108,7 +112,7 @@ public:
 
 private:
 	char			m_imageName[256];
-
+	void resize(unsigned char* input, unsigned char* output, int sourceWidth, int sourceHeight, int targetWidth, int targetHeight);
 };
 
 extern void MessageBox(char *message);

@@ -185,6 +185,19 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------------
+// Brings up a file chooser and then loads another image for dissolving
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_dissolve_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadDissolveImage(newfile);
+	}
+}
+
+//------------------------------------------------------------------
 // Brings up a file chooser and then loads an edge image
 //------------------------------------------------------------------
 void ImpressionistUI::cb_load_edge_image(Fl_Menu_* o, void* v)
@@ -579,6 +592,18 @@ void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 	pDoc->displayEdgeImg();
 }
 
+//------------------------------------------------------------
+// 
+// 
+//------------------------------------------------------------
+void ImpressionistUI::cb_add_background_button(Fl_Widget* o, void* v)
+{
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+
+	pDoc->changeBackgroundBrightness(pDoc->m_pUI->m_DimLevelSlider->value());
+	pDoc->m_pUI->m_paintView->refresh();
+}
+
 //---------------------------------- per instance functions --------------------------------------
 
 //------------------------------------------------
@@ -797,7 +822,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&Display",		0, 0, 0, FL_SUBMENU },
 		{ "&Original Image...", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_display_original_image },
 		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
-		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
+		{ "&Dissolve...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_dissolve_image },
 		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
 		{ "&Convolution", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_convolution },
 		{ 0 },
@@ -1033,12 +1058,11 @@ ImpressionistUI::ImpressionistUI() {
 		m_DimLevelSlider->step(1);
 		m_DimLevelSlider->value(255);
 		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
-		//m_DimLevelSlider->callback(cb_edgeThresholdSlides);
 
 		// Add dim level button to the dialog
 		m_DimLevelButton = new Fl_Button(330, 330, 50, 20, "&Add");
 		m_DimLevelButton->user_data((void*)(this));
-		//m_DimLevelButton->callback(cb_do_it_button);
+		m_DimLevelButton->callback(cb_add_background_button);
 
     m_brushDialog->end();	
 

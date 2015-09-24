@@ -43,13 +43,15 @@ ImpressionistDoc::ImpressionistDoc()
 
 	m_nWidth				= -1;
 	m_ucBitmap				= NULL;
+	m_ucBitmapBackup		= NULL;
 	m_ucPainting			= NULL;
 	m_ucEdge				= NULL;
 	m_ucLoadedEdge			= NULL;
 	m_ucPreviousPainting	= NULL;
 	m_ucAlphaMappedBrush	= NULL;
 	m_ucGradientBitmap		= NULL;
-	m_ucConvolution			= NULL;
+	m_ucBackground			= NULL;
+	m_ucDissolveImage		= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -273,11 +275,13 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucPainting ) delete [] m_ucPainting;
 	if ( m_ucEdge ) delete[] m_ucEdge;
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
-	if (m_ucConvolution) delete[] m_ucConvolution;
+	if ( m_ucBitmapBackup ) delete[] m_ucBitmapBackup;
+	if ( m_ucBackground ) delete[] m_ucBackground;
 
 	m_ucBitmap		= data;
 
 	m_ucEdge		= new GLubyte[3 * width * height];
+	m_ucDissolveImage = new unsigned char[width*height * 3];
 
 	// allocate space for draw view
 	m_ucPainting	= new unsigned char [width*height*3];
@@ -287,8 +291,13 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_ucPreviousPainting = new unsigned char[width*height * 3];
 	memset(m_ucPreviousPainting, 0, width*height * 3);
 
-	m_ucConvolution = new unsigned char[width*height * 3];
-	memset(m_ucConvolution, 0, width*height * 3);
+	// allocate space for backup
+	m_ucBitmapBackup = new unsigned char[width*height * 3];
+	memcpy(m_ucBitmapBackup, m_ucBitmap, width*height * 3);
+
+	// allocate space for background in paint view
+	m_ucBackground = new unsigned char[width*height * 4];
+	memset(m_ucBackground, 0, width*height * 4);
 
 	m_pUI->m_mainWindow->resize(m_pUI->m_mainWindow->x(), 
 								m_pUI->m_mainWindow->y(), 
@@ -304,6 +313,22 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_pUI->m_paintView->refresh();
 
 	return 1;
+}
+
+void ImpressionistDoc::loadDissolveImage(char *iname) {
+	if (m_ucDissolveImage) delete[] m_ucDissolveImage;
+
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+	}
+
+	// resize and load data to dissolve
+	resize(data, m_ucDissolveImage, width, height, m_nWidth, m_nHeight);
+
+	m_pUI->m_paintView->refresh();
 }
 
 //---------------------------------------------------------
@@ -492,18 +517,28 @@ void ImpressionistDoc::doConvolution(float **kernel, int kernelSize) {
 		{
 			int imageX = (x - 3 / 2 + filterX + m_nWidth) % m_nWidth;
 			int imageY = (y - 3 / 2 + filterY + m_nHeight) % m_nHeight;
-			red += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3] * kernel[filterX][filterY];
-			green += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 1] * kernel[filterX][filterY];
-			blue += m_ucBitmap[imageY * m_nWidth * 3 + imageX * 3 + 2] * kernel[filterX][filterY];
+			red += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3] * kernel[filterX][filterY];
+			green += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3 + 1] * kernel[filterX][filterY];
+			blue += m_ucBitmapBackup[imageY * m_nWidth * 3 + imageX * 3 + 2] * kernel[filterX][filterY];
 		}
 
 		//truncate values smaller than zero and larger than 255 
-		m_ucConvolution[y * m_nWidth * 3 + x * 3] = min(max(int(red), 0), 255);
-		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 1] = min(max(int(green), 0), 255);
-		m_ucConvolution[y * m_nWidth * 3 + x * 3 + 2] = min(max(int(blue), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3] = min(max(int(red), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3 + 1] = min(max(int(green), 0), 255);
+		m_ucBitmap[y * m_nWidth * 3 + x * 3 + 2] = min(max(int(blue), 0), 255);
 	}
 
-	m_pUI->m_paintView->drawConvolution();
+	m_pUI->m_origView->refresh();
+}
+
+void ImpressionistDoc::changeBackgroundBrightness(int alpha) {
+	for (int i = 0; i < this->m_nPaintHeight; i++) {
+		for (int j = 0; j < this->m_nPaintWidth; j++) {
+			int k = i * m_nPaintWidth + j;
+			memcpy(m_ucBackground + 4 * k, m_ucBitmap + 3 * k, 3);
+			m_ucBackground[4 * k + 3] = alpha;
+		}
+	}
 }
 
 void ImpressionistDoc::undo() {
@@ -759,4 +794,28 @@ int ImpressionistDoc::GetPixelIntensity_DiffImg(int x, int y)
 	unsigned char color[3];
 	memcpy(color, GetGradientPixel(x, y), 3);
 	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
+}
+
+void ImpressionistDoc::resize(unsigned char* input, unsigned char* output, int sourceWidth, int sourceHeight, int targetWidth, int targetHeight)
+{
+	int x, y;
+	float x_ratio = (float)(sourceWidth) / targetWidth;
+	float y_ratio = (float)(sourceHeight) / targetHeight;
+	float x_diff, y_diff;
+
+	for (int i = 0; i < targetHeight; i++) {
+		y = (int)(y_ratio * i);
+		y_diff = (y_ratio * i) - y;
+
+		for (int j = 0; j < targetWidth; j++) {
+			x = (int)(x_ratio * j);
+			x_diff = (x_ratio * j) - x;
+
+			for (int k = 0; k < 3; k++) {
+				unsigned char up = input[3 * (y * sourceWidth + x) + k] * (1 - x_diff) + input[3 * (y * sourceWidth + x + 1) + k] * (x_diff);
+				unsigned char down = input[3 * ((y + 1) * sourceWidth + x) + k] * (1 - x_diff) + input[3 * ((y + 1) * sourceWidth + x + 1) + k] * (x_diff);
+				output[3 * (i * targetWidth + j) + k] = up * (1 - y_diff) + down * y_diff;
+			}
+		}
+	}
 }

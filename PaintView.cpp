@@ -19,7 +19,6 @@
 #define RIGHT_MOUSE_DOWN	4
 #define RIGHT_MOUSE_DRAG	5
 #define RIGHT_MOUSE_UP		6
-#define CONVOLUTION			7
 
 
 #ifndef WIN32
@@ -84,7 +83,6 @@ void PaintView::initSetup()
 	if (startrow < 0) startrow = 0;
 
 	m_pPaintBitstart = m_pDoc->m_ucPainting + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
-	m_pConvolutionstart = m_pDoc->m_ucConvolution + 3 * ((m_pDoc->m_nPaintWidth * startrow) + scrollpos.x);
 
 	m_nDrawWidth = drawWidth;
 	m_nDrawHeight = drawHeight;
@@ -177,16 +175,26 @@ void PaintView::draw()
 		switch (eventToDo)
 		{
 		case LEFT_MOUSE_DOWN:
-			m_pDoc->m_pCurrentBrush->BrushBegin(source, target);
+			savePreviousStrokes(); // save previous strokes before creating new strokes
+			RestoreContent(); // put the strokes to colour buffer (no background)
+
+			m_pDoc->m_pCurrentBrush->BrushBegin(source, target); // place the strokes to the colour buffer
+
+			SaveCurrentContent(); // save the strokes to the buffer
 			break;
 		case LEFT_MOUSE_DRAG:
+			RestoreContent();
+
 			m_pDoc->m_pCurrentBrush->BrushMove(source, target);
-			break;
-		case LEFT_MOUSE_UP:
-			m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
 
 			SaveCurrentContent();
+			break;
+		case LEFT_MOUSE_UP:
 			RestoreContent();
+
+			m_pDoc->m_pCurrentBrush->BrushEnd(source, target);
+			
+			SaveCurrentContent(); // save current strokes
 			break;
 		case RIGHT_MOUSE_DOWN:
 			firstCoord = target;
@@ -213,20 +221,17 @@ void PaintView::draw()
 			rightClickDirectionLine = NULL;
 
 			break;
-		case CONVOLUTION:
-			glDrawBuffer(GL_BACK); // specify which color buffers are to be drawn into
-
-			glClear(GL_COLOR_BUFFER_BIT); // clear buffers to preset values
-
-			glRasterPos2i(0, m_nWindowHeight - m_nDrawHeight); // starting point for pixel write op
-			glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // how to store the pixels
-			glPixelStorei(GL_UNPACK_ROW_LENGTH, m_pDoc->m_nPaintWidth);
-			glDrawPixels(m_nDrawWidth, m_nDrawHeight, GL_RGB, GL_UNSIGNED_BYTE, m_pConvolutionstart); // write to frame buffer
-			break;
 		default:
 			printf("Unknown event!!\n");
 			break;
 		}
+	}
+
+	// put the background on top of the stroke
+	// it sounds stupid, but if we want to do the other way,
+	// we need to make everything rbga rather than rbg
+	if (m_pDoc->m_ucPainting) {
+		displayBackground(); 
 	}
 
 	glFlush();
@@ -238,10 +243,13 @@ void PaintView::draw()
 
 }
 
-void PaintView::drawConvolution() {
-	eventToDo = CONVOLUTION;
-	isAnEvent = 1;
-	redraw();
+void PaintView::displayBackground() {
+	glDrawBuffer(GL_BACK);
+
+	glRasterPos2i(0, m_nWindowHeight - m_nDrawHeight);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, m_pDoc->m_nPaintWidth);
+	glDrawPixels(m_nDrawWidth, m_nDrawHeight, GL_RGBA, GL_UNSIGNED_BYTE, this->m_pDoc->m_ucBackground);
 }
 
 void PaintView::autoDraw(int spacing, bool randomSize) 
@@ -354,20 +362,16 @@ void PaintView::SaveCurrentContent()
 {
 	// Tell openGL to read from the front buffer when capturing
 	// out paint strokes
-	glReadBuffer(GL_FRONT);
+	glReadBuffer(GL_BACK);
 
 	glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 	glPixelStorei( GL_PACK_ROW_LENGTH, m_pDoc->m_nPaintWidth );
-
-	memcpy(m_pDoc->m_ucPreviousPainting, m_pDoc->m_ucPainting, m_nDrawWidth * m_nDrawHeight * 3);
 	
-	glReadPixels( 0, 
-				  m_nWindowHeight - m_nDrawHeight, 
-				  m_nDrawWidth, 
-				  m_nDrawHeight, 
-				  GL_RGB, 
-				  GL_UNSIGNED_BYTE, 
-				  m_pPaintBitstart );
+	glReadPixels( 0, m_nWindowHeight - m_nDrawHeight, m_nDrawWidth, m_nDrawHeight, GL_RGB, GL_UNSIGNED_BYTE, m_pPaintBitstart );
+}
+
+void PaintView::savePreviousStrokes() {
+	memcpy(m_pDoc->m_ucPreviousPainting, m_pDoc->m_ucPainting, m_nDrawWidth * m_nDrawHeight * 3);
 }
 
 // read data from m_pPaintBitstart to frame buffer
