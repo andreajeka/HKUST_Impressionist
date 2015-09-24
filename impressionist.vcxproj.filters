@@ -7,9 +7,6 @@
     <ClCompile Include="Bitmap.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
-    <ClCompile Include="BlurBrush.cpp">
-      <Filter>Sources Files</Filter>
-    </ClCompile>
     <ClCompile Include="CircleBrush.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
@@ -67,7 +64,16 @@
     <ClCompile Include="TriangleAngle.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
-    <ClCompile Include="SharpenBrush.cpp">
+    <ClCompile Include="EmbossBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WithoutConvBlurBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WithoutConvSharpenBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussianBlurBrush.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -76,9 +82,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BlurBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CircleBrush.h">
@@ -138,7 +141,16 @@
     <ClInclude Include="TriangleBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SharpenBrush.h">
+    <ClInclude Include="EmbossBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WithoutConvBlurBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WithoutConvSharpenBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GaussianBlurBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -913,8 +913,10 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Circle Star",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)CIRCLESTAR},
   {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
   {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
-  { "Filter: Blur",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BLUR },
-  { "Filter: Sharpen",  FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)SHARPEN },
+  { "Filter: Unconvolved Blur",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVBLUR },
+  { "Filter: Unconvolved Sharpen",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVSHARPEN },
+  { "Filter: Emboss",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)EMBOSS },
+  { "Filter: Gaussian Blur ", FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *) GAUSSIANBLUR},
   {0}
 };
 
@@ -975,13 +977,13 @@ ImpressionistUI::ImpressionistUI() {
 	// brush dialog definition
 	m_brushDialog = new Fl_Window(500, 380, "Brush Dialog");
 		// Add a brush type choice to the dialog
-		m_BrushTypeChoice = new Fl_Choice(50,10,150,25,"&Brush");
+		m_BrushTypeChoice = new Fl_Choice(50,10,220,25,"&Brush");
 		m_BrushTypeChoice->user_data((void*)(this));	// record self to be used by static callback functions
 		m_BrushTypeChoice->menu(brushTypeMenu);
 		m_BrushTypeChoice->callback(cb_brushChoice);
 
 		// Add a clear canvas button to the dialog
-		m_ClearCanvasButton = new Fl_Button(240,10,150,25,"&Clear Canvas");
+		m_ClearCanvasButton = new Fl_Button(300,10,150,25,"&Clear Canvas");
 		m_ClearCanvasButton->user_data((void*)(this));
 		m_ClearCanvasButton->callback(cb_clear_canvas_button);
 

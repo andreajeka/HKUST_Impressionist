@@ -137,10 +137,12 @@
   <ItemGroup>
     <ClCompile Include="AlphaMappedBrush.cpp" />
     <ClCompile Include="Bitmap.cpp" />
-    <ClCompile Include="BlurBrush.cpp" />
+    <ClCompile Include="GaussianBlurBrush.cpp" />
+    <ClCompile Include="WithoutConvBlurBrush.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
     <ClCompile Include="CircleStarBrush.cpp" />
     <ClCompile Include="ConvolutionWindow.cpp" />
+    <ClCompile Include="EmbossBrush.cpp" />
     <ClCompile Include="HeartBrush.cpp" />
     <ClCompile Include="ImpBrush.cpp" />
     <ClCompile Include="Impressionist.cpp" />
@@ -156,16 +158,18 @@
     <ClCompile Include="ScatteredCircleBrush.cpp" />
     <ClCompile Include="ScatteredLineBrush.cpp" />
     <ClCompile Include="ScatteredPointBrush.cpp" />
-    <ClCompile Include="SharpenBrush.cpp" />
+    <ClCompile Include="WithoutConvSharpenBrush.cpp" />
     <ClCompile Include="TriangleAngle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlphaMappedBrush.h" />
     <ClInclude Include="bitmap.h" />
-    <ClInclude Include="BlurBrush.h" />
+    <ClInclude Include="GaussianBlurBrush.h" />
+    <ClInclude Include="WithoutConvBlurBrush.h" />
     <ClInclude Include="CircleBrush.h" />
     <ClInclude Include="CircleStarBrush.h" />
     <ClInclude Include="ConvolutionWindow.h" />
+    <ClInclude Include="EmbossBrush.h" />
     <ClInclude Include="HeartBrush.h" />
     <ClInclude Include="ImpBrush.h" />
     <ClInclude Include="impressionist.h" />
@@ -181,7 +185,7 @@
     <ClInclude Include="ScatteredCircleBrush.h" />
     <ClInclude Include="ScatteredLineBrush.h" />
     <ClInclude Include="ScatteredPointBrush.h" />
-    <ClInclude Include="SharpenBrush.h" />
+    <ClInclude Include="WithoutConvSharpenBrush.h" />
     <ClInclude Include="TriangleBrush.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

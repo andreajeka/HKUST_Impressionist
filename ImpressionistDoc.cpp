@@ -23,8 +23,10 @@
 #include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
 #include "LuminanceBrush.h"
-#include "BlurBrush.h"
-#include "SharpenBrush.h"
+#include "WithoutConvBlurBrush.h"
+#include "WithoutConvSharpenBrush.h"
+#include "EmbossBrush.h"
+#include "GaussianBlurBrush.h"
 
 // Inherit from PointBrush
 #include "ScatteredPointBrush.h"
@@ -69,8 +71,10 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
 	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
-	ImpBrush::c_pBrushes[BLUR]						= new BlurBrush(this, "Blur");
-	ImpBrush::c_pBrushes[SHARPEN]					= new SharpenBrush(this, "Sharpen");
+	ImpBrush::c_pBrushes[WOCONVBLUR]				= new WithoutConvBlurBrush(this, "Unconvolved Blur");
+	ImpBrush::c_pBrushes[WOCONVSHARPEN]				= new WithoutConvSharpenBrush(this, "Unconvolved Sharpen");
+	ImpBrush::c_pBrushes[EMBOSS]					= new EmbossBrush(this, "Emboss");
+	ImpBrush::c_pBrushes[GAUSSIANBLUR]				= new GaussianBlurBrush(this, "Gaussian Blur");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
