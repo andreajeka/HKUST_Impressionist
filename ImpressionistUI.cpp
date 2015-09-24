@@ -611,7 +611,7 @@ void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 {
 	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
 	ImpressionistUI* pUI = pDoc->m_pUI;
-	pUI->m_paintView->autoDraw(pDoc->getSpacing(), pDoc->sizeRandIsOn());
+	pUI->m_paintView->autoDraw(pDoc->sizeRandIsOn());
 }
 
 //------------------------------------------------------------

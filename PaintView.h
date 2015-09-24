@@ -23,7 +23,7 @@ public:
 	void initSetup();
 	void draw();
 	void displayBackground();
-	void autoDraw(int spacing, bool randomSize);
+	void autoDraw(bool randomSize);
 	int handle(int event);
 
 	void mouseMove(Point coord);

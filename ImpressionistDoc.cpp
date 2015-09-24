@@ -132,6 +132,7 @@ void ImpressionistDoc::setBrushType(int type)
 //---------------------------------------------------------
 int ImpressionistDoc::getSize()
 {
+	// SIZE RANDOMIZATION DONE HERE
 	int size = m_pUI->getSize();
 	if (m_pUI->sizeRandIsOn()) {
 		// Get better size randomization

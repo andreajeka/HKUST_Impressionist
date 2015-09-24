@@ -91,11 +91,7 @@ void PaintView::initSetup()
 	m_nEndRow = startrow + drawHeight;
 	m_nStartCol = scrollpos.x;
 	m_nEndCol = m_nStartCol + drawWidth;
-}
 
-void PaintView::draw()
-{
-	initSetup();
 	// Implement edge clipping here using stencil buffer
 	// There are two steps:
 	// 1. Initialize stencil buffer by setting color buffer masks to false
@@ -104,7 +100,7 @@ void PaintView::draw()
 	// 2. Use the initialized stencil buffer and stencil test to write only 
 	//    in the locations where stencil value is 1
 	if (!valid()) {
-		
+
 		// Quick explanation: 
 		// Stencil buffer gives an option to which 
 		// fragments should be drawn and which shouldn't
@@ -113,8 +109,8 @@ void PaintView::draw()
 		/************** Step 1 **************/
 		glEnable(GL_STENCIL_TEST);
 
-		/* Basically glStencilMask allows us to set a bitmask that is 
-		   ANDed with the stencil value about to be written to the buffer */
+		/* Basically glStencilMask allows us to set a bitmask that is
+		ANDed with the stencil value about to be written to the buffer */
 		/*----------------------------------------------------------------*/
 		// 0xFF means we set all stencil values to 1 per bit, no mask  
 		glStencilMask(0xFF);
@@ -123,9 +119,9 @@ void PaintView::draw()
 
 		/* Configure Stencil Testing*/
 		/* a. glStencilFunc describes what OpenGL should do
-			  with the content of the stencil buffer
+		with the content of the stencil buffer
 		/* b. glStencilOp describes how we can update
-		      the stencil buffer
+		the stencil buffer
 		/*------------------------------------------------*/
 		// Force drawing to stencil by declaring stencil test function fails
 		// This means we draw 1s on test fail (always)
@@ -139,14 +135,14 @@ void PaintView::draw()
 
 		// Draw stencil shape
 		glBegin(GL_TRIANGLE_STRIP);
-			// Get the vertices for the paint view 
-			glVertex2f(0, m_nWindowHeight - m_nDrawHeight); // bottom left 
-			glVertex2f(m_nDrawWidth, m_nWindowHeight - m_nDrawHeight); //  bottom right
-			glVertex2f(0, m_nWindowHeight); // top left
-			glVertex2f(m_nDrawWidth, m_nWindowHeight); // top right
+		// Get the vertices for the paint view 
+		glVertex2f(0, m_nWindowHeight - m_nDrawHeight); // bottom left 
+		glVertex2f(m_nDrawWidth, m_nWindowHeight - m_nDrawHeight); //  bottom right
+		glVertex2f(0, m_nWindowHeight); // top left
+		glVertex2f(m_nDrawWidth, m_nWindowHeight); // top right
 
 		glEnd();
-		
+
 		/************** Step 2 **************/
 		// Enable color
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -158,6 +154,12 @@ void PaintView::draw()
 		// and write actual content to color buffer only at stencil shape locations.
 		glStencilFunc(GL_LESS, 0, 0xFF);
 	}
+
+}
+
+void PaintView::draw()
+{
+	initSetup();
 
 	if ( m_pDoc->m_ucPainting && !isAnEvent) 
 	{
@@ -237,8 +239,8 @@ void PaintView::draw()
 	glFlush();
 
 	#ifndef MESA
-	// To avoid flicker on some machines.
-	glDrawBuffer(GL_BACK);
+		// To avoid flicker on some machines.
+		glDrawBuffer(GL_BACK);
 	#endif // !MESA
 
 }
@@ -252,29 +254,37 @@ void PaintView::displayBackground() {
 	glDrawPixels(m_nDrawWidth, m_nDrawHeight, GL_RGBA, GL_UNSIGNED_BYTE, this->m_pDoc->m_ucBackground);
 }
 
-void PaintView::autoDraw(int spacing, bool randomSize) 
+void PaintView::autoDraw(bool randomSize) 
 {
+	
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	initSetup();
+	glBlendFunc(GL_NONE, GL_NONE);
+	glDisable(GL_BLEND);
 
 	int canvasWidth = m_pDoc->m_nWidth;
 	int canvasHeight = m_pDoc->m_nHeight;
-		
-	m_pDoc->m_pCurrentBrush->BrushBegin(Point(0, 0), Point(0, 0));
+	int spacing = m_pDoc->getSpacing();
+	Point source(coord.x + m_nStartCol, m_nEndRow - coord.y);
+	Point target(coord.x, m_nWindowHeight - coord.y);
+	m_pDoc->m_pCurrentBrush->BrushBegin(Point(m_nStartCol, m_nEndRow), Point(0, m_nWindowHeight));
 
 	for (int i = 0; i < canvasWidth; i += spacing) {
 		for (int j = 0; j < canvasHeight; j += spacing) {
-			m_pDoc->m_pCurrentBrush->BrushMove(Point(i, j), Point(i, j));
+			m_pDoc->m_pCurrentBrush->BrushMove(Point(i + m_nStartCol, m_nEndRow - j), Point(i, m_nWindowHeight - j));
 		}
 	}
 
-	m_pDoc->m_pCurrentBrush->BrushEnd(Point(canvasWidth - 1, canvasHeight - 1), 
-									  Point(canvasWidth - 1, canvasHeight - 1));
+	m_pDoc->m_pCurrentBrush->BrushEnd(Point(canvasWidth - 1 + m_nStartCol, m_nEndRow - canvasHeight - 1),
+									  Point(canvasWidth - 1, m_nWindowHeight - canvasHeight - 1));
+	
 	SaveCurrentContent();
 	glFlush();
 
 	#ifndef MESA
-	// To avoid flicker on some machines.
-	glDrawBuffer(GL_BACK);
+		// To avoid flicker on some machines.
+		glDrawBuffer(GL_BACK);
 	#endif // !MESA
 }
 
