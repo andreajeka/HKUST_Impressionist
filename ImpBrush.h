@@ -22,8 +22,9 @@ enum
 	HEART,
 	CIRCLESTAR,
 	ALPHAMAPPED,
-	BLUR,
 	LUMINANCE,
+	BLUR,
+	SHARPEN,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
 

@@ -81,7 +81,7 @@ void BlurBrush::SetColor(const Point source) {
 			atY = source.y + k;
 			// Use painting pixel because we are blurring on the painting 
 			// not according to the original paint
-			memcpy(tempColor, pDoc->GetOriginalPaintingPixel(atX, atY), 3);
+			memcpy(tempColor, pDoc->GetOriginalPixel(atX, atY), 3);
 			// First run
 			if (l == -20 && k == -20) {
 				red = tempColor[0];
@@ -122,15 +122,8 @@ void BlurBrush::BrushMove(const Point source, const Point target)
 
 		for (int i = -size/2; i <= size/2; i++) {
 			for (int j = -size/2; j <= size/2; j++) {
-				//First time, in the middle
-				if (i == 0 && j == 0) {
-					SetColor(Point(source));
-					glVertex2d(target.x, target.y);
-				} 
-				else {
-					SetColor(Point(source.x + i, source.y + j));
-					glVertex2d(target.x + i, target.y + j);
-				}	
+				SetColor(Point(source.x + i, source.y + j));
+				glVertex2d(target.x + i, target.y + j);	
 			}
 		}
 

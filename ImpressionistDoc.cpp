@@ -22,8 +22,9 @@
 #include "HeartBrush.h"
 #include "CircleStarBrush.h"
 #include "AlphaMappedBrush.h"
-#include "BlurBrush.h"
 #include "LuminanceBrush.h"
+#include "BlurBrush.h"
+#include "SharpenBrush.h"
 
 // Inherit from PointBrush
 #include "ScatteredPointBrush.h"
@@ -67,8 +68,9 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[HEART]						= new HeartBrush(this, "Heart");
 	ImpBrush::c_pBrushes[CIRCLESTAR]				= new CircleStarBrush(this, "Circle Star");
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
-	ImpBrush::c_pBrushes[BLUR]						= new BlurBrush(this, "Blur");
 	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
+	ImpBrush::c_pBrushes[BLUR]						= new BlurBrush(this, "Blur");
+	ImpBrush::c_pBrushes[SHARPEN]					= new SharpenBrush(this, "Sharpen");
 
 	// make one of the brushes current
 	m_pCurrentBrush	= ImpBrush::c_pBrushes[0];
@@ -818,4 +820,108 @@ void ImpressionistDoc::resize(unsigned char* input, unsigned char* output, int s
 			}
 		}
 	}
+}
+
+void ImpressionistDoc::RGBtoHSV(GLfloat* rgb, GLfloat* hsv) {
+	GLfloat  red	= rgb[0];
+	GLfloat  green	= rgb[1];
+	GLfloat  blue	= rgb[2];
+
+	GLfloat  minVal = min(min(red, green), blue);
+	GLfloat  maxVal = max(max(red, green), blue);
+
+	GLfloat  value = maxVal;
+	GLfloat  delta = maxVal - minVal;
+	GLfloat  saturation, hue;
+	if (maxVal != 0)
+		saturation = delta / maxVal;
+	else {
+		// r=g=b=0
+		saturation = 0;
+		hue = -1; // undefined
+		return;
+	}
+
+	if (red == maxVal)
+		hue = 60.0 * (green - blue) / delta;
+	else if (green == maxVal)
+		hue = 120.0 + 60.0 * (blue - red) / delta;
+	else
+		hue = 240.0 + 60.0 * (red - green) / delta;
+
+	if (hue < 0)
+		hue += 360;
+
+	hsv[0] = hue;
+	hsv[1] = saturation;
+	hsv[2] = value;
+
+}
+
+void ImpressionistDoc::HSVtoRGB(GLfloat* hsv, GLfloat* rgb) {
+	
+	// hue [0,360], saturation[0,1], value[0,1]
+
+	GLfloat  red, green, blue;
+	GLfloat  hue		= hsv[0];
+	GLfloat  saturation = hsv[1];
+	GLfloat  value		= hsv[2];
+
+	// if grey
+	if (saturation == 0) {
+		rgb[0] = rgb[1] = rgb[2] = hsv[2];
+		return;
+	}
+
+	hue /= 60.0;
+	int i = floor(hue);
+	GLfloat  f = hue - i;
+	GLfloat  p = value * (1 - saturation);
+	GLfloat  q = value * (1 - saturation * f);
+	GLfloat  t = value * (1 - saturation * (1 - f));
+
+	switch(i) {
+		case 0:
+			red = value;
+			green = t;
+			blue = p;
+			break;
+		case 1:
+			red = q;
+			green = value;
+			blue = p;
+			break;
+		case 2:
+			red = p;
+			green = value;
+			blue = t;
+			break;
+		case 3:
+			red = p;
+			green = q;
+			blue = value;
+			break;
+		case 4:
+			red = t;
+			green = p;
+			blue = value;
+			break;
+		default:
+			red = value;
+			green = p; 
+			blue = q;
+			break;
+	}
+
+	if (red > 255) red = 255;
+	if (green > 255) green = 255;
+	if (blue > 255) blue = 255;
+	if (red < 0) red = 0;
+	if (green < 0) green = 0;
+	if (blue < 0) blue = 0;
+
+	rgb[0] = red;
+	rgb[1] = green;
+	rgb[2] = blue;
+
 }

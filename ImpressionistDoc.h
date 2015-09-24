@@ -109,6 +109,8 @@ public:
 	GLboolean	isEdgePixel(int x, int y);
 	void		GenerateEdgeDetectedImg(int threshold);
 	void		ReferToLoadedEdgeImg();
+	void		RGBtoHSV(GLfloat* rgb, GLfloat* hsv);
+	void		HSVtoRGB(GLfloat* hsv, GLfloat* rgb);
 
 private:
 	char			m_imageName[256];

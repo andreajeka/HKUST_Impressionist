@@ -67,6 +67,9 @@
     <ClCompile Include="TriangleAngle.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
+    <ClCompile Include="SharpenBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlphaMappedBrush.h">
@@ -133,6 +136,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TriangleBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SharpenBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

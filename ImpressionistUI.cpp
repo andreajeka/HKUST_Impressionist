@@ -851,8 +851,9 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Heart",				FL_ALT+'h', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)HEART},
   {"Circle Star",		FL_ALT+'s', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)CIRCLESTAR},
   {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
-  { "Filter: Blur",		FL_ALT+'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BLUR},
   {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
+  { "Filter: Blur",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)BLUR },
+  { "Filter: Sharpen",  FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)SHARPEN },
   {0}
 };
 
