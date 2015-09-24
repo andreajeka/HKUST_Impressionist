@@ -277,10 +277,13 @@ int ImpressionistDoc::loadImage(char *iname)
 	if ( m_ucPreviousPainting ) delete[] m_ucPreviousPainting;
 	if ( m_ucBitmapBackup ) delete[] m_ucBitmapBackup;
 	if ( m_ucBackground ) delete[] m_ucBackground;
+	if ( m_ucDissolveImage ) delete[] m_ucDissolveImage;
 
 	m_ucBitmap		= data;
 
 	m_ucEdge		= new GLubyte[3 * width * height];
+
+	// allocate space for dissolve image
 	m_ucDissolveImage = new unsigned char[width*height * 3];
 
 	// allocate space for draw view
@@ -316,8 +319,6 @@ int ImpressionistDoc::loadImage(char *iname)
 }
 
 void ImpressionistDoc::loadDissolveImage(char *iname) {
-	if (m_ucDissolveImage) delete[] m_ucDissolveImage;
-
 	unsigned char* data;
 	int width, height;
 
@@ -328,7 +329,7 @@ void ImpressionistDoc::loadDissolveImage(char *iname) {
 	// resize and load data to dissolve
 	resize(data, m_ucDissolveImage, width, height, m_nWidth, m_nHeight);
 
-	m_pUI->m_paintView->refresh();
+	delete[]data;
 }
 
 //---------------------------------------------------------

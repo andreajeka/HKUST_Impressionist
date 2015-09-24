@@ -190,10 +190,47 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 void ImpressionistUI::cb_load_dissolve_image(Fl_Menu_* o, void* v)
 {
 	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+	ImpressionistUI *self = whoami(o);
 
 	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
 	if (newfile != NULL) {
 		pDoc->loadDissolveImage(newfile);
+	}
+
+	int width = pDoc->m_nWidth;
+	int height = pDoc->m_nHeight;
+	GLubyte color[3];
+
+	for (int i = 0; i < 100; i++) {
+
+		for (int w = 0; w < width; w++) {
+			for (int h = 0; h < height; h++) {
+				for (int k = 0; k < 3; k++) {
+					color[k] = (GLubyte)((pDoc->m_ucBitmapBackup[3 * h * width + w * 3 + k] * (100 - i)
+						+ pDoc->m_ucDissolveImage[3 * h * width + w * 3 + k] * (i)) / 100);
+					pDoc->m_ucBitmap[3 * h * width + w * 3 + k] = color[k];
+				}
+			}
+		}
+
+		self->m_origView->refresh();
+		Fl::check();
+	}
+
+	for (int i = 0; i < 100; i++) {
+
+		for (int w = 0; w < width; w++) {
+			for (int h = 0; h < height; h++) {
+				for (int k = 0; k < 3; k++) {
+					color[k] = (GLubyte)((pDoc->m_ucDissolveImage[3 * h * width + w * 3 + k] * (100 - i)
+						+ pDoc->m_ucBitmapBackup[3 * h * width + w * 3 + k] * (i)) / 100);
+					pDoc->m_ucBitmap[3 * h * width + w * 3 + k] = color[k];
+				}
+			}
+		}
+
+		self->m_origView->refresh();
+		Fl::check();
 	}
 }
 
