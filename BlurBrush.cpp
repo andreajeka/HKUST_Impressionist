@@ -20,8 +20,6 @@ void BlurBrush::BrushBegin(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
-	int size = pDoc->getSize();
-	glPointSize((float)size);
 	BrushMove(source, target);
 }
 
@@ -37,37 +35,37 @@ void BlurBrush::SetColor(const Point source) {
 	//1 / 9, 1 / 9, 1 / 9,
 	//};
 
-	/*int red = 0;
-	int green = 0;
-	int blue = 0;
-	int index = 0;
-	GLubyte tempColor[3];
-	GLubyte color[3];
+	//int red = 0;
+	//int green = 0;
+	//int blue = 0;
+	//int index = 0;
+	//GLubyte tempColor[3];
+	//GLubyte color[3];
 
-	GLdouble GaussianKernel[9] =
-	{	0.0625, 0.125, 0.0625,
-		0.125, 0.25, 0.125,
-		0.0625, 0.125, 0.0625,
-	};
+	//GLdouble GaussianKernel[9] =
+	//{	0.0625, 0.125, 0.0625,
+	//	0.125, 0.25, 0.125,
+	//	0.0625, 0.125, 0.0625,
+	//};
 
 
-	for (int k = -1; k <= 1; k++) {
-		for (int l = -1; l <= 1; l++) {
-			memcpy(tempColor, pDoc->GetOriginalPixel(source.x + l, source.y + k), 3);
-			red += tempColor[0] * GaussianKernel[index];
-			green += tempColor[1] * GaussianKernel[index];
-			blue += tempColor[2] * GaussianKernel[index];
-			index++;
-		}
-	}
+	//for (int k = -20; k <= 20; k += 20) {
+	//	for (int l = -20; l <= 20; l+=20) {
+	//		memcpy(tempColor, pDoc->GetOriginalPaintingPixel(source.x + l, source.y + k), 3);
+	//		red += tempColor[0] * GaussianKernel[index];
+	//		green += tempColor[1] * GaussianKernel[index];
+	//		blue += tempColor[2] * GaussianKernel[index];
+	//		index++;
+	//	}
+	//}
 
-	color[0] = red;
-	color[1] = green;
-	color[2] = blue;
-	glColor3ubv(color);*/
+	//color[0] = red;
+	//color[1] = green;
+	//color[2] = blue;
+	//glColor3ubv(color);
 
-	// Use int instead of GLubyte. 
-	// Now the following code of lines work!!! :)
+	 //Use int instead of GLubyte. 
+	 //Now the following code of lines work!!! :)
 	int red;
 	int green;
 	int blue;
@@ -77,8 +75,8 @@ void BlurBrush::SetColor(const Point source) {
 	int atY = 0;
 
 	// Get a large window
-	for (int k = -20; k <= 20; k += 10) {
-		for (int l = -20; l <= 20; l += 10) {
+	for (int k = -20; k <= 20; k += 5) {
+		for (int l = -20; l <= 20; l += 5) {
 			atX = source.x + l;
 			atY = source.y + k;
 			// Use painting pixel because we are blurring on the painting 
@@ -99,9 +97,9 @@ void BlurBrush::SetColor(const Point source) {
 	}
 
 	// Use simple mean filtering
-	color[0] = red / 25;
-	color[1] = green / 25;
-	color[2] = blue / 25;
+	color[0] = red / 100;
+	color[1] = green / 100;
+	color[2] = blue / 100;
 	glColor3ubv(color);
 
 }
@@ -116,10 +114,25 @@ void BlurBrush::BrushMove(const Point source, const Point target)
 		return;
 	}
 
+	int size = pDoc->getSize();
+	// Set to one, we want to get color per pixel
+	glPointSize(1.0);
 	
 	glBegin(GL_POINTS);
-		SetColor(source);
-		glVertex2d(target.x, target.y);
+
+		for (int i = -size/2; i <= size/2; i++) {
+			for (int j = -size/2; j <= size/2; j++) {
+				//First time, in the middle
+				if (i == 0 && j == 0) {
+					SetColor(Point(source));
+					glVertex2d(target.x, target.y);
+				} 
+				else {
+					SetColor(Point(source.x + i, source.y + j));
+					glVertex2d(target.x + i, target.y + j);
+				}	
+			}
+		}
 
 	glEnd();
 }
