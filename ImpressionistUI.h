@@ -65,6 +65,7 @@ public:
 	Fl_Light_Button*	m_ManEdgeClippingButton;
 	Fl_Light_Button*    m_AnotherGradientButton;
 	Fl_Light_Button*    m_SizeRandButton;
+	Fl_Light_Button*    m_CrazyAngleButton;
 
 	// Member functions
 	void				setDocument(ImpressionistDoc* doc);
@@ -91,6 +92,7 @@ public:
 	bool				manEdgeClippingIsOn();
 	bool				anotherGradientIsOn();
 	bool				sizeRandIsOn();
+	bool				crazyAngleIsOn();
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document
@@ -107,6 +109,7 @@ private:
 	bool	manEdgeClippingClicked;
 	bool	anotherGradientClicked;
 	bool	sizeRandClicked;
+	bool	crazyAngleClicked;
 
 	// Static class members
 	static Fl_Menu_Item		menuitems[];
@@ -142,6 +145,7 @@ private:
 	static void cb_man_edge_clipping_button(Fl_Widget* o, void* v);
 	static void cb_another_gradient_button(Fl_Widget* o, void* v);
 	static void cb_size_rand_button(Fl_Widget* o, void* v);
+	static void cb_crazy_angle_button(Fl_Widget* o, void* v);
 	static void cb_paint_button(Fl_Widget* o, void* v);
 	static void cb_do_it_button(Fl_Widget* o, void* v);
 	static void cb_add_background_button(Fl_Widget* o, void* v);

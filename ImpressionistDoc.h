@@ -46,6 +46,7 @@ public:
 	bool	autoEdgeClippingIsOn();
 	bool	manEdgeClippingIsOn();
 	bool	sizeRandIsOn();
+	bool	crazyAngleIsOn();
 	int		getSpacing();
 	void	setSpacing(int value);
 	int		getEdgeThreshold();

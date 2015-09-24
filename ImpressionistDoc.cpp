@@ -92,6 +92,7 @@ void ImpressionistDoc::setUI(ImpressionistUI* ui)
 	m_pUI->m_AutoEdgeClippingButton->deactivate();
 	m_pUI->m_ManEdgeClippingButton->deactivate();
 	m_pUI->m_AnotherGradientButton->deactivate();
+	m_pUI->m_CrazyAngleButton->deactivate();
 }
 
 //---------------------------------------------------------
@@ -116,6 +117,7 @@ void ImpressionistDoc::setBrushType(int type)
 	m_pUI->m_AutoEdgeClippingButton->deactivate();
 	m_pUI->m_ManEdgeClippingButton->deactivate();
 	m_pUI->m_AnotherGradientButton->deactivate();
+	m_pUI->m_CrazyAngleButton->deactivate();
 
 	if (type == BRUSH_LINES || type == BRUSH_SCATTERED_LINES) {
 		m_pUI->m_StrokeDirectionTypeChoice->activate();
@@ -124,6 +126,7 @@ void ImpressionistDoc::setBrushType(int type)
 		m_pUI->m_AutoEdgeClippingButton->activate();
 		m_pUI->m_ManEdgeClippingButton->activate();
 		m_pUI->m_AnotherGradientButton->activate();
+		m_pUI->m_CrazyAngleButton->activate();
 	}
 }
 
@@ -176,8 +179,11 @@ int ImpressionistDoc::getLineAngle()
 	int angle = m_pUI->getLineAngle();
 	if (m_pUI->sizeRandIsOn()) {
 		// Get better size randomization
-		int randomAngle = (angle - angle / 2) + (rand() % (int)(angle - (angle - angle / 2) + 1));
-		//int randomAngle = (rand() % 360);
+		int randomAngle;
+		if (m_pUI->crazyAngleIsOn())
+			randomAngle = (rand() % 360);
+		else
+			randomAngle = (angle - angle / 2) + (rand() % (int)(angle - (angle - angle / 2) + 1));
 		//printf("Random num is = %d", randomSize);
 		return randomAngle;
 	}
@@ -230,6 +236,14 @@ bool ImpressionistDoc::manEdgeClippingIsOn()
 bool ImpressionistDoc::sizeRandIsOn()
 {
 	return m_pUI->sizeRandIsOn();
+}
+
+//----------------------------------------------------
+// Return the state of the crazy angle button
+//----------------------------------------------------
+bool ImpressionistDoc::crazyAngleIsOn()
+{
+	return m_pUI->crazyAngleIsOn();
 }
 
 

@@ -607,6 +607,22 @@ void ImpressionistUI::cb_size_rand_button(Fl_Widget* o, void* v)
 // 
 // 
 //------------------------------------------------------------
+void ImpressionistUI::cb_crazy_angle_button(Fl_Widget* o, void* v)
+{
+	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
+	ImpressionistUI* pUI = pDoc->m_pUI;
+	if (pUI->m_CrazyAngleButton->value() == 1) {
+		pUI->crazyAngleClicked = TRUE;
+	}
+	else {
+		pUI->crazyAngleClicked = FALSE;
+	}
+}
+
+//------------------------------------------------------------
+// 
+// 
+//------------------------------------------------------------
 void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 {
 	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
@@ -835,6 +851,14 @@ bool ImpressionistUI::sizeRandIsOn()
 	return sizeRandClicked;
 }
 
+//-------------------------------------------------
+// 
+//-------------------------------------------------
+bool ImpressionistUI::crazyAngleIsOn()
+{
+	return crazyAngleClicked;
+}
+
 
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {
@@ -945,6 +969,7 @@ ImpressionistUI::ImpressionistUI() {
 	manEdgeClippingClicked = FALSE;
 	anotherGradientClicked = FALSE;
 	sizeRandClicked = FALSE;
+	crazyAngleClicked = FALSE;
 	m_convolutionWindow = new ConvolutionWindow();
 
 	// brush dialog definition
@@ -1036,7 +1061,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_AnotherGradientButton->callback(cb_another_gradient_button);
 
 		// Create a group for spacing slider, size rand. buttom, and paint button
-		m_PaintGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 230, 380, 40, "");
+		m_PaintGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 230, 470, 40, "");
 
 		// Add spacing slider to the dialog
 		m_SpacingSlider = new Fl_Value_Slider(20, 240, 140, 20, "Spacing");
@@ -1052,20 +1077,25 @@ ImpressionistUI::ImpressionistUI() {
 		m_SpacingSlider->callback(cb_spacingSlides);
 
 		// Add size rand light button to the dialog
-		m_SizeRandButton = new Fl_Light_Button(223,238, 100, 23, "&Size Rand.");
+		m_SizeRandButton = new Fl_Light_Button(220,238, 87, 23, "&Size Rand.");
 		m_SizeRandButton->user_data((void*)(this));   // record self to be used by static callback functions
 		m_SizeRandButton->callback(cb_size_rand_button);
 
+		// Add crazy angle light button to the dialog
+		m_CrazyAngleButton = new Fl_Light_Button(315, 238, 100, 23, "&Crazy Angle");
+		m_CrazyAngleButton->user_data((void*)(this));   // record self to be used by static callback functions
+		m_CrazyAngleButton->callback(cb_crazy_angle_button);
+
 		// Add paint button to the dialog
-		m_PaintButton = new Fl_Button(330, 238, 50, 23, "&Paint");
+		m_PaintButton = new Fl_Button(423, 238, 50, 23, "&Paint");
 		m_PaintButton->user_data((void*)(this));
 		m_PaintButton->callback(cb_paint_button);
 
 		// Create a group for edge threshold slider and do it button
-		m_DoItGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 275, 380, 40, "");
+		m_DoItGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 275, 470, 40, "");
 
 		// Add edge threshold slider to the dialog
-		m_EdgeThresholdSlider = new Fl_Value_Slider(20, 285, 200, 20, "Edge Threshold");
+		m_EdgeThresholdSlider = new Fl_Value_Slider(20, 285, 280, 20, "Edge Threshold");
 		m_EdgeThresholdSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_EdgeThresholdSlider->type(FL_HOR_NICE_SLIDER);
 		m_EdgeThresholdSlider->labelfont(FL_COURIER);
@@ -1078,15 +1108,15 @@ ImpressionistUI::ImpressionistUI() {
 		m_EdgeThresholdSlider->callback(cb_edgeThresholdSlides);
 
 		// Add do it button to the dialog
-		m_DoItButton = new Fl_Button(330, 285, 50, 20, "&Do it");
+		m_DoItButton = new Fl_Button(420, 285, 50, 20, "&Do it");
 		m_DoItButton->user_data((void*)(this));
 		m_DoItButton->callback(cb_do_it_button);
 
 		// Create a group for dimlevel slider and add button
-		m_DimLevelGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 320, 380, 40, "");
+		m_DimLevelGroupBox = new Fl_Box(FL_THIN_UP_BOX, 10, 320, 470, 40, "");
 
 		// Add dim level slider to the dialog
-		m_DimLevelSlider = new Fl_Value_Slider(20, 330, 200, 20, "Dim Level");
+		m_DimLevelSlider = new Fl_Value_Slider(20, 330, 280, 20, "Dim Level");
 		m_DimLevelSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_DimLevelSlider->type(FL_HOR_NICE_SLIDER);
 		m_DimLevelSlider->labelfont(FL_COURIER);
@@ -1098,7 +1128,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
 
 		// Add dim level button to the dialog
-		m_DimLevelButton = new Fl_Button(330, 330, 50, 20, "&Add");
+		m_DimLevelButton = new Fl_Button(420, 330, 50, 20, "&Add");
 		m_DimLevelButton->user_data((void*)(this));
 		m_DimLevelButton->callback(cb_add_background_button);
 
