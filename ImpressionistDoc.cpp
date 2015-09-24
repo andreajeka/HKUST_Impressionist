@@ -454,13 +454,16 @@ int ImpressionistDoc::loadGradientImage(char *iname)
 		fl_alert("Can't load bitmap file");
 		return 0;
 	}
-	if (width != m_nWidth || height != m_nHeight) {
-		fl_alert("Image size differs from the original image");
-		delete[] data;
-		return 0;
-	}
 
-	m_ucGradientBitmap = data;
+	if (m_ucGradientBitmap) delete[]m_ucGradientBitmap;
+
+	if (width != m_nWidth || height != m_nHeight) {
+		m_ucGradientBitmap = new unsigned char[m_nPaintWidth*m_nPaintHeight * 3];
+		resize(data, m_ucGradientBitmap, width, height, m_nWidth, m_nHeight);
+		delete[]data;
+	}
+	else
+		m_ucGradientBitmap = data;
 
 	return 1;
 }
