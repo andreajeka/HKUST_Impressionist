@@ -136,8 +136,8 @@ int ImpressionistDoc::getSize()
 	int size = m_pUI->getSize();
 	if (m_pUI->sizeRandIsOn()) {
 		// Get better size randomization
-		int randomSize = (size - 5) + (rand() % (int)(size - (size - 5) + 1));
-		printf("Random num is = %d", randomSize);
+		int randomSize = (size - size/2) + (rand() % (int)(size - (size - size/2) + 1));
+		//printf("Random num is = %d", randomSize);
 		return randomSize;
 	}
 	else return size;
@@ -149,7 +149,14 @@ int ImpressionistDoc::getSize()
 //------------------------------------------------
 int ImpressionistDoc::getLineWidth()
 {
-	return m_pUI->getLineWidth();
+	// WIDTH RANDOMIZATION DONE HERE
+	int width = m_pUI->getLineWidth();
+	if (m_pUI->sizeRandIsOn()) {
+		int randomWidth = (width - width / 2) + (rand() % (int)(width - (width - width / 2) + 1));
+		//printf("Random num is = %d", randomWidth);
+		return randomWidth;
+	} 
+	else return m_pUI->getLineWidth();
 }
 
 //-------------------------------------------------
@@ -165,7 +172,16 @@ void ImpressionistDoc::setLineWidth(int width)
 //------------------------------------------------
 int ImpressionistDoc::getLineAngle()
 {
-	return m_pUI->getLineAngle();
+	// ANGLE RANDOMIZATION DONE HERE
+	int angle = m_pUI->getLineAngle();
+	if (m_pUI->sizeRandIsOn()) {
+		// Get better size randomization
+		int randomAngle = (angle - angle / 2) + (rand() % (int)(angle - (angle - angle / 2) + 1));
+		//int randomAngle = (rand() % 360);
+		//printf("Random num is = %d", randomSize);
+		return randomAngle;
+	}
+	else return angle;
 }
 
 //-------------------------------------------------

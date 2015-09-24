@@ -268,10 +268,11 @@ void PaintView::autoDraw(bool randomSize)
 	int spacing = m_pDoc->getSpacing();
 	Point source(coord.x + m_nStartCol, m_nEndRow - coord.y);
 	Point target(coord.x, m_nWindowHeight - coord.y);
-	m_pDoc->m_pCurrentBrush->BrushBegin(Point(m_nStartCol, m_nEndRow), Point(0, m_nWindowHeight));
+	
 
 	for (int i = 0; i < canvasWidth; i += spacing) {
 		for (int j = 0; j < canvasHeight; j += spacing) {
+			m_pDoc->m_pCurrentBrush->BrushBegin(Point(m_nStartCol, m_nEndRow), Point(0, m_nWindowHeight));
 			m_pDoc->m_pCurrentBrush->BrushMove(Point(i + m_nStartCol, m_nEndRow - j), Point(i, m_nWindowHeight - j));
 		}
 	}
