@@ -51,6 +51,7 @@ ImpressionistDoc::ImpressionistDoc()
 	m_ucAlphaMappedBrush	= NULL;
 	m_ucGradientBitmap		= NULL;
 	m_ucBackground			= NULL;
+	m_ucDissolveImage		= NULL;
 
 	// create one instance of each brush
 	ImpBrush::c_nBrushCount	= NUM_BRUSH_TYPE;
@@ -280,6 +281,7 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_ucBitmap		= data;
 
 	m_ucEdge		= new GLubyte[3 * width * height];
+	m_ucDissolveImage = new unsigned char[width*height * 3];
 
 	// allocate space for draw view
 	m_ucPainting	= new unsigned char [width*height*3];
@@ -311,6 +313,22 @@ int ImpressionistDoc::loadImage(char *iname)
 	m_pUI->m_paintView->refresh();
 
 	return 1;
+}
+
+void ImpressionistDoc::loadDissolveImage(char *iname) {
+	if (m_ucDissolveImage) delete[] m_ucDissolveImage;
+
+	unsigned char* data;
+	int width, height;
+
+	if ((data = readBMP(iname, width, height)) == NULL) {
+		fl_alert("Can't load bitmap file");
+	}
+
+	// resize and load data to dissolve
+	resize(data, m_ucDissolveImage, width, height, m_nWidth, m_nHeight);
+
+	m_pUI->m_paintView->refresh();
 }
 
 //---------------------------------------------------------
@@ -776,4 +794,28 @@ int ImpressionistDoc::GetPixelIntensity_DiffImg(int x, int y)
 	unsigned char color[3];
 	memcpy(color, GetGradientPixel(x, y), 3);
 	return (0.299*color[0] + 0.587*color[1] + 0.144*color[2]);
+}
+
+void ImpressionistDoc::resize(unsigned char* input, unsigned char* output, int sourceWidth, int sourceHeight, int targetWidth, int targetHeight)
+{
+	int x, y;
+	float x_ratio = (float)(sourceWidth) / targetWidth;
+	float y_ratio = (float)(sourceHeight) / targetHeight;
+	float x_diff, y_diff;
+
+	for (int i = 0; i < targetHeight; i++) {
+		y = (int)(y_ratio * i);
+		y_diff = (y_ratio * i) - y;
+
+		for (int j = 0; j < targetWidth; j++) {
+			x = (int)(x_ratio * j);
+			x_diff = (x_ratio * j) - x;
+
+			for (int k = 0; k < 3; k++) {
+				unsigned char up = input[3 * (y * sourceWidth + x) + k] * (1 - x_diff) + input[3 * (y * sourceWidth + x + 1) + k] * (x_diff);
+				unsigned char down = input[3 * ((y + 1) * sourceWidth + x) + k] * (1 - x_diff) + input[3 * ((y + 1) * sourceWidth + x + 1) + k] * (x_diff);
+				output[3 * (i * targetWidth + j) + k] = up * (1 - y_diff) + down * y_diff;
+			}
+		}
+	}
 }

@@ -21,6 +21,7 @@ public:
 	void	setUI(ImpressionistUI* ui);		// Assign the UI to use
 
 	int		loadImage(char *iname);			// called by the UI to load image
+	void	loadDissolveImage(char *iname);
 	int		loadEdgeImage(char *iname);
 	int		loadMuralImage(char *iname);
 	void	loadAlphaMappedBrush(char *iname);
@@ -75,6 +76,7 @@ public:
 	unsigned char*  m_ucEdge;
 	unsigned char*  m_ucLoadedEdge;
 	unsigned char*  m_ucBackground;
+	unsigned char*  m_ucDissolveImage;
 
 	// The current active brush.
 	ImpBrush*			m_pCurrentBrush;	
@@ -110,7 +112,7 @@ public:
 
 private:
 	char			m_imageName[256];
-
+	void resize(unsigned char* input, unsigned char* output, int sourceWidth, int sourceHeight, int targetWidth, int targetHeight);
 };
 
 extern void MessageBox(char *message);

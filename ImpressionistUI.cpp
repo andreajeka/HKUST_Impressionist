@@ -185,6 +185,19 @@ void ImpressionistUI::cb_load_image(Fl_Menu_* o, void* v)
 }
 
 //------------------------------------------------------------------
+// Brings up a file chooser and then loads another image for dissolving
+//------------------------------------------------------------------
+void ImpressionistUI::cb_load_dissolve_image(Fl_Menu_* o, void* v)
+{
+	ImpressionistDoc *pDoc = whoami(o)->getDocument();
+
+	char* newfile = fl_file_chooser("Open File?", "*.bmp", pDoc->getImageName());
+	if (newfile != NULL) {
+		pDoc->loadDissolveImage(newfile);
+	}
+}
+
+//------------------------------------------------------------------
 // Brings up a file chooser and then loads an edge image
 //------------------------------------------------------------------
 void ImpressionistUI::cb_load_edge_image(Fl_Menu_* o, void* v)
@@ -809,7 +822,7 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 	{ "&Display",		0, 0, 0, FL_SUBMENU },
 		{ "&Original Image...", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_display_original_image },
 		{ "&Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_display_edge_image },
-		{ "&Another Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_brushes },
+		{ "&Dissolve...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_dissolve_image },
 		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
 		{ "&Convolution", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_convolution },
 		{ 0 },
