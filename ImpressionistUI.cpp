@@ -868,13 +868,13 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Brushes...",	FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushes, 0, FL_MENU_DIVIDER },
 
 		{ "&Clear Canvas",	FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_clear_canvas},
-		{ "&Undo",			FL_ALT + 'u', (Fl_Callback *)ImpressionistUI::cb_undo, 0, FL_MENU_DIVIDER },
+		{ "&Undo",			FL_ALT + 'z', (Fl_Callback *)ImpressionistUI::cb_undo, 0, FL_MENU_DIVIDER },
 		
 		{ "&Colors...", FL_ALT + 'k', (Fl_Callback *)ImpressionistUI::cb_color_blending },
 		{ "&Paintly...", FL_ALT + 'p', (Fl_Callback *)ImpressionistUI::cb_clear_canvas, 0, FL_MENU_DIVIDER },
 
 		{ "Load Edge Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_edge_image },
-		{ "Load Mural Image...", FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_load_mural_image },
+		{ "Load Mural Image...", FL_ALT + 'm', (Fl_Callback *)ImpressionistUI::cb_load_mural_image },
 		{ "Load Gradient Image...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_gradient_image, 0, FL_MENU_DIVIDER },
 
 		{ "&Quit",			FL_ALT + 'q', (Fl_Callback *)ImpressionistUI::cb_exit },
@@ -886,11 +886,6 @@ Fl_Menu_Item ImpressionistUI::menuitems[] = {
 		{ "&Dissolve...", FL_ALT + 'a', (Fl_Callback *)ImpressionistUI::cb_load_dissolve_image },
 		{ "&Swap Canvas", FL_ALT + 's', (Fl_Callback * )ImpressionistUI::cb_swap_canvas },
 		{ "&Convolution", FL_ALT + 'c', (Fl_Callback *)ImpressionistUI::cb_convolution },
-		{ 0 },
-
-	{ "&Options",		0, 0, 0, FL_SUBMENU },
-		{ "&Faster...", FL_ALT + 'f', (Fl_Callback *)ImpressionistUI::cb_load_image },
-		{ "&Safer...", FL_ALT + 's', (Fl_Callback *)ImpressionistUI::cb_save_image },
 		{ 0 },
 
 	{ "&Help",		0, 0, 0, FL_SUBMENU },
@@ -915,8 +910,9 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
   { "Filter: Unconvolved Blur",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVBLUR },
   { "Filter: Unconvolved Sharpen",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVSHARPEN },
-  { "Filter: Emboss",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)EMBOSS },
-  { "Filter: Gaussian Blur ", FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *) GAUSSIANBLUR},
+  { "Filter: Emboss",	FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)EMBOSS },
+  { "Filter: Gaussian Blur ", FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *) GAUSSIANBLUR},
+  { "Filter: Motion Blur ", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)MOTIONBLUR },
   {0}
 };
 
@@ -983,7 +979,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_BrushTypeChoice->callback(cb_brushChoice);
 
 		// Add a clear canvas button to the dialog
-		m_ClearCanvasButton = new Fl_Button(300,10,150,25,"&Clear Canvas");
+		m_ClearCanvasButton = new Fl_Button(330,10,150,25,"&Clear Canvas");
 		m_ClearCanvasButton->user_data((void*)(this));
 		m_ClearCanvasButton->callback(cb_clear_canvas_button);
 
@@ -994,7 +990,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_StrokeDirectionTypeChoice->callback(cb_strokeDirectionChoice);
 
 		// Add brush size slider to the dialog 
-		m_BrushSizeSlider = new Fl_Value_Slider(10, 80, 300, 20, "Size");
+		m_BrushSizeSlider = new Fl_Value_Slider(10, 80, 400, 20, "Size");
 		m_BrushSizeSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_BrushSizeSlider->type(FL_HOR_NICE_SLIDER);
         m_BrushSizeSlider->labelfont(FL_COURIER);
@@ -1007,7 +1003,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_BrushSizeSlider->callback(cb_sizeSlides);
 
 		// Add line width slider to the dialog
-		m_LineWidthSlider = new Fl_Value_Slider(10, 110, 300, 20, "Line Width");
+		m_LineWidthSlider = new Fl_Value_Slider(10, 110, 400, 20, "Line Width");
 		m_LineWidthSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_LineWidthSlider->type(FL_HOR_NICE_SLIDER);
 		m_LineWidthSlider->labelfont(FL_COURIER);
@@ -1020,7 +1016,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_LineWidthSlider->callback(cb_lineWidthSlides);
 
 		// Add line width slider to the dialog
-		m_LineAngleSlider = new Fl_Value_Slider(10, 140, 300, 20, "Line Angle");
+		m_LineAngleSlider = new Fl_Value_Slider(10, 140, 400, 20, "Line Angle");
 		m_LineAngleSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_LineAngleSlider->type(FL_HOR_NICE_SLIDER);
 		m_LineAngleSlider->labelfont(FL_COURIER);
@@ -1033,7 +1029,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_LineAngleSlider->callback(cb_lineAngleSlides);
 
 		// Add Alpha slider to the dialog
-		m_AlphaSlider = new Fl_Value_Slider(10, 170, 300, 20, "Alpha");
+		m_AlphaSlider = new Fl_Value_Slider(10, 170, 400, 20, "Alpha");
 		m_AlphaSlider->user_data((void*)(this));	// record self to be used by static callback functions
 		m_AlphaSlider->type(FL_HOR_NICE_SLIDER);
 		m_AlphaSlider->labelfont(FL_COURIER);
@@ -1052,7 +1048,7 @@ ImpressionistUI::ImpressionistUI() {
 
 		// Add manual edge clipping light button to the dialog
 		// Manual edge clipping allows edge clipping through edge image
-		m_ManEdgeClippingButton = new Fl_Light_Button(170, 200, 150, 25, "Man &Edge Clipping");
+		m_ManEdgeClippingButton = new Fl_Light_Button(170, 200, 150, 25, "&Man Edge Clipping");
 		m_ManEdgeClippingButton->user_data((void*)(this));   // record self to be used by static callback functions
 		m_ManEdgeClippingButton->callback(cb_man_edge_clipping_button);
 
@@ -1079,7 +1075,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_SpacingSlider->callback(cb_spacingSlides);
 
 		// Add size rand light button to the dialog
-		m_SizeRandButton = new Fl_Light_Button(220,238, 87, 23, "&Size Rand.");
+		m_SizeRandButton = new Fl_Light_Button(220,238, 87, 23, "Size &Rand.");
 		m_SizeRandButton->user_data((void*)(this));   // record self to be used by static callback functions
 		m_SizeRandButton->callback(cb_size_rand_button);
 
@@ -1130,7 +1126,7 @@ ImpressionistUI::ImpressionistUI() {
 		m_DimLevelSlider->align(FL_ALIGN_RIGHT);
 
 		// Add dim level button to the dialog
-		m_DimLevelButton = new Fl_Button(420, 330, 50, 20, "&Add");
+		m_DimLevelButton = new Fl_Button(420, 330, 50, 20, "A&dd");
 		m_DimLevelButton->user_data((void*)(this));
 		m_DimLevelButton->callback(cb_add_background_button);
 

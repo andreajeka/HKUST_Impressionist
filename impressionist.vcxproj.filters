@@ -76,6 +76,9 @@
     <ClCompile Include="GaussianBlurBrush.cpp">
       <Filter>Sources Files</Filter>
     </ClCompile>
+    <ClCompile Include="MotionBlurBrush.cpp">
+      <Filter>Sources Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AlphaMappedBrush.h">
@@ -151,6 +154,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GaussianBlurBrush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionBlurBrush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

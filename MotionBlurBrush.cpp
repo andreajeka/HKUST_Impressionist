@@ -1,45 +1,46 @@
 //
-// EmbossBrush.cpp
+// MotionBlurBrush.cpp
 //
-// The implementation of Blur Brush. It is a kind of ImpBrush. All your brush implementations
+// The implementation of Motion Blur Brush. It is a kind of ImpBrush. All your brush implementations
 // will look like the file with the different GL primitive calls.
 //
 
 #include "impressionistDoc.h"
 #include "impressionistUI.h"
-#include "EmbossBrush.h"
+#include "MotionBlurBrush.h"
 
 extern float frand();
 
-EmbossBrush::EmbossBrush(ImpressionistDoc* pDoc, char* name) :
+MotionBlurBrush::MotionBlurBrush(ImpressionistDoc* pDoc, char* name) :
 ImpBrush(pDoc, name)
 {
 }
 
-void EmbossBrush::BrushBegin(const Point source, const Point target)
+void MotionBlurBrush::BrushBegin(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 	BrushMove(source, target);
 }
 
-void EmbossBrush::SetColor(const Point source) {
+void MotionBlurBrush::SetColor(const Point source) {
 
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
-	//// 3x3 kernel
-	//GLdouble WeightedMeanKernel[9] =
-	//{ 1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//};
 
-	//GLdouble GaussianKernel[9] =
-	//{	0.0625, 0.125, 0.0625,
-	//	0.125, 0.25, 0.125,
-	//	0.0625, 0.125, 0.0625,
-	//};
+	GLdouble MotionBlur[81] =
+	{
+		1, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 1, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 1, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 1, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 1, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 1, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 1, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 1, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 1,
+	};
 
 	GLfloat red = 0.0;
 	GLfloat green = 0.0;
@@ -47,20 +48,13 @@ void EmbossBrush::SetColor(const Point source) {
 	int index = 0;
 	GLubyte tempColor[3];
 	GLubyte color[3];
-	
+
 	GLfloat color1[3];
 	GLfloat tempColor1[3];
 
-	GLfloat EmbossKernel[25] =
-	{	-1, -1, -1, -1, 0,
-		-1, -1, -1, 0, 1,
-		-1, -1, 0, 1, 1,
-		-1, 0, 1, 1, 1,
-		 0, 1, 1, 1, 1
-	};
 
-	for (int k = -2; k <= 2; k += 1) {
-		for (int l = -2; l <= 2; l += 1) {
+	for (int k = -4; k <= 4; k += 1) {
+		for (int l = -4; l <= 4; l += 1) {
 			memcpy(tempColor, pDoc->GetOriginalPixel(source.x + k, source.y + l), 3);
 			// We strictly need to convert to float!!!
 			// I spent a lot of time finding the solution
@@ -69,15 +63,15 @@ void EmbossBrush::SetColor(const Point source) {
 				tempColor1[n] = (float)tempColor[n];
 			}
 
-			red += tempColor1[0] * EmbossKernel[index];
-			green += tempColor1[1] * EmbossKernel[index];
-			blue += tempColor1[2] * EmbossKernel[index];
+			red += tempColor1[0] * MotionBlur[index];
+			green += tempColor1[1] * MotionBlur[index];
+			blue += tempColor1[2] * MotionBlur[index];
 			++index;
 		}
 	}
 
-	double factor = 1.0;
-	double bias = 128.0;
+	double factor = 1.0 / 9.0;
+	double bias = 0.0;
 
 	red = min(max(int(factor * red + bias), 0), 255);
 	green = min(max(int(factor * green + bias), 0), 255);
@@ -95,7 +89,7 @@ void EmbossBrush::SetColor(const Point source) {
 	glColor3ubv(color);
 }
 
-void EmbossBrush::BrushMove(const Point source, const Point target)
+void MotionBlurBrush::BrushMove(const Point source, const Point target)
 {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
@@ -121,7 +115,7 @@ void EmbossBrush::BrushMove(const Point source, const Point target)
 	glEnd();
 }
 
-void EmbossBrush::BrushEnd(const Point source, const Point target)
+void MotionBlurBrush::BrushEnd(const Point source, const Point target)
 {
 }
 

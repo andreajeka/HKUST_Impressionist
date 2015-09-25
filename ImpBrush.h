@@ -27,6 +27,7 @@ enum
 	WOCONVSHARPEN,
 	EMBOSS,
 	GAUSSIANBLUR,
+	MOTIONBLUR,
 	NUM_BRUSH_TYPE // Make sure this stays at the end!
 };
 

@@ -1,18 +1,18 @@
 //
-// SharpenBrush.h
+// MotionBlurBrush.h
 //
-// The header file for Sharpen Brush. 
+// The header file for Motion Blur Brush. 
 //
 
-#ifndef SHARPENBRUSH_H
-#define SHARPENBRUSH_H
+#ifndef MOTIONBLURBRUSH_H
+#define MOTIONBLURBRUSH_H
 
-#include "SharpenBrush.h"
+#include "MotionBlurBrush.h"
 
-class SharpenBrush : public ImpBrush
+class MotionBlurBrush : public ImpBrush
 {
 public:
-	SharpenBrush(ImpressionistDoc* pDoc = NULL, char* name = NULL);
+	MotionBlurBrush(ImpressionistDoc* pDoc = NULL, char* name = NULL);
 
 	void BrushBegin(const Point source, const Point target);
 	void BrushMove(const Point source, const Point target);

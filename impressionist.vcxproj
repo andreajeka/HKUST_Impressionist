@@ -138,6 +138,7 @@
     <ClCompile Include="AlphaMappedBrush.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="GaussianBlurBrush.cpp" />
+    <ClCompile Include="MotionBlurBrush.cpp" />
     <ClCompile Include="WithoutConvBlurBrush.cpp" />
     <ClCompile Include="CircleBrush.cpp" />
     <ClCompile Include="CircleStarBrush.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="AlphaMappedBrush.h" />
     <ClInclude Include="bitmap.h" />
     <ClInclude Include="GaussianBlurBrush.h" />
+    <ClInclude Include="MotionBlurBrush.h" />
     <ClInclude Include="WithoutConvBlurBrush.h" />
     <ClInclude Include="CircleBrush.h" />
     <ClInclude Include="CircleStarBrush.h" />

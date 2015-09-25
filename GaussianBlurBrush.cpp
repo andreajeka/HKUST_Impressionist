@@ -28,13 +28,6 @@ void GaussianBlurBrush::SetColor(const Point source) {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
-	//// 3x3 kernel
-	//GLdouble WeightedMeanKernel[9] =
-	//{ 1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//};
-
 	GLdouble GaussianKernel[9] =
 	{	0.0625, 0.125, 0.0625,
 		0.125, 0.25, 0.125,
