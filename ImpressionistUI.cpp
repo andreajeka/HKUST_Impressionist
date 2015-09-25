@@ -340,7 +340,7 @@ void ImpressionistUI::cb_exit(Fl_Menu_* o, void* v)
 //-----------------------------------------------------------
 void ImpressionistUI::cb_about(Fl_Menu_* o, void* v) 
 {
-	fl_message("Impressionist FLTK version for COMP4411, Fall 2015 by Andrea Juliati Kurniasari");
+	fl_message("Impressionist FLTK version for COMP4411, Fall 2015 by Andrea Juliati Kurniasari (ajk) and Terrance Law (pmlaw)");
 }
 
 //------------------------------------------------------------

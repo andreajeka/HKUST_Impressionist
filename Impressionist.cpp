@@ -6,6 +6,11 @@
 // They do have a link to each other as their member such that they can 
 // communicate.
 //
+//
+// Created by:
+// KURNIASARI, Andrea Juliati (ajk@stu.ust.hk)
+// LAW, Po Ming (pmlaw@stu.ust.hk)
+//
 
 #include <stdio.h>
 
