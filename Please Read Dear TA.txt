@@ -1,0 +1,12 @@
+Dear TA,
+
+Note for TA when grading the program:
+1. Sometimes if you can't see anything on the painting window, try resizing the window a bit to get the result. This can happen when you are doing automatic painting or doing manual painting.
+When you encounter something weird, just try tor resize the window first for quick solution.
+
+2. Lab 4210 is using VS Studio 2015. Tried running the program on 2015 and the program will work if we don't upgrade the compilers (just use 2013 compiler version) 
+
+Thanks for reading. We hope this helps you.
+
+Best,
+Andrea and Terrance

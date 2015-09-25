@@ -258,7 +258,7 @@ void PaintView::displayBackground() {
 
 void PaintView::autoDraw(bool randomSize) 
 {
-	
+	glClear(GL_COLOR_BUFFER_BIT);
 	initSetup();
 	glBlendFunc(GL_NONE, GL_NONE);
 	glDisable(GL_BLEND);
