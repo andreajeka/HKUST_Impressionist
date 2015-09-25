@@ -24,7 +24,7 @@
 #include "AlphaMappedBrush.h"
 #include "LuminanceBrush.h"
 #include "WithoutConvBlurBrush.h"
-#include "WithoutConvSharpenBrush.h"
+#include "SharpenBrush.h"
 #include "EmbossBrush.h"
 #include "GaussianBlurBrush.h"
 #include "MotionBlurBrush.h"
@@ -73,7 +73,7 @@ ImpressionistDoc::ImpressionistDoc()
 	ImpBrush::c_pBrushes[ALPHAMAPPED]				= new AlphaMappedBrush(this, "Alpha-mapped");
 	ImpBrush::c_pBrushes[LUMINANCE]					= new LuminanceBrush(this, "Luminance");
 	ImpBrush::c_pBrushes[WOCONVBLUR]				= new WithoutConvBlurBrush(this, "Unconvolved Blur");
-	ImpBrush::c_pBrushes[WOCONVSHARPEN]				= new WithoutConvSharpenBrush(this, "Unconvolved Sharpen");
+	ImpBrush::c_pBrushes[SHARPEN]					= new SharpenBrush(this, "Sharpen");
 	ImpBrush::c_pBrushes[EMBOSS]					= new EmbossBrush(this, "Emboss");
 	ImpBrush::c_pBrushes[GAUSSIANBLUR]				= new GaussianBlurBrush(this, "Gaussian Blur");
 	ImpBrush::c_pBrushes[MOTIONBLUR]				= new MotionBlurBrush(this, "Motion Blur");
@@ -613,8 +613,11 @@ void ImpressionistDoc::displayEdgeImg()
 }
 
 //----------------------------------------------------------------
-// 
-//-----------------------------------------------------------------
+// Swap the content of original view to the painting view.
+// Vice versa applies.
+// This is called by the UI when the swap canvas menu item
+// is chosen 
+//----------------------------------------------------------------
 void ImpressionistDoc::swapCanvas()
 {
 	std::swap(m_ucBitmap, m_ucPainting);
@@ -863,6 +866,7 @@ void ImpressionistDoc::resize(unsigned char* input, unsigned char* output, int s
 	}
 }
 
+// Convert from RGB color space to HSV color space
 void ImpressionistDoc::RGBtoHSV(GLfloat* rgb, GLfloat* hsv) {
 	GLfloat  red	= rgb[0];
 	GLfloat  green	= rgb[1];
@@ -899,6 +903,7 @@ void ImpressionistDoc::RGBtoHSV(GLfloat* rgb, GLfloat* hsv) {
 
 }
 
+// Convert from HSV color space to RGB color space
 void ImpressionistDoc::HSVtoRGB(GLfloat* hsv, GLfloat* rgb) {
 	
 	// hue [0,360], saturation[0,1], value[0,1]

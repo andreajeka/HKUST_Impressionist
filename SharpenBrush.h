@@ -1,18 +1,18 @@
 //
-// WithoutConvSharpenBrush.h
+// SharpenBrush.h
 //
-// The header file for Without Convolution Sharpen Brush. 
+// The header file for Sharpen Brush. 
 //
 
-#ifndef WITHOUTCONVSHARPENBRUSH_H
-#define WITHOUTCONVSHARPENBRUSH_H
+#ifndef SHARPENBRUSH_H
+#define SHARPENBRUSH_H
 
 #include "ImpBrush.h"
 
-class WithoutConvSharpenBrush : public ImpBrush
+class SharpenBrush : public ImpBrush
 {
 public:
-	WithoutConvSharpenBrush(ImpressionistDoc* pDoc = NULL, char* name = NULL);
+	SharpenBrush(ImpressionistDoc* pDoc = NULL, char* name = NULL);
 
 	void BrushBegin(const Point source, const Point target);
 	void BrushMove(const Point source, const Point target);

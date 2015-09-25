@@ -527,8 +527,9 @@ void ImpressionistUI::cb_edgeThresholdSlides(Fl_Widget* o, void* v)
 
 
 //------------------------------------------------------------
-// 
-// 
+// Automatically activate clipped painting for line brush
+// by generating edge image
+// Called by the UI when the AutoEdgeClippingButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_auto_edge_clipping_button(Fl_Widget* o, void* v)
 {
@@ -546,8 +547,9 @@ void ImpressionistUI::cb_auto_edge_clipping_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Automatically activate clipped painting for line brush
+// from loaded edge image
+// Called by the UI when the ManEdgeClippingButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_man_edge_clipping_button(Fl_Widget* o, void* v)
 {
@@ -570,10 +572,9 @@ void ImpressionistUI::cb_man_edge_clipping_button(Fl_Widget* o, void* v)
 	}
 }
 
-//------------------------------------------------------------
-// 
-// 
-//------------------------------------------------------------
+//-------------------------------------------------------------
+//  Called by the UI when the AnotherGradientButton is clicked
+//-------------------------------------------------------------
 void ImpressionistUI::cb_another_gradient_button(Fl_Widget* o, void* v)
 {
 	ImpressionistDoc * pDoc = ((ImpressionistUI*)(o->user_data()))->getDocument();
@@ -588,8 +589,8 @@ void ImpressionistUI::cb_another_gradient_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Activate random size for any brush when doing auto painting
+// Called by the UI when SizeRandButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_size_rand_button(Fl_Widget* o, void* v)
 {
@@ -604,8 +605,9 @@ void ImpressionistUI::cb_size_rand_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Activate 'crazy angle' (random angle from 0-359 deg) when
+// doing auto painting
+// Called by the UI when the CrazyAngleButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_crazy_angle_button(Fl_Widget* o, void* v)
 {
@@ -620,8 +622,8 @@ void ImpressionistUI::cb_crazy_angle_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Do auto painting
+// Called by the UI when the PaintButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 {
@@ -631,8 +633,8 @@ void ImpressionistUI::cb_paint_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Generate edge image on the original view based on threshold
+// Called by the UI when DoItButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 {
@@ -646,8 +648,7 @@ void ImpressionistUI::cb_do_it_button(Fl_Widget* o, void* v)
 }
 
 //------------------------------------------------------------
-// 
-// 
+// Called by the UI when AddBackgroundButton is clicked
 //------------------------------------------------------------
 void ImpressionistUI::cb_add_background_button(Fl_Widget* o, void* v)
 {
@@ -820,7 +821,7 @@ double ImpressionistUI::getBlendColour(int index)
 }
 
 //-------------------------------------------------
-// 
+// Return the state of AutoEdgeClippingButton
 //-------------------------------------------------
 bool ImpressionistUI::autoEdgeClippingIsOn()
 {
@@ -828,7 +829,7 @@ bool ImpressionistUI::autoEdgeClippingIsOn()
 }
 
 //-------------------------------------------------
-// 
+// Return the state of ManEdgeClippingButton
 //-------------------------------------------------
 bool ImpressionistUI::manEdgeClippingIsOn()
 {
@@ -836,7 +837,7 @@ bool ImpressionistUI::manEdgeClippingIsOn()
 }
 
 //-------------------------------------------------
-// 
+// Return the state of AnotherGradientButton
 //-------------------------------------------------
 bool ImpressionistUI::anotherGradientIsOn()
 {
@@ -844,7 +845,7 @@ bool ImpressionistUI::anotherGradientIsOn()
 }
 
 //-------------------------------------------------
-// 
+// Return the state of SizeRandButton
 //-------------------------------------------------
 bool ImpressionistUI::sizeRandIsOn()
 {
@@ -852,7 +853,7 @@ bool ImpressionistUI::sizeRandIsOn()
 }
 
 //-------------------------------------------------
-// 
+// Return the state of CrazyAngleButton
 //-------------------------------------------------
 bool ImpressionistUI::crazyAngleIsOn()
 {
@@ -909,7 +910,7 @@ Fl_Menu_Item ImpressionistUI::brushTypeMenu[NUM_BRUSH_TYPE+1] = {
   {"Alpha-mapped",		FL_ALT+'a', (Fl_Callback *)ImpressionistUI::cb_load_alpha_mapped_brush},
   {"Luminance",			FL_ALT+'u', (Fl_Callback *)ImpressionistUI::cb_load_luminance_brush },
   { "Filter: Unconvolved Blur",		FL_ALT + 'b', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVBLUR },
-  { "Filter: Unconvolved Sharpen",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)WOCONVSHARPEN },
+  { "Filter: Sharpen",	FL_ALT + 'n', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)SHARPEN },
   { "Filter: Emboss",	FL_ALT + 'e', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)EMBOSS },
   { "Filter: Gaussian Blur ", FL_ALT + 'g', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *) GAUSSIANBLUR},
   { "Filter: Motion Blur ", FL_ALT + 'o', (Fl_Callback *)ImpressionistUI::cb_brushChoice, (void *)MOTIONBLUR },

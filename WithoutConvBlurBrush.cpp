@@ -28,42 +28,6 @@ void WithoutConvBlurBrush::SetColor(const Point source) {
 	ImpressionistDoc* pDoc = GetDocument();
 	ImpressionistUI* dlg = pDoc->m_pUI;
 
-	//// 3x3 kernel
-	//GLdouble WeightedMeanKernel[9] =
-	//{ 1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//1 / 9, 1 / 9, 1 / 9,
-	//};
-
-	//int red = 0;
-	//int green = 0;
-	//int blue = 0;
-	//int index = 0;
-	//GLubyte tempColor[3];
-	//GLubyte color[3];
-
-	//GLdouble GaussianKernel[9] =
-	//{	0.0625, 0.125, 0.0625,
-	//	0.125, 0.25, 0.125,
-	//	0.0625, 0.125, 0.0625,
-	//};
-
-
-	//for (int k = -20; k <= 20; k += 20) {
-	//	for (int l = -20; l <= 20; l+=20) {
-	//		memcpy(tempColor, pDoc->GetOriginalPaintingPixel(source.x + l, source.y + k), 3);
-	//		red += tempColor[0] * GaussianKernel[index];
-	//		green += tempColor[1] * GaussianKernel[index];
-	//		blue += tempColor[2] * GaussianKernel[index];
-	//		index++;
-	//	}
-	//}
-
-	//color[0] = red;
-	//color[1] = green;
-	//color[2] = blue;
-	//glColor3ubv(color);
-
 	 //Use int instead of GLubyte. 
 	 //Now the following code of lines work!!! :)
 	int red;
