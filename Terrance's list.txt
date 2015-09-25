@@ -1,0 +1,12 @@
+Assume 2 whistles = 1 bell
+
+-new brushes - triangle brush, heart brush, circle star brush (1.5 bells)
+-cursor (0.5 bell)
+-control colour of brushes (1 bell)
+-undo function (1 bell)
+-dimmed background in paint view (1.5 bells)
+-alpha-mapped brush stroke (1.5 bells)
+-luminance brush stroke (1.5 bells?)
+-brush stroke to follow the gradient of another image (1.5 bells)
+-convolution and normalise (+paint using the changed image?) (2 bells)
+-dissolve (1 bells)
