@@ -10,3 +10,5 @@ Assume 2 whistles = 1 bell
 -brush stroke to follow the gradient of another image (1.5 bells)
 -convolution and normalise (+paint using the changed image?) (2 bells)
 -dissolve (1 bells)
+
+total ~13 bells

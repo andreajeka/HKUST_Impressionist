@@ -1,0 +1,11 @@
+Assume 2 whistles = 1 bell
+
+-region clipping (0.5 bell)
+-swap content (0.5 bell)
+-filter brush = unconvolved blur, unconvolved sharpen, emboss, gaussian blurr, motion blur (5 bells?)
+-mural effect (1.5 bells)
+-auto paint (1.5 bells)
+-load edge image and clip brush stroke (1.5 bells)
+-generate edge image (2 bells)
+
+total ~12.5 bells
