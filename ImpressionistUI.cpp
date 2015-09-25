@@ -860,6 +860,13 @@ bool ImpressionistUI::crazyAngleIsOn()
 	return crazyAngleClicked;
 }
 
+//-------------------------------------------------
+// Return the state of CrazyAngleButton
+//-------------------------------------------------
+void ImpressionistUI::setSizeRand(bool sizeRand)
+{
+	sizeRandClicked = sizeRand;
+}
 
 // Main menu definition
 Fl_Menu_Item ImpressionistUI::menuitems[] = {

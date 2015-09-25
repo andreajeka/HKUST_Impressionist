@@ -124,7 +124,9 @@ void ImpressionistDoc::setBrushType(int type)
 	m_pUI->m_ManEdgeClippingButton->deactivate();
 	m_pUI->m_AnotherGradientButton->deactivate();
 	m_pUI->m_CrazyAngleButton->deactivate();
+	m_pUI->m_CrazyAngleButton->value(0);
 
+	
 	if (type == BRUSH_LINES || type == BRUSH_SCATTERED_LINES) {
 		m_pUI->m_StrokeDirectionTypeChoice->activate();
 		m_pUI->m_LineWidthSlider->activate();

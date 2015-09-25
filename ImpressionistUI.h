@@ -93,6 +93,7 @@ public:
 	bool				anotherGradientIsOn();
 	bool				sizeRandIsOn();
 	bool				crazyAngleIsOn();
+	void				setSizeRand(bool sizeRand);
 
 private:
 	ImpressionistDoc*	m_pDoc;		// pointer to document to communicate with the document

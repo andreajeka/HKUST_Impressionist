@@ -177,6 +177,8 @@ void PaintView::draw()
 		switch (eventToDo)
 		{
 		case LEFT_MOUSE_DOWN:
+			m_pDoc->m_pUI->m_SizeRandButton->value(0);
+			m_pDoc->m_pUI->setSizeRand(FALSE);
 			savePreviousStrokes(); // save previous strokes before creating new strokes
 			RestoreContent(); // put the strokes to colour buffer (no background)
 
@@ -257,8 +259,6 @@ void PaintView::displayBackground() {
 void PaintView::autoDraw(bool randomSize) 
 {
 	
-	glClear(GL_COLOR_BUFFER_BIT);
-
 	initSetup();
 	glBlendFunc(GL_NONE, GL_NONE);
 	glDisable(GL_BLEND);
